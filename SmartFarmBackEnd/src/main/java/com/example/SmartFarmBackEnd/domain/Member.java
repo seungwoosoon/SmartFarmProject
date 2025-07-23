@@ -16,6 +16,11 @@ public class Member {
 
     private String login;
     private String password;
+    private String name;
+    private String phoneNumber;
+
+    @Embedded
+    private Address address;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FarmShelf> farmShelves = new ArrayList<>();

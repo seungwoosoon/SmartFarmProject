@@ -20,6 +20,9 @@ public class Pot {
     private double light_strength;
 
     @Enumerated(EnumType.STRING)
+    private Plant potPlant;
+
+    @Enumerated(EnumType.STRING)
     private PotStatus potStatus;
 
     @Enumerated(EnumType.STRING)

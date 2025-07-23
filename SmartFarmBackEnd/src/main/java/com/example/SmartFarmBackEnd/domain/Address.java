@@ -1,4 +1,4 @@
-package com.example.jpashop.domain;
+package com.example.SmartFarmBackEnd.domain;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
