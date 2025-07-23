@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <h1>🧪 Test React + Spring Boot</h1>
       <p>🚀 백엔드 응답: {message}</p>
-      <h2>Success Full Request ~~!!!!</h2>
+      <h2>Success Full Request ~~!!!!!</h2>
     </div>
   );
 }
