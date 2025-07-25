@@ -1,23 +1,51 @@
 // src/pages/HomePages.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 import StatusBox from '../components/StatusBox';
-import '../App.css'; // 스타일은 여기에 합쳐도 되고 나중에 분리해도 돼
+import { logout } from '../api/auth'; // ✅ 로그아웃 API 추가
+import '../App.css';
 
 function HomePages() {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
+
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const navigate = useNavigate();
+
+  // ✅ 로그인 상태 변경 시 localStorage에 반영
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', isLoggedIn);
+  }, [isLoggedIn]);
+
+  // ✅ 로그아웃 함수 정의
+  const handleLogout = async () => {
+    try {
+      await logout(); // 백엔드 세션 종료 요청
+    } catch (err) {
+      console.error('백엔드 로그아웃 실패:', err);
+    }
+    localStorage.removeItem('isLoggedIn'); // 프론트 상태 초기화
+    setIsLoggedIn(false);
+    navigate('/'); // 홈으로 이동
+  };
 
   return (
     <div className="home-container">
       <img src="/background.jpg" alt="background" className="background-img" />
 
-      {/* 헤더 컴포넌트: 로고 + 로그인 버튼 */}
-      <Header onLoginClick={() => setShowLogin(true)} />
+      {/* ✅ 헤더에 로그아웃 핸들러 전달 */}
+      <Header
+        isLoggedIn={isLoggedIn}
+        onLoginClick={() => setShowLogin(true)}
+        onLogout={handleLogout}
+        onLogoClick={() => navigate('/')}
+      />
 
-      {/* 로그인 모달 */}
       {showLogin && (
         <LoginModal
           onClose={() => setShowLogin(false)}
@@ -25,10 +53,13 @@ function HomePages() {
             setShowLogin(false);
             setShowSignup(true);
           }}
+          onLoginSuccess={() => {
+            setIsLoggedIn(true);
+            setShowLogin(false);
+          }}
         />
       )}
 
-      {/* 회원가입 모달 */}
       {showSignup && (
         <SignupModal
           onClose={() => setShowSignup(false)}
@@ -36,30 +67,25 @@ function HomePages() {
             setShowSignup(false);
             setShowLogin(true);
           }}
+          onLoginSuccess={() => {
+            setIsLoggedIn(true);
+            setShowSignup(false);
+          }}
         />
       )}
 
-      {/* 검색창 + 벌꿀 묶음 */}
-<div className="search-wrapper">
-  <div className="search-group">
-    <div className="search-bar">
-      <img src="/search-icon.png" className="search-icon" alt="검색 아이콘" />
+      <div className="search-wrapper">
+        <div className="search-group">
+          <div className="search-bar">
+            <img src="/search-icon.png" className="search-icon" alt="검색 아이콘" />
+            <input type="text" placeholder="Search" />
+          </div>
+          <img src="/bee.png" className="bee-img" alt="bee" />
+        </div>
+      </div>
 
-      <input type="text" placeholder="Search" />
-    </div>
-    <img src="/bee.png" className="bee-img" alt="" />
-  </div>
-</div>
-
-
-
-      {/* 해시태그 설명 */}
       <p className="hashtag"># 오늘 상추 상태는 어때? &nbsp; # 토마토 수확은 언제쯤 가능해?</p>
 
-      {/* 꿀벌 이미지 */}
-      <img src="/bee.png" alt="bee" className="bee-img" />
-
-      {/* 상태 박스들 */}
       <div className="status-box-container">
         <StatusBox type="critical" count={0} />
         <StatusBox type="warning" count={0} />

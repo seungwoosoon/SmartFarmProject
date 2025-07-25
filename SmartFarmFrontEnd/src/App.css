@@ -217,3 +217,86 @@ body {
   font-size: 20px;
   cursor: pointer;
 }
+
+/* --- 회원가입 모달 스타일 --- */
+
+.signup-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.signup-input-group label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.signup-input-group input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* 아이디 + 중복확인 버튼 한 줄에 */
+.id-check-group {
+  display: flex;
+  gap: 10px;
+}
+
+.id-check-group input {
+  flex: 1;
+}
+
+.check-id-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid #2e7d32;
+  background-color: #ffffff;
+  color: #2e7d32;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.check-id-btn:hover {
+  background-color: #e6f4ea;
+}
+
+.signup-btn-modal {
+  padding: 10px 20px;
+  background-color: #81c784;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.to-login-link {
+  color: #2e7d32;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+
+.nav-btn {
+  margin-left: 10px;
+  background-color: #A5D6A7;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  margin-left: 10px;
+  background-color: #ef5350;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}

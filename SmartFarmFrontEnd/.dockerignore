@@ -1,0 +1,22 @@
+// 의존성 폴더 (package.json으로 다시 설치됨)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+// 빌드 결과물 (Docker에서 새로 빌드됨)
+build/
+dist/
+
+//OS 관련 파일들
+
+ehthumbs.db
+Thumbs.db
+
+// Git 관련
+.git/
+
+README.md
+CHANGELOG.md
+
+
