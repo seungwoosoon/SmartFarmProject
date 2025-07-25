@@ -48,8 +48,8 @@ function LoginModal({ onClose, onSwitchToSignup, onLoginSuccess }) {
         </button>
 
         <p className="switch-links" onClick={onSwitchToSignup}>
-          FORGOT LOGIN / SIGN - UP
-        </p>
+           SIGN - UP
+        </p> 
 
         <button className="close-btn" onClick={onClose}>X</button>
       </div>
