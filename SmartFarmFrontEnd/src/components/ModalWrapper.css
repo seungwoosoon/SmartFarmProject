@@ -1,0 +1,97 @@
+/* ModalWrapper.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: rgba(240, 255, 240, 0.8); /* 반투명 연녹색 */
+  padding: 40px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #2e7d32;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  font-size: 14px;
+}
+
+/* ID + 중복 확인 버튼 감싸는 div */
+.id-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.id-row input {
+  flex: 1;
+}
+
+/* 중복 확인 버튼 */
+.check-id-btn {
+  padding: 9px 12px;
+  font-size: 12px;
+  background-color: #ffffff;
+  border: 1px solid #2e7d32;
+  color: #2e7d32;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.check-id-btn:hover {
+  background-color: #e6f2e6;
+}
+
+/* 회원가입 버튼 */
+.signup-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  background-color: #66bb6a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.signup-btn:hover {
+  background-color: #58a05a;
+}
+
+/* 로그인으로 전환 버튼 */
+.to-login-btn {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: #2e7d32;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+

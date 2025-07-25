@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
+// src/App.js
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePages from './pages/HomePages';
+import MyFarm from './pages/MyFarm';
+import MyPage from './pages/MyPage';
 
 function App() {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.text())
-      .then((data) => setMessage(data));
-  }, []);
-
   return (
-    <div className="App">
-      <h1>🧪 Test React + Spring Boot</h1>
-      <p>🚀 백엔드 응답: {message}</p>
-      <h2>Success Full Request ~~!!!</h2>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePages />} />
+        <Route path="/myfarm" element={<MyFarm />} />
+        <Route path="/mypage" element={<MyPage />} />
+      </Routes>
+    </Router>
   );
 }
 

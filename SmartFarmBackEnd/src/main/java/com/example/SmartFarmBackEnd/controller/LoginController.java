@@ -18,14 +18,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-
+import org.springframework.web.bind.annotation.RequestMapping; // 이거 추가됨
+import org.springframework.security.crypto.password.PasswordEncoder; // 이거 추가됨
 
 @RestController
+@RequestMapping("/api/auth") // ⭐ 이 한 줄 추가
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
     private final FarmService farmService;
+    private final PasswordEncoder passwordEncoder; // 추가됨
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password,
@@ -36,10 +39,16 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 회원입니다.");
         }
 
+        // Member member = optionalMember.get();
+        // if (!member.getPassword().equals(password)) {
+        //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+        // }
         Member member = optionalMember.get();
-        if (!member.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, member.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
         }
+        // 이거 수정됨
+
 
         // 로그인 성공 → 세션 생성
         HttpSession session = request.getSession(true); // true = 없으면 생성

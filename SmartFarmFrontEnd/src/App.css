@@ -1,38 +1,302 @@
-.App {
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.logo {
+  height: 60px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #2e7d32;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+/* 기존 .search-bar는 그대로 유지 */
+
+.search-group {
+  position: relative;
+  width: fit-content;
+}
+
+/* 꿀벌 이미지: 검색창에 고정 */
+.bee-img {
+  position: absolute;
+  left: -150px;
+  bottom: -100px;
+  height: 150px;
+  object-fit: contain;
+  z-index: 0;
+}
+
+/* 기존 .search-bar 삭제 후 아래로 교체 */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 448px;
+  height: 45px;
+  padding: 0 8px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 80px auto 0; /* 중앙 정렬 */
+}
+
+/* 입력창 */
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12px;
+  color: #555;
+}
+
+.search-bar input::placeholder {
+  color: rgba(0, 0, 0, 0.3); /* 30% */
+  font-size: 12px;
+}
+
+/* 꼬리 삼각형 */
+.search-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: -7px; /* 👈 여기만 미세 조정 (38 → 28) */
+  width: 20px;
+  height: 28px;
+  background-color: white;
+  transform: rotate(590deg);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+
+/* 아이콘 */
+.search-icon {
+  width: 24px;
+  height: 24px;
+}
+
+
+
+.hashtag {
+  text-align: center;
+  color: green;
+  margin: 20px;
+}
+
+
+.status-box-container {
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+  gap: 24px; /* 간격 조절 */
+  margin-top: 40px;
+}
+
+.status-box {
+  background-color: #EDF7ED;
+  padding: 16px;
+  border-radius: 16px;
+  text-align: center;
+  width: 120px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tomato-icon {
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+
+
+/* 로그인 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 40px;
+  border-radius: 10px;
+  width: 400px;
+  position: relative;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.modal-title {
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 24px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.login-input-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.login-input-group label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.login-input-group input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-btn-modal {
+  padding: 10px 20px;
+  background-color: #A5D6A7;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.switch-links {
+  color: #2e7d32;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* --- 회원가입 모달 스타일 --- */
+
+.signup-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.signup-input-group label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.signup-input-group input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* 아이디 + 중복확인 버튼 한 줄에 */
+.id-check-group {
+  display: flex;
+  gap: 10px;
+}
+
+.id-check-group input {
+  flex: 1;
+}
+
+.check-id-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid #2e7d32;
+  background-color: #ffffff;
+  color: #2e7d32;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.check-id-btn:hover {
+  background-color: #e6f4ea;
+}
+
+.signup-btn-modal {
+  padding: 10px 20px;
+  background-color: #81c784;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.to-login-link {
+  color: #2e7d32;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+
+.nav-btn {
+  margin-left: 10px;
+  background-color: #A5D6A7;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  margin-left: 10px;
+  background-color: #ef5350;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
