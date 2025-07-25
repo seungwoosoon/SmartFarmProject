@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository {
@@ -15,8 +14,9 @@ public class MemberRepository {
     private final EntityManager em;
 
     // 저장
-    public void save(Member member) {
+    public Long save(Member member) {
         em.persist(member);
+        return member.getId();
     }
 
     // ID로 조회

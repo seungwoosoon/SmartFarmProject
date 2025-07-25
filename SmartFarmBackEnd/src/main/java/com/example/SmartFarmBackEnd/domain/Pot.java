@@ -64,5 +64,4 @@ public class Pot {
     public void linkShelfFloor(ShelfFloor floor) {
         this.shelfFloor = floor;
     }
-
 }

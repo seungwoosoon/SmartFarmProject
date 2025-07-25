@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue
@@ -27,4 +29,13 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Shelf> farmShelves = new ArrayList<>();
+
+    public Member(String login, String password, String name, String phoneNumber, Address address) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.farmShelves = new ArrayList<>();
+    }
 }
