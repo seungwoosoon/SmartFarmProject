@@ -12,70 +12,67 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.RequestMapping; // 이거 추가됨
+
 import org.springframework.security.crypto.password.PasswordEncoder; // 이거 추가됨
 
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
-@RequestMapping("/api/auth") // ⭐ 이 한 줄 추가
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
     private final FarmService farmService;
-    private final PasswordEncoder passwordEncoder; // 추가됨
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password,
+    public ResponseEntity<String> login(@RequestBody Map<String, String> requestBody,
                                         HttpServletRequest request) {
-        Optional<Member> optionalMember = loginService.login(username, password);
+        String login = requestBody.get("login");
+        String password = requestBody.get("password");
+
+        Optional<Member> optionalMember = loginService.login(login, password);
 
         if (optionalMember.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 회원입니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 틀렸습니다.");
         }
 
-        // Member member = optionalMember.get();
-        // if (!member.getPassword().equals(password)) {
-        //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-        // }
         Member member = optionalMember.get();
-        if (!passwordEncoder.matches(password, member.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-        }
-        // 이거 수정됨
 
-
-        // 로그인 성공 → 세션 생성
-        HttpSession session = request.getSession(true); // true = 없으면 생성
-        session.setMaxInactiveInterval(60 * 15); // 30분
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(60 * 15);
         session.setAttribute("LOGIN_MEMBER", member.getId());
 
         return ResponseEntity.ok("로그인 성공. 세션ID: " + session.getId());
     }
+
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody @Validated MemberJoinRequestDto request) {
-        // AddressDto → Address
-        Address address = new Address(
-                request.getAddress().getCity(),
-                request.getAddress().getStreet(),
-                request.getAddress().getZipcode()
-        );
+        System.out.println("🔥 회원가입 요청 도착");
+        try {
+            Address address = new Address(
+                    request.getAddress().getCity(),
+                    request.getAddress().getStreet(),
+                    request.getAddress().getZipcode()
+            );
 
-        // Member 생성
-        Member member = new Member(
-                request.getLogin(),
-                request.getPassword(),
-                request.getName(),
-                request.getPhoneNumber(),
-                address
-        );
-        loginService.join(member);
+            Member member = new Member(
+                    request.getLogin(),
+                    request.getPassword(),
+                    request.getName(),
+                    request.getPhoneNumber(),
+                    address
+            );
+            loginService.join(member);
 
-        return ResponseEntity.ok("회원가입 성공");
+            return ResponseEntity.ok("회원가입 성공");
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 찍기
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패: " + e.getMessage());
+        }
     }
 }

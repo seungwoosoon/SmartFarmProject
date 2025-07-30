@@ -6,8 +6,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create # or create, validate, none
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: Lax
+        secure: false
