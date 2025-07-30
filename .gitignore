@@ -1,15 +1,29 @@
-# ========== Java (백엔드) ==========
+# ========== Java / Spring (백엔드) ==========
 **/build/
 **/.gradle/
 **/.idea/
 **/*.iml
+**/out/
 
-# ========== Node.js (프론트엔드) ==========
+# ========== Node.js / React (프론트엔드) ==========
 **/node_modules/
+**/coverage/
 **/build/
+**/.pnp
+**/.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========== 환경변수 / 민감정보 ==========
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # ========== macOS ==========
 .DS_Store
 
-# ========== 기타 ==========
-.env
+# ========== VS Code ==========
+.vscode/
