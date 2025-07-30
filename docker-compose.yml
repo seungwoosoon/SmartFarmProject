@@ -1,12 +1,13 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:14
     container_name: smartfarm-db
     environment:
-      POSTGRES_DB: smartfarm
-      POSTGRES_USER: son
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -20,14 +21,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     restart: always
-    
+
   frontend:
     build: ./SmartFarmFrontEnd
     container_name: smartfarm-frontend
     ports:
-      - "3000:80"  # nginx 포트가 80이므로 외부에 3000으로 노출
+      - "3000:80"
     depends_on:
       - backend
 
