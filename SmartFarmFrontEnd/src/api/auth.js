@@ -1,8 +1,6 @@
 // src/api/auth.js
 import axios from 'axios';
 
-// Spring Boot 서버 주소
-//const API_BASE_URL = 'http://localhost:8080';
 const API_BASE_URL = "http://localhost:8080/api/auth";
 
 // 로그인 요청
@@ -10,7 +8,7 @@ export const login = async (loginId, password) => {
   const response = await axios.post(`${API_BASE_URL}/login`, {
     login: loginId,
     password: password,
-  }, { withCredentials: true }); // 👉 쿠키 기반 세션 유지 시 필요
+  }, { withCredentials: true });
   return response.data;
 };
 
@@ -25,6 +23,32 @@ export const signup = async (userData) => {
 // 로그아웃 요청
 export const logout = async () => {
   await axios.post(`${API_BASE_URL}/logout`, {}, {
-    withCredentials: true, // 세션 기반이면 필수
+    withCredentials: true,
   });
+};
+
+// 현재 로그인한 사용자 정보 요청
+export const getCurrentUser = async () => {
+  const response = await axios.get(`${API_BASE_URL}/me`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+// 🔽 현재 프로필 이미지 URL 가져오기
+export const getProfileImageUrl = async () => {
+  const response = await axios.get(`${API_BASE_URL}/image_url`, {
+    withCredentials: true,
+  });
+  return response.data.profileImageUrl;
+};
+
+// 🔼 프로필 이미지 URL 업데이트
+export const updateProfileImageUrl = async (imageUrl) => {
+  const response = await axios.post(`${API_BASE_URL}/image_url`, {
+    imageUrl: imageUrl,
+  }, {
+    withCredentials: true,
+  });
+  return response.data;
 };

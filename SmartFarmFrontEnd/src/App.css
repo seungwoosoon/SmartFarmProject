@@ -223,7 +223,7 @@ body {
 .signup-input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 3px; /*이거 조정했음 원래 10px*/
   margin-bottom: 20px;
   text-align: left;
 }
@@ -299,4 +299,121 @@ body {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+/* myfarm-icon 크기 모양조절*/
+.nav-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+}
+
+/* MyPage 전체 레이아웃 */
+.mypage-container {
+  background-color: #f3f9f3;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: 'Arial', sans-serif;
+  color: #222;
+}
+
+/* 상단바 */
+.mypage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mypage-title {
+  font-size: 24px;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.edit-btn {
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+/* 본문 */
+.mypage-body {
+  display: flex;
+  gap: 40px;
+}
+
+/* 왼쪽 프로필 */
+.profile-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-title {
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.profile-image-box {
+  width: 200px;
+  height: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.image-placeholder {
+  color: #999;
+  font-size: 14px;
+}
+
+/* 오른쪽 정보 */
+.info-section {
+  flex: 2;
+  font-size: 16px;
+}
+
+.info-section p {
+  margin-bottom: 10px;
+}
+
+.notify-section {
+  margin-top: 20px;
+}
+
+.notify-section label {
+  font-size: 14px;
+}
+
+/* Delete 버튼 */
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 14px;
+  text-decoration: underline;
 }

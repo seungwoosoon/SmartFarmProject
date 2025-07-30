@@ -19,22 +19,26 @@ function Header({ isLoggedIn, onLoginClick, onLogout }) {
       />
 
       {isLoggedIn ? (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <button className="login-btn" onClick={() => navigate('/myfarm')}>
-            My Farm
-          </button>
-          <button className="login-btn" onClick={() => navigate('/mypage')}>
-            My Page
-          </button>
-          <button className="login-btn" onClick={onLogout}>
-            LOG OUT
-          </button>
-        </div>
-      ) : (
-        <button className="login-btn" onClick={onLoginClick}>
-          LOG IN
-        </button>
-      )}
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* MyFarm 버튼을 이미지 아이콘으로 변경 */}
+    <button className="icon-btn" onClick={() => navigate('/myfarm')}>
+      <img src="/myfarm-icon.png" alt="My Farm" className="nav-icon" />
+    </button>
+
+    <button className="login-btn" onClick={() => navigate('/mypage')}>
+      My Page
+    </button>
+    <button className="login-btn" onClick={onLogout}>
+      LOG OUT
+    </button>
+  </div>
+) : (
+  <button className="login-btn" onClick={onLoginClick}>
+    LOG IN
+  </button>
+)}
+
+      
     </div>
   );
 }
