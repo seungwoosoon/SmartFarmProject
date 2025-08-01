@@ -34,21 +34,3 @@ export const getCurrentUser = async () => {
   });
   return response.data;
 };
-
-// 🔽 현재 프로필 이미지 URL 가져오기
-export const getProfileImageUrl = async () => {
-  const response = await axios.get(`${API_BASE_URL}/image_url`, {
-    withCredentials: true,
-  });
-  return response.data.profileImageUrl;
-};
-
-// 🔼 프로필 이미지 URL 업데이트
-export const updateProfileImageUrl = async (imageUrl) => {
-  const response = await axios.post(`${API_BASE_URL}/image_url`, {
-    imageUrl: imageUrl,
-  }, {
-    withCredentials: true,
-  });
-  return response.data;
-};
