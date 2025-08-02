@@ -1,32 +1,31 @@
 # 1단계: React 앱 빌드
 FROM node:20 AS build
 
-# 작업 디렉토리 설정
+# 1-1) 작업 디렉토리
 WORKDIR /app
 
-# package 파일만 먼저 복사하여 캐싱
-COPY package*.json ./
+# 1-2) 빌드 인자 정의 & env 설정
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
 
-# 의존성 설치 (npm ci가 더 안정적임, lock 파일 기준으로)
+# 1-3) package만 복사 → 의존성 설치 (캐시 활용)
+COPY package*.json ./
 RUN npm ci
 
-# 전체 코드 복사
+# 1-4) 전체 소스 복사
 COPY . .
 
-# React 앱 빌드
+# 1-5) React 앱 빌드
 RUN npm run build
 
 # 2단계: Nginx로 정적 파일 서빙
 FROM nginx:alpine
 
-# 빌드된 결과물을 nginx html 경로로 복사
+# 2-1) build 결과물을 nginx html 경로로 복사
 COPY --from=build /app/build /usr/share/nginx/html
 
-# 커스텀 nginx 설정 복사
+# 2-2) Nginx 설정 (필요시)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# 포트 노출
 EXPOSE 80
-
-# nginx 실행
 CMD ["nginx", "-g", "daemon off;"]

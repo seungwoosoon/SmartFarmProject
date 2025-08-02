@@ -14,7 +14,8 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./SmartFarmBackEnd
+    build:
+      context: ./SmartFarmBackEnd
     container_name: smartfarm-backend
     depends_on:
       - db
@@ -28,7 +29,10 @@ services:
     restart: always
 
   frontend:
-    build: ./SmartFarmFrontEnd
+    build:
+      context: ./SmartFarmFrontEnd
+      args:
+        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
     container_name: smartfarm-frontend
     ports:
       - "3000:80"

@@ -20,8 +20,8 @@ public class MemberRepository {
     }
 
     // ID로 조회
-    public Member findById(Long id) {
-        return em.find(Member.class, id);
+    public Optional<Member> findById(Long id) {
+        return Optional.ofNullable(em.find(Member.class, id));
     }
 
     // login (username) 으로 조회

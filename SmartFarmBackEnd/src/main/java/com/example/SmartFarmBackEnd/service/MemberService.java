@@ -18,7 +18,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Member findById(Long id) {
+    public Optional<Member> findById(Long id) {
         return memberRepository.findById(id);
     }
 

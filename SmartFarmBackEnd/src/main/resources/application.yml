@@ -18,3 +18,12 @@ server:
       cookie:
         same-site: Lax
         secure: false
+app:
+  upload:
+    dir: /Users/SEUNGWOO/uploads
+
+mqtt:
+  broker: tcp://mqtt-broker:1883
+  client-id: spring-client
+  topic-sub: etboard/sensor
+  topic-pub: led/control
