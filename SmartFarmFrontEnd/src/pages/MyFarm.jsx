@@ -1,4 +1,3 @@
-// src/pages/MyFarm.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -115,7 +114,7 @@ function MyFarm() {
   };
 
   return (
-    <div className="myfarm-container">
+    <div className="myfarm-container farm-bg"> {/* ✅ farm-bg 클래스 추가됨 */}
       {isLoggedIn && (
         <Header
           isLoggedIn={isLoggedIn}
@@ -125,11 +124,21 @@ function MyFarm() {
         />
       )}
 
+      {/* 👇 상단 설명 */}
+      <p className="farm-instruction">
+        선반에 세싹을 추가해 나만의 스마트팜을 시작해보세요 🌱
+      </p>
+
       <div className="farm-buttons">
         <button className="add-btn" onClick={handleAddOne}>+ 하나 추가</button>
         <button className="add-btn" onClick={handleAddLine}>+ 줄 추가</button>
         <button className="add-btn" onClick={handleAddAll}>+ 전체 추가</button>
       </div>
+
+      {/* 👇 하단 힌트 문구 */}
+      <p className="farm-hint">
+        세싹을 심고 관리하려면 <strong>+하나 추가</strong>를 눌러보세요 🌿
+      </p>
 
       <div className="farm-shelves">
         {shelves.map((shelf, shelfIdx) => (

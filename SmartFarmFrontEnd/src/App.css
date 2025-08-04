@@ -460,7 +460,7 @@ body {
 .pots-row {
   display: flex;
   justify-content: center; 
-  gap: 1px;   
+  gap: 0px;   
   position: absolute;
   width: 100%;
   padding: 0 10px;
@@ -628,4 +628,174 @@ body {
   border-radius: 12px;
   font-size: 16px;
   font-weight: bold;
+}
+
+
+/* ✅ 달력 모달 전체 배경 */
+.calendar-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ✅ 달력 모달 콘텐츠 (중앙 박스) */
+.calendar-content {
+  background: white;
+  padding: 32px 36px;
+  border-radius: 16px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* ✅ 모달 닫기 버튼 */
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* ✅ 달력 오픈 버튼 */
+.calendar-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* ✅ 일정 리스트 */
+.event-list {
+  margin-top: 24px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  padding-left: 10px;
+}
+
+.event-list li {
+  margin-bottom: 6px;
+}
+
+/* ✅ react-calendar 커스텀 스타일 */
+.custom-calendar {
+  border: 1px solid #ddd;         /* 회색 테두리 추가 */
+  border-radius: 12px;           /* 👈 모서리만 둥글게 */
+  overflow: hidden;              /* 내부 요소가 둥근 테두리 벗어나지 않게 */
+  width: 100%;
+  border: none;
+  font-family: 'Arial', sans-serif;
+  background-color: transparent;
+}
+
+/* 상단 네비게이션 (연도/월) */
+.custom-calendar .react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.custom-calendar .react-calendar__navigation__label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 요일 텍스트 */
+.custom-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+}
+
+/* 날짜 셀 */
+.custom-calendar .react-calendar__tile {
+  padding: 10px 0;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+/* 오늘 날짜 배경 강조 */
+.custom-calendar .react-calendar__tile--now {
+  background: #e0f2f1;
+  border-radius: 8px;
+}
+
+/* 선택된 날짜 */
+.custom-calendar .react-calendar__tile--active {
+  background: #a5d6a7;
+  color: white;
+}
+
+/*-----------------------------------------------*/
+.farm-instruction {
+  font-size: 18px;
+  text-align: center;
+  color: #2e7d32;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.farm-hint {
+  font-size: 14px;
+  text-align: center;
+  color: #4caf50;
+  margin: 10px 0 30px;
+}
+
+/* farm/plant 페이지 배경 */
+.farm-bg {
+  background: linear-gradient(
+    180deg,
+    #fdf6ec 0%,     /* 밝은 베이지 (흙 위 햇빛 느낌) */
+    #f5e7d3 40%,    /* 따뜻한 모래색 */
+    #e6cdb2 75%,    /* 연한 흙색 */
+    #d9b99b 100%    /* 진한 흙갈색 */
+  );
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.myplant-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: bold;
+  color: #5d4037; /* 연한 흙색 톤 */
+  z-index: 10;
+}
+
+
+/* 기존 farm-bg 대체 */
+.plant-bg {
+  background: linear-gradient(
+    0deg,
+    #b2e2b1 0%,     /* 아래 진한 연두 */
+    #c8e6c9 30%,    /* 중간 연한 연두 */
+    #d9f3df 60%,    /* 연한 민트 느낌 */
+    #ebfaf0 85%,    /* 거의 흰색에 가까운 민트 */
+    #f8fdf9 100%    /* 맨 위, 아주 연함 */
+  );
+  background-attachment: fixed;
+  min-height: 100vh;
 }
