@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { addSeedling } from '../api/farm';
 import '../App.css';
 
 const ROWS_PER_SHELF = 4;
@@ -37,6 +37,20 @@ function MyFarm() {
         );
     }
 
+    const sendSeedlingToBackend = async (shelfIdx, rowIdx, colIdx) => {
+        try {
+            await addSeedling({
+                numofshelf: shelfIdx,
+                numofshelffloor: rowIdx,
+                numofpot: colIdx,
+            });
+            console.log(`✅ 백엔드 전송 완료: ${shelfIdx}-${rowIdx}-${colIdx}`);
+        } catch (error) {
+            console.error('❌ 백엔드 전송 실패:', error);
+        }
+    };
+
+
     const handleAddOne = () => {
         const newShelves = [...shelves];
 
@@ -46,6 +60,7 @@ function MyFarm() {
                     if (!newShelves[s][r][c]) {
                         newShelves[s][r][c] = { status: 'NORMAL' };
                         setShelves(newShelves);
+                        sendSeedlingToBackend(s, r, c);
                         return;
                     }
                 }
@@ -56,6 +71,7 @@ function MyFarm() {
         newShelf[0][0] = { status: 'NORMAL' };
         newShelves.push(newShelf);
         setShelves(newShelves);
+        sendSeedlingToBackend(newShelves.length - 1, 0, 0);
     };
 
     const handleAddLine = () => {
@@ -67,6 +83,9 @@ function MyFarm() {
                 if (isRowEmpty) {
                     newShelves[s][r] = Array(COLS_PER_ROW).fill({ status: 'NORMAL' });
                     setShelves(newShelves);
+                    for (let c = 0; c < COLS_PER_ROW; c++) {
+                        sendSeedlingToBackend(s, r, c);
+                    }
                     return;
                 }
             }
@@ -76,6 +95,9 @@ function MyFarm() {
         newShelf[0] = Array(COLS_PER_ROW).fill({ status: 'NORMAL' });
         newShelves.push(newShelf);
         setShelves(newShelves);
+        for (let c = 0; c < COLS_PER_ROW; c++) {
+            sendSeedlingToBackend(newShelves.length - 1, 0, c);
+        }
     };
 
     const handleAddAll = () => {
@@ -91,15 +113,22 @@ function MyFarm() {
                 Array(COLS_PER_ROW).fill({ status: 'NORMAL' })
             );
             newShelves.push(newShelf);
+            setShelves(newShelves);
+            const newIndex = newShelves.length - 1;
+            for (let r = 0; r < ROWS_PER_SHELF; r++) {
+                for (let c = 0; c < COLS_PER_ROW; c++) {
+                    sendSeedlingToBackend(newIndex, r, c);
+                }
+            }
         } else {
             for (let r = 0; r < ROWS_PER_SHELF; r++) {
                 for (let c = 0; c < COLS_PER_ROW; c++) {
                     lastShelf[r][c] = { status: 'NORMAL' };
+                    sendSeedlingToBackend(newShelves.length - 1, r, c);
                 }
             }
+            setShelves(newShelves);
         }
-
-        setShelves(newShelves);
     };
 
     const handlePlantClick = (shelfIndex, rowIndex, colIndex) => {
@@ -111,11 +140,12 @@ function MyFarm() {
         if (!newShelves[shelfIdx][rowIdx][colIdx]) {
             newShelves[shelfIdx][rowIdx][colIdx] = { status: 'NORMAL' };
             setShelves(newShelves);
+            sendSeedlingToBackend(shelfIdx, rowIdx, colIdx);
         }
     };
 
     return (
-        <div className="myfarm-container farm-bg"> {/* ✅ farm-bg 클래스 추가됨 */}
+        <div className="myfarm-container farm-bg">
             {isLoggedIn && (
                 <Header
                     isLoggedIn={isLoggedIn}
@@ -125,7 +155,6 @@ function MyFarm() {
                 />
             )}
 
-            {/* 👇 상단 설명 */}
             <p className="farm-instruction">
                 선반에 세싹을 추가해 나만의 스마트팜을 시작해보세요 🌱
             </p>
@@ -136,7 +165,6 @@ function MyFarm() {
                 <button className="add-btn" onClick={handleAddAll}>+ 전체 추가</button>
             </div>
 
-            {/* 👇 하단 힌트 문구 */}
             <p className="farm-hint">
                 세싹을 심고 관리하려면 <strong>+하나 추가</strong>를 눌러보세요 🌿
             </p>

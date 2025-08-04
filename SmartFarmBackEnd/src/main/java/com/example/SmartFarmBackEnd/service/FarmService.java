@@ -19,7 +19,6 @@ import java.util.List;
 public class FarmService {
 
     private final MemberRepository memberRepository;
-    private final ShelfRepository shelfRepository;
     private final PotRepository potRepository;
 
     public Long createMemberWithEmptyFarm(Member member) {
@@ -49,7 +48,7 @@ public class FarmService {
     // 화분 하나 상태/식물 업데이트 (원본 메서드)
     public void updatePotStatus(Long potId,
                                 PotStatus status,
-                                double soilHumidity,
+                                double ph,
                                 double temperature,
                                 double lightStrength,
                                 double ttsDensity,
@@ -59,7 +58,7 @@ public class FarmService {
         if (pot == null) {
             throw new IllegalArgumentException("해당 ID의 Pot이 존재하지 않습니다.");
         }
-        pot.updateStatus(status, soilHumidity, temperature, lightStrength, ttsDensity, humidity, plant);
+        pot.updateStatus(status, ph, temperature, lightStrength, ttsDensity, humidity, plant);
     }
 
 

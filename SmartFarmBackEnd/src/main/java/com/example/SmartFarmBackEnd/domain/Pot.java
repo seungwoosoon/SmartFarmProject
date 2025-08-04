@@ -1,7 +1,6 @@
 package com.example.SmartFarmBackEnd.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Entity
@@ -26,7 +25,7 @@ public class Pot {
     @Enumerated(EnumType.STRING)
     private PotStatus status = PotStatus.EMPTY;
 
-    private double soilHumidity;
+    private double ph;
     private double temperature;
     private double lightStrength;
     private double ttsDensity;
@@ -38,7 +37,7 @@ public class Pot {
 
     public void updateStatus(
             PotStatus status,
-            double soilHumidity,
+            double ph,
             double temperature,
             double lightStrength,
             double ttsDensity,
@@ -46,7 +45,7 @@ public class Pot {
             Plant plant // nullable
     ) {
         this.status = status;
-        this.soilHumidity = soilHumidity;
+        this.ph = ph;
         this.temperature = temperature;
         this.lightStrength = lightStrength;
         this.ttsDensity = ttsDensity;

@@ -9,8 +9,12 @@ import lombok.Data;
 public class PotDto {
     private Integer position;
     private PotStatus status;
-    private Plant plant;
-    // (필요하다면 센서값들 추가)
+    private Plant plant = Plant.TOMATO;
+    private double ph = 7.5;
+    private double temperature = 26.5;
+    private double lightStrength = 3;
+    private double ttsDensity = 2;
+    private double humidity = 4.5;
 
     public static PotDto from(Pot p) {
         PotDto dto = new PotDto();

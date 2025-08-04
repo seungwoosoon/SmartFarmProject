@@ -45,7 +45,7 @@ public class SecurityConfig {
                         // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // 로그인·회원가입·로그아웃, 이미지 업로드/조회, 정적 리소스 열람 허용
-                        .requestMatchers("/api/auth/**", "/api/image/**", "/css/**", "/js/**", "/image/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/image/**", "/api/farm/**", "/css/**", "/js/**", "/image/**").permitAll()
                         // 그 외는 인증 필요
                         .anyRequest().authenticated()
                 )
