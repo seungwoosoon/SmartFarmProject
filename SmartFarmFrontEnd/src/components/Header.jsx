@@ -1,12 +1,11 @@
-/*상단 로고, 로그인버튼(네비게이션바)*/
 // src/components/Header.jsx
 import { useNavigate } from 'react-router-dom';
 
-function Header({ isLoggedIn, onLoginClick, onLogout }) {
+function Header({ isLoggedIn, onLoginClick, onLogout, currentPage }) {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate('/'); // 홈으로 이동
+    navigate('/');
   };
 
   return (
@@ -19,33 +18,27 @@ function Header({ isLoggedIn, onLoginClick, onLogout }) {
       />
 
       {isLoggedIn ? (
-  <div style={{ display: 'flex', gap: '16px' }}>
-    {/* MyFarm 버튼을 이미지 아이콘으로 변경 */}
-    <button className="icon-btn" onClick={() => navigate('/myfarm')}>
-      <img src="/myfarm-icon.png" alt="My Farm" className="nav-icon" />
-    </button>
-
-    <button className="login-btn" onClick={() => navigate('/mypage')}>
-      My Page
-    </button>
-    <button className="login-btn" onClick={onLogout}>
-      LOG OUT
-    </button>
-  </div>
-) : (
-  <button className="login-btn" onClick={onLoginClick}>
-    LOG IN
-  </button>
-)}
-
-      
+        <div style={{ display: 'flex', gap: '16px' }}>
+          {/* 🔥 MyFarm 버튼은 현재 페이지가 myfarm이 아닐 때만 표시 */}
+          {currentPage !== 'myfarm' && (
+            <button className="icon-btn" onClick={() => navigate('/myfarm')}>
+              <img src="/myfarm-icon.png" alt="My Farm" className="nav-icon" />
+            </button>
+          )}
+          <button className="login-btn" onClick={() => navigate('/mypage')}>
+            My Page
+          </button>
+          <button className="login-btn" onClick={onLogout}>
+            LOG OUT
+          </button>
+        </div>
+      ) : (
+        <button className="login-btn" onClick={onLoginClick}>
+          LOG IN
+        </button>
+      )}
     </div>
   );
 }
 
 export default Header;
-
-
-
-//Header.css는 만들지 않아도 되지만, 나중에 예쁘게 꾸미고 싶을 때 분리해도 좋아.
-
