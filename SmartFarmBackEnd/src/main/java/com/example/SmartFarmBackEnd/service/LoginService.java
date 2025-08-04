@@ -36,4 +36,8 @@ public class LoginService {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
+
+    public boolean existsByLogin(String login) {
+        return this.memberRepository.findByLogin(login).isPresent();
+    }
 }

@@ -8,7 +8,7 @@ export const uploadProfileImage = async (file) => {
     formData.append("file", file);
 
     const { data } = await axios.post(
-        `${API_ROOT}/api/images/upload`,
+        `${API_ROOT}/api/image/upload`,
         formData,
         {
             withCredentials: true,
@@ -20,7 +20,7 @@ export const uploadProfileImage = async (file) => {
 
 export const getProfileImageUrl = async () => {
     const { data } = await axios.get(
-        `${API_ROOT}/api/images/me`,
+        `${API_ROOT}/api/image/me`,
         { withCredentials: true }
     );
     return data;  // { id, imageUrl }

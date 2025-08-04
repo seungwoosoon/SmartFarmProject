@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:14
@@ -32,12 +30,14 @@ services:
     build:
       context: ./SmartFarmFrontEnd
       args:
-        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+      # build 시 REACT_APP_BACKEND_URL 을 Dockerfile 에 전달
+       REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
     container_name: smartfarm-frontend
+    env_file:
+        - .env        # 런타임에도 ENV로 주고 싶다면
     ports:
-      - "3000:80"
+        - "3000:80"   # nginx 기본 80 → 호스트 3000
     depends_on:
-      - backend
-
+        - backend
 volumes:
   pgdata:

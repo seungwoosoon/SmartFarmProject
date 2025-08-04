@@ -22,6 +22,15 @@ export const signup = async (userData) => {
   return data;
 };
 
+export const checkLogin = async (login) => {
+  const response = await axios.get(`${AUTH_BASE}/check-login`, {
+    params: { login },
+    withCredentials: true,
+  });
+  // { available: true } 형태로 가정
+  return response.data.available;
+};
+
 export const logout = async () => {
   await axios.post(
       `${AUTH_BASE}/logout`,

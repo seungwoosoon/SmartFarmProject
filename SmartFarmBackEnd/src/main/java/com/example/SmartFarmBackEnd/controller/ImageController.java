@@ -5,7 +5,6 @@ import com.example.SmartFarmBackEnd.domain.Member;
 import com.example.SmartFarmBackEnd.dto.ImageUploadResponseDto;
 import com.example.SmartFarmBackEnd.repository.MemberRepository;
 import com.example.SmartFarmBackEnd.service.ImageService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,23 +16,24 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/images")
+@RequestMapping("/api/image")
 public class ImageController {
 
     private final ImageService imageService;
     private final MemberRepository memberRepository;
 
+    // 업로드
     @PostMapping("/upload")
     public ResponseEntity<ImageUploadResponseDto> upload(
             @RequestParam("file") MultipartFile file,
-            HttpServletRequest request
+            HttpSession session
     ) throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_MEMBER") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
+        if (memberId == null) {
+            System.out.println("⚠️ 세션 없음 → 개발용 임시 memberId 사용");
+            memberId = 1L;  // 👈 테스트용 memberId (DB에 존재하는 ID여야 함)
         }
 
-        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
 
@@ -41,14 +41,14 @@ public class ImageController {
         return ResponseEntity.ok(new ImageUploadResponseDto(image.getId(), image.getImageUrl()));
     }
 
+    // 내 프로필 이미지 조회
     @GetMapping("/me")
-    public ResponseEntity<ImageUploadResponseDto> getMyImage(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("LOGIN_MEMBER") == null) {
+    public ResponseEntity<ImageUploadResponseDto> getMyImage(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
+        if (memberId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
 

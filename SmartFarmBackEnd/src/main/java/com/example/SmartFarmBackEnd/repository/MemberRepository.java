@@ -2,6 +2,7 @@ package com.example.SmartFarmBackEnd.repository;
 
 import com.example.SmartFarmBackEnd.domain.Member;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -42,5 +43,24 @@ public class MemberRepository {
     // 삭제
     public void delete(Member member) {
         em.remove(member);
+    }
+
+    public Optional<Member> findWithShelves(Long memberId) {
+        String jpql = """
+            select m
+              from Member m
+              join fetch m.farmShelves s
+              join fetch s.shelfFloors f
+              join fetch f.pots p
+             where m.id = :memberId
+        """;
+        try {
+            Member member = em.createQuery(jpql, Member.class)
+                    .setParameter("memberId", memberId)
+                    .getSingleResult();
+            return Optional.of(member);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 }

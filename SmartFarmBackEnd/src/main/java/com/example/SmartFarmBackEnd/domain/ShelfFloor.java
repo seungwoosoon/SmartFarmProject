@@ -33,4 +33,8 @@ public class ShelfFloor {
     public void linkShelf(Shelf shelf) {
         this.shelf = shelf;
     }
+    public void addPot(Pot pot) {
+        pots.add(pot);
+        pot.linkShelfFloor(this);
+    }
 }

@@ -50,6 +50,12 @@ public class ImageService {
         Image image = new Image(imageUrl, member);
         return imageRepository.save(image);
     }
+    public void createDefaultProfile(Member member) {
+        // static/images/default-profile.png 를 기본 URL로 지정
+        String defaultUrl = "/bee.png";
+        Image img = new Image(defaultUrl, member);
+        imageRepository.save(img);
+    }
 
     /**
      * 로그인된 사용자의 프로필 이미지 조회

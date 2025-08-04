@@ -30,6 +30,11 @@ public class Shelf {
     public void setPosition(int position) {
         this.position = position;
     }
+    public void addFloor(ShelfFloor floor) {
+        shelfFloors.add(floor);
+        floor.linkShelf(this);
+    }
+
     public void linkMember(Member member) {
         this.member = member;
     }

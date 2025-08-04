@@ -20,9 +20,11 @@ public class Pot {
     @Column(name = "position")
     private Integer position; // 해당 층(ShelfFloor) 내 항아리 위치
 
-    private Plant potPlant;
+    @Enumerated(EnumType.STRING)
+    private Plant potPlant = Plant.EMPTY;
 
-    private PotStatus status;
+    @Enumerated(EnumType.STRING)
+    private PotStatus status = PotStatus.EMPTY;
 
     private double soilHumidity;
     private double temperature;
@@ -32,15 +34,6 @@ public class Pot {
 
     public void setPosition(int position) {
         this.position = position;
-    }
-
-    public void setPotStatus(int status) {
-        switch (status) {
-            case 0: this.status = PotStatus.EMPTY; break;
-            case 1: this.status = PotStatus.NORMAL; break;
-            case 2: this.status = PotStatus.WARNING; break;
-            case 3: this.status = PotStatus.CRITICAL; break;
-        }
     }
 
     public void updateStatus(

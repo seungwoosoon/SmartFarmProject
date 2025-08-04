@@ -2,6 +2,7 @@ package com.example.SmartFarmBackEnd.repository;
 
 import com.example.SmartFarmBackEnd.domain.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -41,4 +42,70 @@ public class PotRepository {
 
         em.remove(pot); // 🔻 DB에서 삭제
     }
+
+    public Pot findByPosition(Long memberId,
+                              int shelfPosition,
+                              int floorPosition,
+                              int potPosition) {
+        String jpql = """
+            select p
+              from Pot p
+              join p.shelfFloor f
+              join f.shelf s
+              join s.member m
+             where m.id = :memberId
+               and s.position = :shelfPos
+               and f.position = :floorPos
+               and p.position = :potPos
+        """;
+        try {
+            return em.createQuery(jpql, Pot.class)
+                    .setParameter("memberId", memberId)
+                    .setParameter("shelfPos",   shelfPosition)
+                    .setParameter("floorPos",   floorPosition)
+                    .setParameter("potPos",     potPosition)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    /** 2) 특정 줄(Floor)의 모든 Pot 조회 */
+    public List<Pot> findAllByFloor(Long memberId,
+                                    int shelfPosition,
+                                    int floorPosition) {
+        String jpql = """
+            select p
+              from Pot p
+              join p.shelfFloor f
+              join f.shelf s
+              join s.member m
+             where m.id = :memberId
+               and s.position = :shelfPos
+               and f.position = :floorPos
+        """;
+        return em.createQuery(jpql, Pot.class)
+                .setParameter("memberId", memberId)
+                .setParameter("shelfPos",   shelfPosition)
+                .setParameter("floorPos",   floorPosition)
+                .getResultList();
+    }
+
+    /** 3) 특정 선반(Shelf)의 모든 Pot 조회 */
+    public List<Pot> findAllByShelf(Long memberId,
+                                    int shelfPosition) {
+        String jpql = """
+            select p
+              from Pot p
+              join p.shelfFloor f
+              join f.shelf s
+              join s.member m
+             where m.id = :memberId
+               and s.position = :shelfPos
+        """;
+        return em.createQuery(jpql, Pot.class)
+                .setParameter("memberId", memberId)
+                .setParameter("shelfPos", shelfPosition)
+                .getResultList();
+    }
+
 }

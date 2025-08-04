@@ -1,9 +1,9 @@
 package com.example.SmartFarmBackEnd.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class ImageUploadResponseDto {
     private Long imageId;

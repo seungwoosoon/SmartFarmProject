@@ -1,9 +1,11 @@
 package com.example.SmartFarmBackEnd.service;
 
 import com.example.SmartFarmBackEnd.domain.*;
+import com.example.SmartFarmBackEnd.dto.LineRequest;
+import com.example.SmartFarmBackEnd.dto.PotPositionRequest;
+import com.example.SmartFarmBackEnd.dto.ShelfRequest;
 import com.example.SmartFarmBackEnd.repository.MemberRepository;
 import com.example.SmartFarmBackEnd.repository.PotRepository;
-import com.example.SmartFarmBackEnd.repository.ShelfFloorRepository;
 import com.example.SmartFarmBackEnd.repository.ShelfRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,41 +19,34 @@ import java.util.List;
 public class FarmService {
 
     private final MemberRepository memberRepository;
-    private final ShelfFloorRepository shelfFloorRepository;
     private final ShelfRepository shelfRepository;
     private final PotRepository potRepository;
-    @Transactional
-    public Member createMemberWithEmptyFarm(Member member) {
-        for (int i = 0; i < 5; i++) {
-            Shelf shelf = new Shelf();
-            shelf.setPosition(i);
-            shelf.linkMember(member);
 
-            for (int j = 0; j < 5; j++) {
-                ShelfFloor floor = new ShelfFloor();
-                floor.setPosition(j);
-                floor.linkShelf(shelf);
+    public Long createMemberWithEmptyFarm(Member member) {
+        // 1) 빈 선반 하나
+        Shelf shelf = new Shelf();
+        shelf.setPosition(0);
+        member.addShelf(shelf);
 
-                for (int k = 0; k < 4; k++) {
-                    Pot pot = new Pot();
-                    pot.setPosition(k);
-                    pot.setPotStatus(0);
-                    pot.linkShelfFloor(floor);
-                    floor.getPots().add(pot);
-                    potRepository.save(pot);
-                }
-                shelf.getShelfFloors().add(floor);
-                shelfFloorRepository.save(floor);
+        // 2) 4개 층
+        for (int floorIdx = 0; floorIdx < 4; floorIdx++) {
+            ShelfFloor floor = new ShelfFloor();
+            floor.setPosition(floorIdx);
+            shelf.addFloor(floor);
+
+            // 3) 각 층에 5개 화분
+            for (int potIdx = 0; potIdx < 5; potIdx++) {
+                Pot pot = new Pot();
+                pot.setPosition(potIdx);
+                floor.addPot(pot);
             }
-            shelfRepository.save(shelf);
-            member.getFarmShelves().add(shelf);
         }
 
-
-        memberRepository.save(member);
-        return member;
+        // cascade = ALL 로, member만 save 해도 하위 전부 영속화
+        return memberRepository.save(member);
     }
-    @Transactional
+
+    // 화분 하나 상태/식물 업데이트 (원본 메서드)
     public void updatePotStatus(Long potId,
                                 PotStatus status,
                                 double soilHumidity,
@@ -67,19 +62,123 @@ public class FarmService {
         pot.updateStatus(status, soilHumidity, temperature, lightStrength, ttsDensity, humidity, plant);
     }
 
-    @Transactional
-    public void deletePot(Long potId) {
-        Pot pot = potRepository.findOne(potId);
-        if (pot == null) {
-            throw new IllegalArgumentException("해당 ID의 Pot이 존재하지 않습니다.");
-        }
 
-        // 연관된 floor에서도 제거 (orphanRemoval을 쓰더라도 객체 그래프 정리를 위해 명시적으로)
-        ShelfFloor floor = pot.getShelfFloor();
-        if (floor != null) {
-            floor.getPots().remove(pot);
-        }
+    // 화분 하나 추가 → EMPTY → NORMAL + TOMATO
+    public Pot addPot(Long memberId,
+                      PotPositionRequest req) {
+        Pot pot = potRepository.findByPosition(
+                memberId,
+                req.getShelfPosition(),
+                req.getFloorPosition(),
+                req.getPotPosition()
+        );
+        if (pot == null) throw new IllegalArgumentException("해당 pot이 없습니다.");
 
-        potRepository.delete(pot);
+        pot.updateStatus(
+                PotStatus.NORMAL,
+                0, 0, 0, 0, 0,
+                Plant.TOMATO
+        );
+        return pot;
+    }
+
+    // 한 줄 추가 → 해당 floor의 모든 pot
+    public List<Pot> addLine(Long memberId,
+                             LineRequest req) {
+        List<Pot> pots = potRepository.findAllByFloor(
+                memberId,
+                req.getShelfPosition(),
+                req.getFloorPosition()
+        );
+        if (pots.isEmpty()) throw new IllegalArgumentException("해당 줄이 없습니다.");
+
+        pots.forEach(p ->
+                p.updateStatus(
+                        PotStatus.NORMAL,
+                        0, 0, 0, 0, 0,
+                        Plant.TOMATO
+                )
+        );
+        return pots;
+    }
+
+    // 선반 전체 추가 → shelf 내 모든 pot
+    public List<Pot> addShelf(Long memberId,
+                              ShelfRequest req) {
+        List<Pot> pots = potRepository.findAllByShelf(
+                memberId,
+                req.getShelfPosition()
+        );
+        if (pots.isEmpty()) throw new IllegalArgumentException("해당 선반이 없습니다.");
+
+        pots.forEach(p ->
+                p.updateStatus(
+                        PotStatus.NORMAL,
+                        0, 0, 0, 0, 0,
+                        Plant.TOMATO
+                )
+        );
+        return pots;
+    }
+
+    // 화분 하나 삭제 → 상태·식물 모두 EMPTY로
+    public Pot deletePot(Long memberId,
+                         PotPositionRequest req) {
+        Pot pot = potRepository.findByPosition(
+                memberId,
+                req.getShelfPosition(),
+                req.getFloorPosition(),
+                req.getPotPosition()
+        );
+        if (pot == null) throw new IllegalArgumentException("해당 pot이 없습니다.");
+
+        pot.updateStatus(
+                PotStatus.EMPTY,
+                0, 0, 0, 0, 0,
+                Plant.EMPTY
+        );
+        return pot;
+    }
+
+    // 줄 삭제 → 모든 pot EMPTY
+    public List<Pot> deleteLine(Long memberId,
+                                LineRequest req) {
+        List<Pot> pots = potRepository.findAllByFloor(
+                memberId,
+                req.getShelfPosition(),
+                req.getFloorPosition()
+        );
+        pots.forEach(p ->
+                p.updateStatus(
+                        PotStatus.EMPTY,
+                        0, 0, 0, 0, 0,
+                        Plant.EMPTY
+                )
+        );
+        return pots;
+    }
+
+    // 선반 전체 삭제 → 모든 pot EMPTY
+    public List<Pot> deleteShelf(Long memberId,
+                                 ShelfRequest req) {
+        List<Pot> pots = potRepository.findAllByShelf(
+                memberId,
+                req.getShelfPosition()
+        );
+        pots.forEach(p ->
+                p.updateStatus(
+                        PotStatus.EMPTY,
+                        0, 0, 0, 0, 0,
+                        Plant.EMPTY
+                )
+        );
+        return pots;
+    }
+
+    // 내 농장 전체 조회 (readOnly 추천)
+    @Transactional(readOnly = true)
+    public Member selectFarm(Long memberId) {
+        return memberRepository.findWithShelves(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 없습니다."));
     }
 }

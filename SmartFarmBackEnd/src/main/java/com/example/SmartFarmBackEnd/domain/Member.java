@@ -38,4 +38,8 @@ public class Member {
         this.address = address;
         this.farmShelves = new ArrayList<>();
     }
+    public void addShelf(Shelf shelf) {
+        farmShelves.add(shelf);
+        shelf.linkMember(this);
+    }
 }

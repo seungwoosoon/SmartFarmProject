@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class MemberJoinRequestDto {
     @NotBlank
     private String login;

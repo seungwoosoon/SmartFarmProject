@@ -14,11 +14,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class SecurityConfig {
                         // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // 로그인·회원가입·로그아웃, 이미지 업로드/조회, 정적 리소스 열람 허용
-                        .requestMatchers("/api/auth/**", "/api/images/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/image/**", "/css/**", "/js/**", "/image/**").permitAll()
                         // 그 외는 인증 필요
                         .anyRequest().authenticated()
                 )
@@ -57,6 +61,22 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        // React 개발 서버 주소
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        // 허용할 HTTP 메서드
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        // 허용할 헤더
+        config.setAllowedHeaders(List.of("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 모든 경로에 이 설정을 적용
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean

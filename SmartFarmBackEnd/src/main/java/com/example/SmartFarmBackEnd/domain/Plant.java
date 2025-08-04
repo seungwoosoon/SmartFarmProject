@@ -1,5 +1,5 @@
 package com.example.SmartFarmBackEnd.domain;
 
 public enum Plant {
-    POTATO, LETTUCE, TOMATO
+    POTATO, LETTUCE, TOMATO, EMPTY
 }
