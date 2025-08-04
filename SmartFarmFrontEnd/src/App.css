@@ -417,3 +417,380 @@ body {
   font-size: 14px;
   text-decoration: underline;
 }
+
+/* myfarm, myplant pages */
+.myfarm-container {
+  background-color: #e9f7ef; /* ✅ 이 페이지 전용 배경 */
+  padding: 20px;
+}
+
+.farm-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.farm-shelves {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.shelf {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.shelf-img {
+  width: 100%;
+  display: block;
+}
+
+.pots-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 정확한 위치 조정을 위한 각 줄의 위치 (이미지 높이에 따라 조정 가능) */
+.pots-row {
+  display: flex;
+  justify-content: center;
+  gap: 0px;
+  position: absolute;
+  width: 100%;
+  padding: 0 10px;
+
+  transform: translateX(-10px); /* ✅ 왼쪽으로 10px 이동 */
+}
+
+.pots-row:nth-child(1) { top: 4.6%; }
+.pots-row:nth-child(2) { top: 22.2%; }
+.pots-row:nth-child(3) { top: 40%; }
+.pots-row:nth-child(4) { top: 58%; }
+
+/*세싹 이미지 크기*/
+.plant-img {
+  width: 110px;
+  cursor: pointer;
+}
+
+.plant-info-box {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.plant-img-large {
+  width: 120px;
+}
+
+.plant-details {
+  font-size: 18px;
+}
+
+.status-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+/*예쁜 버튼 스타일*/
+
+.add-btn {
+  background-color: transparent;
+  border: 1.5px solid #4caf50; /* 초록색 얇은 테두리 */
+  color: #4caf50;              /* 글자색도 초록 */
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 8px;          /* 살짝 둥글게 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-btn:hover {
+  background-color: #e8f5e9;   /* hover 시 약간의 연초록 배경 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/*+버튼*/
+.add-seed-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #4caf50;
+  border: 2px dashed #a5d6a7;
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  margin: 24px; /* ✅ 버튼 간격을 벌리는 핵심 */
+}
+
+.add-seed-btn:hover {
+  background-color: #e8f5e9;
+}
+
+
+/*myplant page detail 추가*/
+
+.myplant-container {
+  background-color: #e9f7ef;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;               /* ✅ 중앙 정렬을 위한 flex 추가 */
+  justify-content: center;     /* ✅ 수평 중앙 */
+  align-items: center;         /* ✅ 수직 중앙 (선택) */
+}
+
+.plant-info-box {
+  display: flex;
+  gap: 60px;                   /* 이미지와 텍스트 사이 여백 */
+  align-items: center;
+  background-color: #ffffffa0;
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.myplant-fullscreen {
+  background-color: #e9f7ef;
+  min-height: 100vh;   /* ⬅️ 하얀 부분 제거 핵심 */
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+
+.back-btn {
+  position: absolute;     /* 💡 화면 기준 절대 위치 */
+  top: 20px;               /* 상단에서 20px */
+  left: 20px;              /* 왼쪽에서 20px */
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;             /* 다른 요소보다 위에 보이게 */
+}
+
+
+.plant-info-layout {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.plant-left {
+  background-color: #d0e7d5;
+  border-radius: 20px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+}
+
+.plant-large-img {
+  width: 100%;
+  height: auto;
+}
+
+.plant-name {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.plant-stage {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.plant-right {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* ✅ 달력 모달 전체 배경 */
+.calendar-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ✅ 달력 모달 콘텐츠 (중앙 박스) */
+.calendar-content {
+  background: white;
+  padding: 32px 36px;
+  border-radius: 16px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* ✅ 모달 닫기 버튼 */
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* ✅ 달력 오픈 버튼 */
+.calendar-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* ✅ 일정 리스트 */
+.event-list {
+  margin-top: 24px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  padding-left: 10px;
+}
+
+.event-list li {
+  margin-bottom: 6px;
+}
+
+/* ✅ react-calendar 커스텀 스타일 */
+.custom-calendar {
+  border: 1px solid #ddd;         /* 회색 테두리 추가 */
+  border-radius: 12px;           /* 👈 모서리만 둥글게 */
+  overflow: hidden;              /* 내부 요소가 둥근 테두리 벗어나지 않게 */
+  width: 100%;
+  border: none;
+  font-family: 'Arial', sans-serif;
+  background-color: transparent;
+}
+
+/* 상단 네비게이션 (연도/월) */
+.custom-calendar .react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.custom-calendar .react-calendar__navigation__label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 요일 텍스트 */
+.custom-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+}
+
+/* 날짜 셀 */
+.custom-calendar .react-calendar__tile {
+  padding: 10px 0;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+/* 오늘 날짜 배경 강조 */
+.custom-calendar .react-calendar__tile--now {
+  background: #e0f2f1;
+  border-radius: 8px;
+}
+
+/* 선택된 날짜 */
+.custom-calendar .react-calendar__tile--active {
+  background: #a5d6a7;
+  color: white;
+}
+
+/*-----------------------------------------------*/
+.farm-instruction {
+  font-size: 18px;
+  text-align: center;
+  color: #2e7d32;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.farm-hint {
+  font-size: 14px;
+  text-align: center;
+  color: #4caf50;
+  margin: 10px 0 30px;
+}
+
+/* farm/plant 페이지 배경 */
+.farm-bg {
+  background: linear-gradient(
+          180deg,
+          #fdf6ec 0%,     /* 밝은 베이지 (흙 위 햇빛 느낌) */
+          #f5e7d3 40%,    /* 따뜻한 모래색 */
+          #e6cdb2 75%,    /* 연한 흙색 */
+          #d9b99b 100%    /* 진한 흙갈색 */
+  );
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.myplant-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: bold;
+  color: #5d4037; /* 연한 흙색 톤 */
+  z-index: 10;
+}
+
+
+/* 기존 farm-bg 대체 */
+.plant-bg {
+  background: linear-gradient(
+          0deg,
+          #b2e2b1 0%, /* 아래 진한 연두 */ #c8e6c9 30%, /* 중간 연한 연두 */ #d9f3df 60%, /* 연한 민트 느낌 */ #ebfaf0 85%, /* 거의 흰색에 가까운 민트 */ #f8fdf9 100% /* 맨 위, 아주 연함 */
+  ) fixed;
+  min-height: 100vh;
+}
