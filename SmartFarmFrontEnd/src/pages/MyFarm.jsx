@@ -7,7 +7,6 @@ import '../App.css';
 const ROWS_PER_SHELF = 4;
 const COLS_PER_ROW = 5; 
 
-
 function MyFarm() {
     const navigate = useNavigate();
 
