@@ -12,11 +12,6 @@ body {
   color: #222;
 }
 
-html {
-  user-select: none;
-  outline: none;
-}
-
 .home-container {
   position: relative;
   width: 100%;
