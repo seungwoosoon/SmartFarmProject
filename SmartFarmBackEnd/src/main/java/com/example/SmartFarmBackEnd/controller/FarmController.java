@@ -23,7 +23,7 @@ public class FarmController {
         }
         return (Long) session.getAttribute("memberId");
     }
-    @GetMapping("/structure")
+    @GetMapping("/api/STRUCTURE_URL")
     public ResponseEntity<MemberDto> getFarmStructure(HttpServletRequest request) {
         Long memberId = getSessionMemberId(request);
         Member member = farmService.selectFarm(memberId);

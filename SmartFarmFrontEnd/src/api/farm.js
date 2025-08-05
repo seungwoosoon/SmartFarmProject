@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const API_ROOT = process.env.REACT_APP_BACKEND_URL;
-const FARM_BASE = `${API_ROOT}/api/farm-product`;
+const FARM_BASE = `${API_ROOT}/api/farm`;
 
 /**
  * 세싹 등록 API 호출
@@ -13,7 +13,7 @@ const FARM_BASE = `${API_ROOT}/api/farm-product`;
  */
 export const addSeedling = async ({ numofshelf, numofshelffloor, numofpot }) => {
     const { data } = await axios.post(
-        FARM_BASE,
+        `${FARM_BASE}/addSeedling`,
         {
             numofshelf,
             numofshelffloor,
@@ -31,7 +31,7 @@ export const addSeedling = async ({ numofshelf, numofshelffloor, numofpot }) => 
  * @returns {Promise<object>} - { seedlings: [...] }
  */
 export const getSeedlings = async () => {
-    const { data } = await axios.get(STRUCTURE_URL, {
+    const { data } = await axios.get(`${FARM_BASE}/getSeedlings`, {
         withCredentials: true, // ✅ 세션 쿠키 포함
     });
     return data;
