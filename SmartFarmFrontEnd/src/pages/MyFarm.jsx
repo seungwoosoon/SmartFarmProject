@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import { addSeedling } from '../api/farm';
+import { addSeedling, getSeedlings } from '../api/farm';
 import '../App.css';
 
 const ROWS_PER_SHELF = 4;
 const COLS_PER_ROW = 5; 
+
 
 function MyFarm() {
     const navigate = useNavigate();
@@ -19,6 +20,55 @@ function MyFarm() {
     useEffect(() => {
         localStorage.setItem('isLoggedIn', isLoggedIn);
     }, [isLoggedIn]);
+
+    // ✅ 백엔드에서 기존 세싹 데이터 불러오기
+    useEffect(() => {
+        const fetchSeedlings = async () => {
+            try {
+                const seedlings = await getSeedlings(); // 응답은 배열
+
+                const maxShelf = seedlings.length > 0
+                    ? Math.max(...seedlings.map(s => s.position.numofshelf))
+                    : 0;
+
+                const newShelves = [];
+                for (let i = 0; i <= maxShelf; i++) {
+                    newShelves.push(createEmptyShelf());
+                }
+
+                for (let s of seedlings) {
+                    const {
+                        position: { numofshelf, numofshelffloor, numofpot },
+                        status,
+                        plant,
+                        exp,
+                        ph,
+                        temperature,
+                        lightStrength,
+                        ttsDensity,
+                        humidity,
+                    } = s;
+
+                    newShelves[numofshelf][numofshelffloor][numofpot] = {
+                        status,
+                        plant,
+                        exp,
+                        ph,
+                        temperature,
+                        lightStrength,
+                        ttsDensity,
+                        humidity,
+                    };
+                }
+
+                setShelves(newShelves);
+            } catch (error) {
+                console.error('❌ 세싹 불러오기 실패:', error);
+            }
+        };
+
+        fetchSeedlings();
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -49,7 +99,6 @@ function MyFarm() {
             console.error('❌ 백엔드 전송 실패:', error);
         }
     };
-
 
     const handleAddOne = () => {
         const newShelves = [...shelves];
