@@ -25,3 +25,14 @@ export const addSeedling = async ({ numofshelf, numofshelffloor, numofpot }) => 
     );
     return data;
 };
+
+/**
+ * 세싹 전체 상태 조회 API 호출 (GET /api/auth/structure)
+ * @returns {Promise<object>} - { seedlings: [...] }
+ */
+export const getSeedlings = async () => {
+    const { data } = await axios.get(STRUCTURE_URL, {
+        withCredentials: true, // ✅ 세션 쿠키 포함
+    });
+    return data;
+};
