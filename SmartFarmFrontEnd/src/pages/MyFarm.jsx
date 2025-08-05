@@ -5,8 +5,7 @@ import { addSeedling, getSeedlings } from '../api/farm';
 import '../App.css';
 
 const ROWS_PER_SHELF = 4;
-const COLS_PER_ROW = 5; 
-
+const COLS_PER_ROW = 5;
 
 function MyFarm() {
     const navigate = useNavigate();
@@ -18,7 +17,7 @@ function MyFarm() {
     const [shelves, setShelves] = useState([createEmptyShelf()]);
 
     useEffect(() => {
-        localStorage.setItem('isLoggedIn', isLoggedIn);
+        localStorage.setItem('isLoggedIn', isLoggedIn.toString());
     }, [isLoggedIn]);
 
     // ✅ 백엔드에서 기존 세싹 데이터 불러오기
@@ -28,7 +27,7 @@ function MyFarm() {
                 const seedlings = await getSeedlings(); // 응답은 배열
 
                 const maxShelf = seedlings.length > 0
-                    ? Math.max(...seedlings.map(s => s.position.numofshelf))
+                    ? Math.max(...seedlings.map(s => s.position.numOfShelf))
                     : 0;
 
                 const newShelves = [];
@@ -38,7 +37,7 @@ function MyFarm() {
 
                 for (let s of seedlings) {
                     const {
-                        position: { numofshelf, numofshelffloor, numofpot },
+                        position: { numOfShelf, numOfShelfFloor, numOfPot },
                         status,
                         plant,
                         exp,
@@ -49,7 +48,7 @@ function MyFarm() {
                         humidity,
                     } = s;
 
-                    newShelves[numofshelf][numofshelffloor][numofpot] = {
+                    newShelves[numOfShelf][numOfShelfFloor][numOfPot] = {
                         status,
                         plant,
                         exp,
@@ -90,9 +89,9 @@ function MyFarm() {
     const sendSeedlingToBackend = async (shelfIdx, rowIdx, colIdx) => {
         try {
             await addSeedling({
-                numofshelf: shelfIdx,
-                numofshelffloor: rowIdx,
-                numofpot: colIdx,
+                numOfShelf: shelfIdx,
+                numOfShelfFloor: rowIdx,
+                numOfPot: colIdx,
             });
             console.log(`✅ 백엔드 전송 완료: ${shelfIdx}-${rowIdx}-${colIdx}`);
         } catch (error) {
@@ -144,8 +143,11 @@ function MyFarm() {
         newShelf[0] = Array(COLS_PER_ROW).fill({ status: 'NORMAL' });
         newShelves.push(newShelf);
         setShelves(newShelves);
-        for (let c = 0; c < COLS_PER_ROW; c++) {
-            sendSeedlingToBackend(newShelves.length - 1, 0, c);
+        const newIndex = newShelves.length - 1;
+        for (let r = 0; r < ROWS_PER_SHELF; r++) {
+            for (let c = 0; c < COLS_PER_ROW; c++) {
+                sendSeedlingToBackend(newIndex, r, c);
+            }
         }
     };
 
@@ -163,10 +165,10 @@ function MyFarm() {
             );
             newShelves.push(newShelf);
             setShelves(newShelves);
-            const newIndex = newShelves.length - 1;
+            const newIdx = newShelves.length - 1;
             for (let r = 0; r < ROWS_PER_SHELF; r++) {
                 for (let c = 0; c < COLS_PER_ROW; c++) {
-                    sendSeedlingToBackend(newIndex, r, c);
+                    sendSeedlingToBackend(newIdx, r, c);
                 }
             }
         } else {

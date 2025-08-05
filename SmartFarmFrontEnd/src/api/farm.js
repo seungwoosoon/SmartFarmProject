@@ -15,11 +15,9 @@ export const addSeedling = async ({ numofshelf, numofshelffloor, numofpot }) => 
     const { data } = await axios.post(
         `${FARM_BASE}/addSeedling`,
         {
-            numofshelf,
-            numofshelffloor,
-            numofpot,
-            exp: 0,
-            status: "NORMAL",
+            shelfPosition: numofshelf,
+            floorPosition: numofshelffloor,
+            potPosition: numofpot,
         },
         { withCredentials: true }
     );

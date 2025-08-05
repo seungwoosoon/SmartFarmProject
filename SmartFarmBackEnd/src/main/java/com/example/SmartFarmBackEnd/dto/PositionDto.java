@@ -9,4 +9,10 @@ public class PositionDto {
     private int numOfShelf;
     private int numOfShelfFloor;
     private int numOfPot;
+
+    public PositionDto(Integer position, Integer position1, Integer position2) {
+        numOfShelf = position;
+        numOfShelfFloor = position1;
+        numOfPot = position2;
+    }
 }

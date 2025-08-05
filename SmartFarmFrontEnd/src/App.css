@@ -758,7 +758,7 @@ body {
 
 .myplant-container {
   background: linear-gradient(to bottom, #f0fdf4, #d0ebd0);
-  min-height: calc(100vh -60px);
+  min-height: calc(100vh);
   display: flex;
   justify-content: center;
   align-items: center;

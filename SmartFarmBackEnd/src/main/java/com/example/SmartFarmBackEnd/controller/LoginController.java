@@ -97,7 +97,7 @@ public class LoginController {
         // 6) 세션에 로그인 정보 저장
         HttpSession session = servletRequest.getSession(true);
         session.setMaxInactiveInterval(60 * 15);  // 15분
-        session.setAttribute("LOGIN_MEMBER", memberId);
+        session.setAttribute("LOGIN_MEMBER", member.getId());
 
         return ResponseEntity.ok("회원가입 성공");
     }

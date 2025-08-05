@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class PotDto {
-    private Integer position;
+    private PositionDto position;
     private PotStatus status;
     private Plant plant = Plant.TOMATO;
     private double ph = 7.5;
@@ -18,9 +18,18 @@ public class PotDto {
 
     public static PotDto from(Pot p) {
         PotDto dto = new PotDto();
-        dto.setPosition(p.getPosition());
+        dto.setPosition(new PositionDto(
+                p.getShelfFloor().getShelf().getPosition(),
+                p.getShelfFloor().getPosition(),
+                p.getPosition()
+        ));
         dto.setStatus(p.getStatus());
         dto.setPlant(p.getPotPlant());
+        dto.setPh(p.getPh());
+        dto.setTemperature(p.getTemperature());
+        dto.setLightStrength(p.getLightStrength());
+        dto.setTtsDensity(p.getTtsDensity());
+        dto.setHumidity(p.getHumidity());
         return dto;
     }
 }

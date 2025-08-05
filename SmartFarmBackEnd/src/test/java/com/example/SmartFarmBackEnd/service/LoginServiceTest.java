@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -26,7 +26,7 @@ class LoginServiceTest {
         member.setName("Jack");
 
         Long saveId = loginService.join(member);
-        Member findMember = memberRepository.findById(saveId);
+        Optional<Member> findMember = memberRepository.findById(saveId);
 
         em.flush();
         Assertions.assertThat(member).isEqualTo(findMember);

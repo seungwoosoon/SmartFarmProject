@@ -6,7 +6,6 @@ import com.example.SmartFarmBackEnd.dto.PotPositionRequest;
 import com.example.SmartFarmBackEnd.dto.ShelfRequest;
 import com.example.SmartFarmBackEnd.repository.MemberRepository;
 import com.example.SmartFarmBackEnd.repository.PotRepository;
-import com.example.SmartFarmBackEnd.repository.ShelfRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +62,8 @@ public class FarmService {
 
 
     // 화분 하나 추가 → EMPTY → NORMAL + TOMATO
-    public Pot addPot(Long memberId,
-                      PotPositionRequest req) {
+    public void addPot(Long memberId,
+                       PotPositionRequest req) {
         Pot pot = potRepository.findByPosition(
                 memberId,
                 req.getShelfPosition(),
@@ -78,7 +77,6 @@ public class FarmService {
                 0, 0, 0, 0, 0,
                 Plant.TOMATO
         );
-        return pot;
     }
 
     // 한 줄 추가 → 해당 floor의 모든 pot

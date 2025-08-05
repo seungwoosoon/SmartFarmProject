@@ -47,13 +47,11 @@ public class MemberRepository {
 
     public Optional<Member> findWithShelves(Long memberId) {
         String jpql = """
-            select m
-              from Member m
-              join fetch m.farmShelves s
-              join fetch s.shelfFloors f
-              join fetch f.pots p
-             where m.id = :memberId
-        """;
+        select distinct m
+          from Member m
+          join fetch m.farmShelves s
+         where m.id = :memberId
+    """;
         try {
             Member member = em.createQuery(jpql, Member.class)
                     .setParameter("memberId", memberId)

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class ShelfFloor {
     private Integer position; // Shelf 내부에서의 층 위치 인덱스
 
     @OneToMany(mappedBy = "shelfFloor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Pot> pots = new ArrayList<>();
 
     public void setPosition(int position) {
