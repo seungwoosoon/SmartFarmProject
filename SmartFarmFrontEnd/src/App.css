@@ -1,19 +1,10 @@
 /* src/App.css */
-* {
-  outline: none;
-}
-
 body {
   margin: 0;
   padding: 0;
   font-family: 'Pretendard', 'Inter', sans-serif;
   background: linear-gradient(to bottom right, #f0fdf4, #d0f0dc);
   color: #222;
-}
-
-html {
-  user-select: none;
-  outline: none;
 }
 
 .home-container {
