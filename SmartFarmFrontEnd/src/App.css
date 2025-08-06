@@ -673,7 +673,7 @@ body {
 .pots-row {
   display: flex;
   justify-content: center; 
-  gap: 0px;   
+  gap: 0;
   position: absolute;
   width: 100%;
   padding: 0 10px;
@@ -983,7 +983,6 @@ body {
   border-radius: 12px;           /* 👈 모서리만 둥글게 */
   overflow: hidden;              /* 내부 요소가 둥근 테두리 벗어나지 않게 */
   width: 100%;
-  border: none;
   font-family: 'Arial', sans-serif;
   background-color: transparent;
 }

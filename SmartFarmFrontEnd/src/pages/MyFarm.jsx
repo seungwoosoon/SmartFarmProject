@@ -36,6 +36,7 @@ function MyFarm() {
                 }
 
                 for (let s of seedlings) {
+                    if (s.status === "EMPTY") continue;
                     const {
                         position: { numOfShelf, numOfShelfFloor, numOfPot },
                         status,

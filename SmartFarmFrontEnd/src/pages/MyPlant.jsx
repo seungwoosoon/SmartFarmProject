@@ -32,7 +32,7 @@ function MyPlant() {
     fetchPlant();
     */
 
-    // Mock 데이터
+    //Mock 데이터
     const mockData = {
       temperature: 24.5,
       humidity: 60,
