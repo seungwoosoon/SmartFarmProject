@@ -1,5 +1,6 @@
 package com.example.SmartFarmBackEnd.service;
 
+import ch.qos.logback.classic.Logger;
 import com.example.SmartFarmBackEnd.domain.*;
 import com.example.SmartFarmBackEnd.dto.LineRequest;
 import com.example.SmartFarmBackEnd.dto.PotPositionRequest;
@@ -7,6 +8,7 @@ import com.example.SmartFarmBackEnd.dto.ShelfRequest;
 import com.example.SmartFarmBackEnd.repository.MemberRepository;
 import com.example.SmartFarmBackEnd.repository.PotRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +64,8 @@ public class FarmService {
 
 
     // 화분 하나 추가 → EMPTY → NORMAL + TOMATO
+
+
     public void addPot(Long memberId,
                        PotPositionRequest req) {
         Pot pot = potRepository.findByPosition(
@@ -71,6 +75,7 @@ public class FarmService {
                 req.getPotPosition()
         );
         if (pot == null) throw new IllegalArgumentException("해당 pot이 없습니다.");
+
 
         pot.updateStatus(
                 PotStatus.NORMAL,

@@ -24,7 +24,10 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder; // 이거 추가됨
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(
+        origins = {"http://localhost:3000", "http://10.145.189.17:3000"},
+        allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

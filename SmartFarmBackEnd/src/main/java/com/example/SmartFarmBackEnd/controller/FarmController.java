@@ -10,6 +10,7 @@ import com.example.SmartFarmBackEnd.service.FarmService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@Slf4j
+@CrossOrigin(
+        origins = {"http://localhost:3000", "http://10.145.189.17:3000"},
+        allowCredentials = "true"
+)
 @RestController
 @RequiredArgsConstructor
 public class FarmController {
@@ -38,8 +43,12 @@ public class FarmController {
 
         ArrayList<PotDto> result = new ArrayList<>();
         for (Shelf shelf : member.getFarmShelves()) {
+            shelf.getPosition(); // 🔄 강제 초기화
             for (ShelfFloor floor : shelf.getShelfFloors()) {
+                floor.getPosition(); // 🔄 강제 초기화
                 for (Pot pot : floor.getPots()) {
+                    pot.getPosition(); // 🔄 강제 초기화
+                    pot.getShelfFloor().getShelf().getPosition(); // 💥 여기까지 강제로 접근
                     result.add(PotDto.from(pot));
                 }
             }
@@ -51,6 +60,8 @@ public class FarmController {
     @PostMapping("/api/farm/addSeedling")
     public ResponseEntity<Void> addSeedling(@RequestBody PotPositionRequest req,
                                             HttpServletRequest httpRequest) {
+        log.info("📍 Pot 위치 요청 - x: {}, y: {}, shelfFloorId: {}",
+                req.getShelfPosition(), req.getFloorPosition(), req.getPotPosition());
         Long memberId = getSessionMemberId(httpRequest);
         farmService.addPot(memberId, req);
         return ResponseEntity.ok().build();

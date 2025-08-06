@@ -27,38 +27,26 @@ function MyFarm() {
             try {
                 const data = await getSeedlings();
 
-                // ✅ 추가된 디버깅 로그
                 console.log("📡 getSeedlings 호출됨, 응답 데이터:", JSON.stringify(data, null, 2));
 
-                const seedlings = data.seedlings || [];
+                // 최대 선반/층/화분 인덱스 계산
+                const maxShelfIndex = Math.max(...data.map(s => s.position.numOfShelf), 0);
+                const maxFloorIndex = Math.max(...data.map(s => s.position.numOfShelfFloor), 0);
+                const maxPotIndex = Math.max(...data.map(s => s.position.numOfPot), 0);
 
-                console.log("📡 받은 seedlings:", JSON.stringify(seedlings, null, 2));
+                // 정확한 크기의 3차원 shelves 배열 생성
+                const structuredShelves = Array.from({ length: maxShelfIndex + 1 }, () =>
+                    Array.from({ length: ROWS_PER_SHELF }, () =>
+                        Array(COLS_PER_ROW).fill(null)
+                    )
+                );
 
-                const maxShelfIndex = seedlings.length > 0
-                    ? Math.max(...seedlings.map(s => s.position.numOfShelf))
-                    : 0;
-
-                const newShelves = [];
-                for (let i = 0; i <= maxShelfIndex; i++) {
-                    newShelves.push(createEmptyShelf());
-                }
-
-                for (let s of seedlings) {
-                    if (s.status === "EMPTY") continue;
-                    const {
-                        position: { numOfShelf, numOfShelfFloor, numOfPot },
-                        status,
-                        plant,
-                        exp,
-                        ph,
-                        temperature,
-                        lightStrength,
-                        ttsDensity,
-                        humidity,
-                    } = s;
+                // 데이터 위치에 맞게 삽입
+                for (let pot of data) {
+                    const { numOfShelf, numOfShelfFloor, numOfPot } = pot.position;
 
                     if (
-                        numOfShelf >= newShelves.length ||
+                        numOfShelf >= structuredShelves.length ||
                         numOfShelfFloor >= ROWS_PER_SHELF ||
                         numOfPot >= COLS_PER_ROW
                     ) {
@@ -66,21 +54,12 @@ function MyFarm() {
                         continue;
                     }
 
-                    newShelves[numOfShelf][numOfShelfFloor][numOfPot] = {
-                        status,
-                        plant,
-                        exp,
-                        ph,
-                        temperature,
-                        lightStrength,
-                        ttsDensity,
-                        humidity,
-                    };
-
+                    structuredShelves[numOfShelf][numOfShelfFloor][numOfPot] = pot;
                     console.log(`✅ 심은 위치: ${numOfShelf}-${numOfShelfFloor}-${numOfPot}`);
                 }
 
-                setShelves(newShelves);
+                // 화면에 반영
+                setShelves(structuredShelves);
             } catch (error) {
                 console.error('❌ 세싹 불러오기 실패:', error);
             }
@@ -245,32 +224,28 @@ function MyFarm() {
                     <div className="shelf" key={shelfIdx}>
                         <img src="/shelf.png" className="shelf-img" alt="shelf" />
                         <div className="pots-layer">
-                            {shelf.map((row, rowIdx) => (
-                                <div className="pots-row" key={rowIdx}>
-                                    {row.map((plant, colIdx) => (
-                                        plant ? (
-                                            <img
-                                                key={colIdx}
-                                                src="/normal.png"
-                                                className="plant-img"
-                                                alt="normal"
-                                                onClick={() =>
-                                                    handlePlantClick(shelfIdx, rowIdx, colIdx)
-                                                }
-                                            />
-                                        ) : (
-                                            <button
-                                                key={colIdx}
-                                                className="add-seed-btn"
-                                                onClick={() =>
-                                                    handleAddSeedlingAt(shelfIdx, rowIdx, colIdx)
-                                                }
-                                            >
-                                                +
-                                            </button>
-                                        )
-                                    ))}
-                                </div>
+                            {row.map((plant, colIdx) => (
+                                plant ? (
+                                    <img
+                                        key={colIdx}
+                                        src="/normal.png"
+                                        className="plant-img"
+                                        alt="normal"
+                                        onClick={() =>
+                                            handlePlantClick(shelfIdx, rowIdx, colIdx)
+                                        }
+                                    />
+                                ) : (
+                                    <button
+                                        key={colIdx}
+                                        className="add-seed-btn"
+                                        onClick={() =>
+                                            handleAddSeedlingAt(shelfIdx, rowIdx, colIdx)
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                )
                             ))}
                         </div>
                     </div>

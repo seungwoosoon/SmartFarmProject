@@ -16,6 +16,8 @@ public class Pot {
     @JoinColumn(name = "floor_id")
     private ShelfFloor shelfFloor;
 
+    private double exp = 0.0;
+
     @Column(name = "position")
     private Integer position; // 해당 층(ShelfFloor) 내 항아리 위치
 
@@ -42,6 +44,7 @@ public class Pot {
             double lightStrength,
             double ttsDensity,
             double humidity,
+            double exp,
             Plant plant // nullable
     ) {
         this.status = status;
@@ -50,6 +53,7 @@ public class Pot {
         this.lightStrength = lightStrength;
         this.ttsDensity = ttsDensity;
         this.potPlant = plant;
+        this.exp = exp;
         this.humidity = humidity;
     }
 

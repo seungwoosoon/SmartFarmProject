@@ -11,13 +11,18 @@ const FARM_BASE = `${API_ROOT}/api/farm`;
  * @param {number} numofpot - 줄의 몇 번째 칸
  * @returns {Promise<object>} - 서버 응답 데이터
  */
-export const addSeedling = async ({ numofshelf, numofshelffloor, numofpot }) => {
+export const addSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => {
+    console.log("전송 요청 데이터 확인:", {
+        shelfPosition: numOfShelf,
+        floorPosition: numOfShelfFloor,
+        potPosition: numOfPot,
+    });
     const { data } = await axios.post(
         `${FARM_BASE}/addSeedling`,
         {
-            shelfPosition: numofshelf,
-            floorPosition: numofshelffloor,
-            potPosition: numofpot,
+            shelfPosition: numOfShelf,
+            floorPosition: numOfShelfFloor,
+            potPosition: numOfPot,
         },
         { withCredentials: true }
     );

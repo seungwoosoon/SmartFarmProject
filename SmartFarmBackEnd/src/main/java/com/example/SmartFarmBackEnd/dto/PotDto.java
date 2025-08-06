@@ -15,6 +15,7 @@ public class PotDto {
     private double lightStrength = 3;
     private double ttsDensity = 2;
     private double humidity = 4.5;
+    private double exp = 0.0;
 
     public static PotDto from(Pot p) {
         PotDto dto = new PotDto();
@@ -25,6 +26,7 @@ public class PotDto {
         ));
         dto.setStatus(p.getStatus());
         dto.setPlant(p.getPotPlant());
+        dto.setExp(p.getExp());
         dto.setPh(p.getPh());
         dto.setTemperature(p.getTemperature());
         dto.setLightStrength(p.getLightStrength());

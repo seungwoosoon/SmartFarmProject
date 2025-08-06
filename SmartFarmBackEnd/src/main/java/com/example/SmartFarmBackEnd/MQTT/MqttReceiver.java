@@ -1,6 +1,5 @@
-package com.example.SmartFarmBackEnd.MQTT;
+//package com.example.SmartFarmBackEnd.MQTT;
 
-import com.example.SmartFarmBackEnd.service.SensorService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.MqttClient;

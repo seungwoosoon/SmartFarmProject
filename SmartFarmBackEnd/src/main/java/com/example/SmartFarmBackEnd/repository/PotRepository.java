@@ -30,7 +30,7 @@ public class PotRepository {
     // ✅ 특정 상태의 Pot들 조회
     public List<Pot> findByStatus(PotStatus status) {
         return em.createQuery(
-                        "select p from Pot p where p.potStatus = :status", Pot.class)
+                        "select p from Pot p where p.status = :status", Pot.class)
                 .setParameter("status", status)
                 .getResultList();
     }
