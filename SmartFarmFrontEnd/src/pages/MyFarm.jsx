@@ -1,3 +1,4 @@
+// ... 생략된 import 부분은 동일 ...
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -24,14 +25,21 @@ function MyFarm() {
     useEffect(() => {
         const fetchSeedlings = async () => {
             try {
-                const seedlings = await getSeedlings(); // 응답은 배열
+                const data = await getSeedlings();
 
-                const maxShelf = seedlings.length > 0
+                // ✅ 추가된 디버깅 로그
+                console.log("📡 getSeedlings 호출됨, 응답 데이터:", JSON.stringify(data, null, 2));
+
+                const seedlings = data.seedlings || [];
+
+                console.log("📡 받은 seedlings:", JSON.stringify(seedlings, null, 2));
+
+                const maxShelfIndex = seedlings.length > 0
                     ? Math.max(...seedlings.map(s => s.position.numOfShelf))
                     : 0;
 
                 const newShelves = [];
-                for (let i = 0; i <= maxShelf; i++) {
+                for (let i = 0; i <= maxShelfIndex; i++) {
                     newShelves.push(createEmptyShelf());
                 }
 
@@ -49,6 +57,15 @@ function MyFarm() {
                         humidity,
                     } = s;
 
+                    if (
+                        numOfShelf >= newShelves.length ||
+                        numOfShelfFloor >= ROWS_PER_SHELF ||
+                        numOfPot >= COLS_PER_ROW
+                    ) {
+                        console.warn(`❌ 잘못된 인덱스: ${numOfShelf}-${numOfShelfFloor}-${numOfPot}`);
+                        continue;
+                    }
+
                     newShelves[numOfShelf][numOfShelfFloor][numOfPot] = {
                         status,
                         plant,
@@ -59,6 +76,8 @@ function MyFarm() {
                         ttsDensity,
                         humidity,
                     };
+
+                    console.log(`✅ 심은 위치: ${numOfShelf}-${numOfShelfFloor}-${numOfPot}`);
                 }
 
                 setShelves(newShelves);
