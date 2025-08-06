@@ -18,8 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,71 +34,54 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1) CORS 활성화
                 .cors(Customizer.withDefaults())
-                // 2) CSRF 완전 비활성화 (개발 편의)
                 .csrf(AbstractHttpConfigurer::disable)
-                // 3) 인가 설정
                 .authorizeHttpRequests(auth -> auth
-                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // 로그인·회원가입·로그아웃, 이미지 업로드/조회, 정적 리소스 열람 허용
-                        .requestMatchers("/api/auth/**", "/api/image/**", "/api/farm/**", "/css/**", "/js/**", "/image/**").permitAll()
-                        // 그 외는 인증 필요
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/image/**",
+                                "/api/farm/**",
+                                "/css/**",
+                                "/js/**",
+                                "/image/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
-                // 4) 로그인·로그아웃 URL 재정의
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
-                        .logoutSuccessHandler((req, res, auth) -> {
-                            // React 쪽에서 200을 기대하므로 상태코드만 내려줍니다
-                            res.setStatus(HttpServletResponse.SC_OK);
-                        })
+                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK))
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 );
 
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        // React 개발 서버 주소
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
-        // 허용할 HTTP 메서드
+
+        // ✅ 반드시 명시적인 주소로 허용해야 세션 쿠키가 전달됨
+        config.setAllowedOrigins(List.of("http://10.145.189.17:3000"));
+        config.setAllowCredentials(true);  // 쿠키 허용
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        // 허용할 헤더
         config.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // 모든 경로에 이 설정을 적용
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
     }
 
     @Bean
     public OncePerRequestFilter loggingFilter() {
         return new OncePerRequestFilter() {
             @Override
-            protected void doFilterInternal(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain)
-                    throws ServletException, IOException {
+            protected void doFilterInternal(
+                    HttpServletRequest req,
+                    HttpServletResponse res,
+                    FilterChain chain
+            ) throws ServletException, IOException {
                 System.out.println("📥 들어온 요청: " + req.getMethod() + " " + req.getRequestURI());
                 chain.doFilter(req, res);
             }

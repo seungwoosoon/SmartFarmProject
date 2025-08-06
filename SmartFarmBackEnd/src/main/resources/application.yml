@@ -17,6 +17,8 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
+  address: 0.0.0.0
+  port: 8080
   servlet:
     session:
       cookie:
@@ -24,7 +26,7 @@ server:
         secure: false
 app:
   upload:
-    dir: /Users/SEUNGWOO/uploads
+    dir: /uploads
 
 mqtt:
   broker: tcp://mqtt-broker:1883

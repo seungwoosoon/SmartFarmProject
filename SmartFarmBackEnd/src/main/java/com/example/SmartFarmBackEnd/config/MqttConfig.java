@@ -22,20 +22,22 @@ public class MqttConfig {
 
     @Bean
     public MqttClient mqttClient() {
-        MqttClient client = null;
         try {
-            client = new MqttClient(brokerUrl, clientId, new MemoryPersistence());
+            MqttClient client = new MqttClient(brokerUrl, clientId, new MemoryPersistence());
             MqttConnectOptions opts = new MqttConnectOptions();
             opts.setCleanSession(true);
             opts.setAutomaticReconnect(true);
-            try {
-                client.connect(opts);
-            } catch (MqttException e) {
-                log.warn("Failed to connect to MQTT broker {}: {}", brokerUrl, e.getMessage());
-            }
+            client.connect(opts);
+            log.info("✅ MQTT 연결 성공: {}", brokerUrl);
+            return client;
         } catch (MqttException e) {
-            log.warn("Failed to create MQTT client for broker {}: {}", brokerUrl, e.getMessage());
+            log.warn("⚠️ MQTT 연결 실패: {} → 더미 클라이언트 반환", e.getMessage());
+            // 더미 MqttClient라도 생성해서 반환 (연결은 안 되더라도 NPE 방지)
+            try {
+                return new MqttClient("tcp://localhost:1884", clientId + "-dummy", new MemoryPersistence());
+            } catch (MqttException ex) {
+                throw new RuntimeException("MQTT 클라이언트 생성 자체가 불가능합니다.", ex);
+            }
         }
-        return client;
     }
 }
