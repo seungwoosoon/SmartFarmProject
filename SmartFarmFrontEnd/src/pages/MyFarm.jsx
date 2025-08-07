@@ -182,8 +182,6 @@ function MyFarm() {
 
     if (p === 'empty' || s === 'empty') return null;
 
-    if (p === 'sprout') return '/normal.png'; // sprout + normal 상황 이미지
-
     // 조합 이미지: plant_status.png (예: flower_warning.png)
     return `/${p}_${s}.png`;
   }
