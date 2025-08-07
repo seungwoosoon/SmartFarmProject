@@ -59,13 +59,11 @@ public class FarmService {
         if (pot == null) {
             throw new IllegalArgumentException("해당 ID의 Pot이 존재하지 않습니다.");
         }
-        pot.updateStatus(status, ph, temperature, lightStrength, ttsDensity, humidity, plant);
+        // exp 인자를 넣어야 하므로 0.0 기본값 임시 추가
+        pot.updateStatus(status, ph, temperature, lightStrength, ttsDensity, humidity, 0.0, plant);
     }
 
-
     // 화분 하나 추가 → EMPTY → NORMAL + TOMATO
-
-
     public void addPot(Long memberId,
                        PotPositionRequest req) {
         Pot pot = potRepository.findByPosition(
@@ -76,10 +74,10 @@ public class FarmService {
         );
         if (pot == null) throw new IllegalArgumentException("해당 pot이 없습니다.");
 
-
         pot.updateStatus(
                 PotStatus.NORMAL,
-                0, 0, 0, 0, 0,
+                0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0,              // exp 인자 추가
                 Plant.TOMATO
         );
     }
@@ -97,7 +95,8 @@ public class FarmService {
         pots.forEach(p ->
                 p.updateStatus(
                         PotStatus.NORMAL,
-                        0, 0, 0, 0, 0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0,             // exp 인자 추가
                         Plant.TOMATO
                 )
         );
@@ -116,7 +115,8 @@ public class FarmService {
         pots.forEach(p ->
                 p.updateStatus(
                         PotStatus.NORMAL,
-                        0, 0, 0, 0, 0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0,             // exp 인자 추가
                         Plant.TOMATO
                 )
         );
@@ -136,7 +136,8 @@ public class FarmService {
 
         pot.updateStatus(
                 PotStatus.EMPTY,
-                0, 0, 0, 0, 0,
+                0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0,          // exp 인자 추가
                 Plant.EMPTY
         );
         return pot;
@@ -153,7 +154,8 @@ public class FarmService {
         pots.forEach(p ->
                 p.updateStatus(
                         PotStatus.EMPTY,
-                        0, 0, 0, 0, 0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0,          // exp 인자 추가
                         Plant.EMPTY
                 )
         );
@@ -170,7 +172,8 @@ public class FarmService {
         pots.forEach(p ->
                 p.updateStatus(
                         PotStatus.EMPTY,
-                        0, 0, 0, 0, 0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0,          // exp 인자 추가
                         Plant.EMPTY
                 )
         );

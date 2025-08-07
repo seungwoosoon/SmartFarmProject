@@ -36,26 +36,46 @@ public class Pot {
     public void setPosition(int position) {
         this.position = position;
     }
-
     public void updateStatus(
-            PotStatus status,
-            double ph,
-            double temperature,
-            double lightStrength,
-            double ttsDensity,
-            double humidity,
-            double exp,
-            Plant plant // nullable
-    ) {
-        this.status = status;
-        this.ph = ph;
-        this.temperature = temperature;
-        this.lightStrength = lightStrength;
-        this.ttsDensity = ttsDensity;
-        this.potPlant = plant;
-        this.exp = exp;
-        this.humidity = humidity;
-    }
+        PotStatus status,
+        double ph,
+        double temperature,
+        double lightStrength,
+        double ttsDensity,
+        double humidity,
+        double exp,
+        Plant plant
+) {
+    this.status = status;
+    this.ph = ph;
+    this.temperature = temperature;
+    this.lightStrength = lightStrength;
+    this.ttsDensity = ttsDensity;
+    this.humidity = humidity;
+    this.exp = exp;
+    this.potPlant = plant;
+}
+
+
+    // public void updateStatus(
+    //         PotStatus status,
+    //         double ph,
+    //         double temperature,
+    //         double lightStrength,
+    //         double ttsDensity,
+    //         double humidity,
+    //         double exp,
+    //         Plant plant // nullable
+    // ) {
+    //     this.status = status;
+    //     this.ph = ph;
+    //     this.temperature = temperature;
+    //     this.lightStrength = lightStrength;
+    //     this.ttsDensity = ttsDensity;
+    //     this.potPlant = plant;
+    //     this.exp = exp;
+    //     this.humidity = humidity;
+    // }
 
     public void linkShelfFloor(ShelfFloor floor) {
         this.shelfFloor = floor;

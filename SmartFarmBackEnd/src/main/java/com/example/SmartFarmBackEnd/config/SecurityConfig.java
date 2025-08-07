@@ -34,10 +34,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(Customizer.withDefaults()) // CorsConfigurationSource 빈을 자동으로 찾아 사용
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Preflight 요청 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // 인증 없이 접근 가능한 경로들
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/image/**",
@@ -46,6 +48,7 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/image/**"
                         ).permitAll()
+                        // 그 외 요청은 인증 필요
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
@@ -62,17 +65,25 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ 반드시 명시적인 주소로 허용해야 세션 쿠키가 전달됨
-        config.setAllowedOrigins(List.of("http://10.145.189.17:3000"));
-        config.setAllowCredentials(true);  // 쿠키 허용
+        // 실제 프론트엔드가 접속하는 도메인/포트를 반드시 모두 명시해야 함
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://10.145.189.17:3000"
+                // 필요시 "http://127.0.0.1:3000" 등을 추가 가능
+        ));
+
+        config.setAllowCredentials(true);    // 쿠키 등 인증정보 전달 허용
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedHeaders(List.of("*")); // 모든 요청 헤더 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
 
+    /**
+     * 요청 진입 시 로그를 출력하는 필터 (디버깅용)
+     */
     @Bean
     public OncePerRequestFilter loggingFilter() {
         return new OncePerRequestFilter() {
