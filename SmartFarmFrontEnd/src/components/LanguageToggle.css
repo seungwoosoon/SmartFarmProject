@@ -1,0 +1,70 @@
+.lang-toggle-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b6ddb2;
+  border-radius: 16px;
+  padding: 0;
+  position: relative;
+  width: 62px;
+  height: 32px;
+  box-shadow: 0 1px 8px rgba(50, 100, 50, 0.10);
+  cursor: pointer;
+  border: none;
+  user-select: none;
+}
+
+.lang-toggle-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 56px;
+  height: 32px;
+  font-weight: 700;
+  font-size: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.lang-label {
+  flex: 1;
+  text-align: center;
+  color: #488753;
+  opacity: 0.78;
+  transition: color 0.2s, opacity 0.18s;
+  user-select: none;
+  pointer-events: none;
+  line-height: 32px;  /* 높이와 딱 맞게 */
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-toggle-switch.korean .lang-label.kr {
+  color: #367b25;
+  opacity: 1;
+}
+
+.lang-toggle-switch.english .lang-label.eng {
+  color: #367b25;
+  opacity: 1;
+}
+
+.lang-toggle-knob {
+  position: absolute;
+  top: 50%;    /* 중앙 기준으로 */
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(80, 160, 80, 0.17);
+  transition: transform 0.22s cubic-bezier(.6, .15, .3, 1), top 0.18s;
+  z-index: 2;
+  transform: translateY(-50%); /* 수직 중앙 정렬 */
+}
+
+.lang-toggle-switch.english .lang-toggle-knob {
+  transform: translate(27px, -50%); /* 오른쪽+수직중앙 */
+}

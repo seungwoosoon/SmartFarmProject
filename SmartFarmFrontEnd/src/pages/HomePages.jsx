@@ -1,6 +1,7 @@
 // src/pages/HomePages.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
@@ -9,6 +10,7 @@ import { logout } from '../api/auth';
 import '../App.css';
 
 function HomePages() {
+  const { t } = useTranslation();  // 번역 훅 사용
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('isLoggedIn') === 'true';
   });
@@ -16,12 +18,18 @@ function HomePages() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [currentText, setCurrentText] = useState('');
-  const typingTextRef = useRef(['오늘 상추 상태는 어때?', '토마토 수확은 언제쯤 가능해?']);
+  // 번역 키 배열로 수정 (여러 문장 토글)
+  const typingTextRef = useRef([t('typing.question1'), t('typing.question2')]);
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem('isLoggedIn', isLoggedIn);
   }, [isLoggedIn]);
+
+  // i18n 언어가 바뀔 때도 typingTextRef를 재설정해야 함
+  useEffect(() => {
+    typingTextRef.current = [t('typing.question1'), t('typing.question2')];
+  }, [t]);
 
   useEffect(() => {
     let textIndex = 0;
@@ -50,7 +58,7 @@ function HomePages() {
     typingInterval = setInterval(typeNextChar, 100);
 
     return () => clearInterval(typingInterval);
-  }, []);
+  }, [typingTextRef]);
 
   const handleLogout = async () => {
     try {
@@ -65,7 +73,7 @@ function HomePages() {
 
   return (
     <div className="home-container">
-      <img src="/background.jpg" alt="background" className="background-img" />
+      <img src="/background.jpg" alt={t('alt.background')} className="background-img" />
 
       <Header
         isLoggedIn={isLoggedIn}
@@ -102,22 +110,22 @@ function HomePages() {
         />
       )}
 
-      {/* ✅ 꿀벌 + 말풍선 묶음 */}
+      {/* 꿀벌 + 말풍선 묶음 */}
       <div className="bee-and-bubble">
-        <img src="/bee.png" className="bee-img" alt="bee" />
+        <img src="/bee.png" className="bee-img" alt={t('alt.bee')} />
         <div className="speech-bubble">
           <p className="typing">{currentText}</p>
           <div className="search-bar">
-            <img src="/search-icon.png" className="search-icon" alt="검색 아이콘" />
-            <input type="text" placeholder="Search" />
+            <img src="/search-icon.png" className="search-icon" alt={t('alt.search')} />
+            <input type="text" placeholder={t('placeholder.search')} />
           </div>
         </div>
       </div>
 
-      {/* ✅ 추천 질문 버튼 */}
+      {/* 추천 질문 버튼 */}
       <div className="suggested-questions">
-        <button># 수분량 부족한 작물은?</button>
-        <button># 수확 가능한 작물은?</button>
+        <button>{t('question.moisture')}</button>
+        <button>{t('question.harvest')}</button>
       </div>
 
       <div className="status-box-container">

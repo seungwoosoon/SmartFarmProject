@@ -1,10 +1,16 @@
+// src/pages/MyPlant.jsx
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import '../App.css'; // 여기에 스타일 정의되어 있어야 함
+import Bar from '../components/Bar';
+import '../components/Bar.css';
+import '../App.css'; // 스타일 포함
 
 function MyPlant() {
+  const { t } = useTranslation();
+
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
@@ -26,63 +32,66 @@ function MyPlant() {
         const data = await response.json();
         setPlantData(data);
       } catch (err) {
-        console.error('식물 데이터 불러오기 실패', err);
+        console.error(t('error.loadPlantDataFail'), err);
       }
     };
     fetchPlant();
     */
 
-    //Mock 데이터
+    // Mock 데이터
     const mockData = {
-      temperature: 24.5,
-      humidity: 60,
+      temperature: 17.5, //24.5
+      humidity: 80,  // 60
       light: 540,
-      ph: 6.3,
+      ph: 10.3, // 6.3
       tds: 720,
       status: 'NORMAL',
     };
     setPlantData(mockData);
 
     const mockSchedules = [
-      { date: '2025-08-10', event: '수확 예정일' },
-      { date: '2025-08-15', event: '비료 주기' },
+      { date: '2025-08-10', event: t('schedule.harvest') },
+      { date: '2025-08-15', event: t('schedule.fertilizer') },
     ];
     setSchedules(mockSchedules);
-  }, [shelf, row, col]);
+  }, [shelf, row, col, t]);
 
   return (
     <>
       <div className="myplant-container plant-bg">
         <div className="myplant-header">
-          My Plant🌿
-          <p className="myplant-subtext">현재 식물의 상태와 센서 데이터를 한눈에 확인해보세요.</p>
+          {t('myplant.title')}🌿
+          <p className="myplant-subtext">{t('myplant.subtitle')}</p>
         </div>
 
-        <button className="back-btn" onClick={() => navigate(-1)}>←</button>
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          ← {t('button.back')}
+        </button>
 
         {plantData && (
           <div className="plant-info-box">
             <div className="plant-left">
-              <img src="/tomato_red.png" alt="tomato" className="plant-large-img" />
-              <div className="plant-name">토마토</div>
-              <div className="plant-stage">성장 단계</div>
+              <img src="/tomato_red.png" alt={t('alt.tomato')} className="plant-large-img" />
+              <div className="plant-name">{t('plant.tomato')}</div>
+              <div className="plant-stage">{t('plant.stage')}</div>
             </div>
 
             <div className="plant-right">
-              <div className="sensor-cards">
-                <div className="sensor-card">🌡️ Temperature: {plantData.temperature}°C</div>
-                <div className="sensor-card">💧 Humidity: {plantData.humidity}%</div>
-                <div className="sensor-card">💡 Light: {plantData.light}</div>
-                <div className="sensor-card">🧪 pH Level: {plantData.ph}</div>
-                <div className="sensor-card">🧂 TDS Level: {plantData.tds}ppm</div>
+              {/* 기존 카드형 센서 데이터 대신 Bar 컴포넌트로 교체 */}
+              <div className="sensor-bars">
+                <Bar label={t('sensor.temperature')} value={plantData.temperature} min={0} max={50} unit="°C" icon="🌡️" />
+                <Bar label={t('sensor.humidity')} value={plantData.humidity} min={0} max={100} unit="%" icon="💧" />
+                <Bar label={t('sensor.light')} value={plantData.light} min={0} max={1000} unit="" icon="💡" />
+                <Bar label={t('sensor.ph')} value={plantData.ph} min={0} max={14} unit="" icon="🧪" />
+                <Bar label={t('sensor.tds')} value={plantData.tds} min={0} max={2000} unit="ppm" icon="🧂" />
               </div>
 
               <div className="button-group">
                 <div className="status-label">
-                  {plantData.status === 'NORMAL' ? '적정 상태입니다' : plantData.status}
+                  {plantData.status === 'NORMAL' ? t('plant.statusNormal') : plantData.status}
                 </div>
                 <button className="calendar-btn" onClick={() => setIsModalOpen(true)}>
-                  📅 재배일정
+                  📅 {t('button.schedule')}
                 </button>
               </div>
             </div>
@@ -98,7 +107,7 @@ function MyPlant() {
                 value={value}
                 onChange={setValue}
                 className="custom-calendar"
-                locale="ko-KR"
+                locale={t('calendar.locale')}
                 formatDay={(locale, date) => date.getDate()}
                 calendarType="gregory"
               />
@@ -115,7 +124,7 @@ function MyPlant() {
 
       {/* 하단 고정 Footer */}
       <p className="footer-info">
-        SmartFarm 시스템 v1.0.0 &nbsp;|&nbsp; © 2025 FarmLink Team
+        SmartFarm {t('footer.systemName')} v1.0.0 &nbsp;|&nbsp; © 2025 FarmLink Team
       </p>
     </>
   );
