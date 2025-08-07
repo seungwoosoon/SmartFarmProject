@@ -78,7 +78,7 @@ public class FarmService {
                 PotStatus.NORMAL,
                 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0,              // exp 인자 추가
-                Plant.TOMATO
+                Plant.SPROUT
         );
     }
 
@@ -97,7 +97,7 @@ public class FarmService {
                         PotStatus.NORMAL,
                         0.0, 0.0, 0.0, 0.0, 0.0,
                         0.0,             // exp 인자 추가
-                        Plant.TOMATO
+                        Plant.SPROUT
                 )
         );
         return pots;
@@ -117,7 +117,7 @@ public class FarmService {
                         PotStatus.NORMAL,
                         0.0, 0.0, 0.0, 0.0, 0.0,
                         0.0,             // exp 인자 추가
-                        Plant.TOMATO
+                        Plant.SPROUT
                 )
         );
         return pots;
