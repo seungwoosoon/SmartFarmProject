@@ -77,7 +77,15 @@ i18n.use(initReactI18next).init({
       "schedule.fertilizer": "비료 주기",
       "alt.tomato": "토마토",
       "calendar.locale": "ko-KR",
-      "footer.systemName": "시스템"
+      "footer.systemName": "시스템",
+       //------------------------------------------------------------------------- tutorial
+      "myfarm.tour.step1": "세싹을 하나씩 추가할 수 있어요!",
+"myfarm.tour.step2": "한 줄(5개)씩 추가할 수 있어요!",
+"myfarm.tour.step3": "전체 선반을 한 번에 채울 수도 있어요!",
+"myfarm.tour.step4": "이건 실제 선반이에요. 세싹들이 여기에 자라요.",
+"myfarm.tour.step5": "비어 있는 화분에 + 버튼을 눌러 세싹을 심어보세요!",
+"myfarm.tour.step6": "세싹을 클릭하면 상태를 자세히 확인할 수 있어요.",
+"myfarm.tour.step7": "여기 X 버튼을 누르면 세싹을 삭제할 수 있어요.",
         // 필요한 번역 키 추가
       },
     },
@@ -155,6 +163,14 @@ i18n.use(initReactI18next).init({
       "alt.tomato": "Tomato",
       "calendar.locale": "en-US",
       "footer.systemName": "System",
+      //------------------------------------------------------------------------- tutorial
+      "myfarm.tour.step1": "You can add one seedling at a time!",
+"myfarm.tour.step2": "You can add a full row of 5 seedlings!",
+"myfarm.tour.step3": "You can even fill the entire shelf at once!",
+"myfarm.tour.step4": "This is the shelf where your seedlings grow.",
+"myfarm.tour.step5": "Click the + button on an empty pot to plant!",
+"myfarm.tour.step6": "Click a seedling to view its status in detail.",
+"myfarm.tour.step7": "Click the X button to remove the seedling.",
       },
     },
   },
