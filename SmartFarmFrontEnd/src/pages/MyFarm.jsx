@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
-import { addSeedling, getSeedlings } from '../api/farm';
+import { addSeedling, getSeedlings, deleteSeedling } from '../api/farm';
 import '../App.css';
 
 const ROWS_PER_SHELF = 4;
@@ -93,6 +93,18 @@ function MyFarm() {
     }
   };
 
+  const handleDeleteSeedling = async (shelfIdx, rowIdx, colIdx) => {
+    try {
+      await deleteSeedling({ numOfShelf: shelfIdx, numOfShelfFloor: rowIdx, numOfPot: colIdx });
+
+      const newShelves = [...shelves];
+      newShelves[shelfIdx][rowIdx][colIdx] = null;
+      setShelves(newShelves);
+    } catch (error) {
+      console.error(t('error.deleteSeedlingFail'), error);
+    }
+  };
+
   const handleAddOne = () => {
     const newShelves = [...shelves];
     for (let s = 0; s < newShelves.length; s++) {
@@ -175,14 +187,11 @@ function MyFarm() {
     }
   };
 
-  // plant와 status에 따른 이미지 경로 반환 함수
   function getPlantImageSrc(plant, status) {
     const p = plant ? plant.toLowerCase() : '';
     const s = status ? status.toLowerCase() : '';
 
     if (p === 'empty' || s === 'empty') return null;
-
-    // 조합 이미지: plant_status.png (예: flower_warning.png)
     return `/${p}_${s}.png`;
   }
 
@@ -217,14 +226,24 @@ function MyFarm() {
               {shelf.map((row, rowIdx) => (
                 <div className="pots-row" key={rowIdx}>
                   {row.map((plant, colIdx) => (
-                    <div className="pot-slot" key={colIdx}>
+                    <div className="pot-slot" key={colIdx} style={{ position: 'relative' }}>
                       {(plant && plant.status !== 'EMPTY' && plant.plant !== 'EMPTY') ? (
-                        <img
-                          src={getPlantImageSrc(plant.plant, plant.status)}
-                          className="plant-img"
-                          alt={`${plant.plant}-${plant.status}`}
-                          onClick={() => handlePlantClick(shelfIdx, rowIdx, colIdx)}
-                        />
+                        <>
+                          <img
+                            src={getPlantImageSrc(plant.plant, plant.status)}
+                            className="plant-img"
+                            alt={`${plant.plant}-${plant.status}`}
+                            onClick={() => handlePlantClick(shelfIdx, rowIdx, colIdx)}
+                          />
+                          <button
+                            className="delete-seed-btn"
+                            onClick={() => handleDeleteSeedling(shelfIdx, rowIdx, colIdx)}
+                            aria-label={t('myfarm.deleteSeedling')}
+                            title={t('myfarm.deleteSeedling')}
+                          >
+                            ×
+                          </button>
+                        </>
                       ) : (
                         <button
                           className="add-seed-btn"

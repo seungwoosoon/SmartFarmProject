@@ -29,6 +29,19 @@ export const addSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => 
     return data;
 };
 
+export const deleteSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => {
+    const { data } = await axios.post(
+        `${FARM_BASE}/deleteSeedling`,
+        {
+            shelfPosition: numOfShelf,
+            floorPosition: numOfShelfFloor,
+            potPosition: numOfPot,
+        },
+        { withCredentials: true }
+    );
+    return data;
+};
+
 /**
  * 세싹 전체 상태 조회 API 호출 (GET /api/auth/structure)
  * @returns {Promise<object>} - { seedlings: [...] }

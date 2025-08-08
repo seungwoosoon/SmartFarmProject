@@ -652,6 +652,7 @@ body {
   position: relative;
   width: 100%;
   max-width: 600px;
+  margin: 0 auto;
 }
 
 .shelf-img {
@@ -674,7 +675,7 @@ body {
   gap: 0;
   position: absolute;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 5px;
 
   transform: translateX(0); /* ✅ 위치 튐 방지 위해 제거 또는 0으로 */
 }
@@ -686,11 +687,13 @@ body {
 
 /* ✅ 한 칸(포트) 단위로 고정된 래퍼 */
 .pot-slot {
+  position: relative;
   width: 100px;
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: visible;
 }
 
 /* 세싹 이미지 크기 및 위치 고정 */
@@ -766,6 +769,38 @@ body {
 .add-seed-btn:hover {
   background-color: #e8f5e9;
 }
+
+.delete-seed-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  transform: translate(50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.6);  /* ✅ 더 투명하게 */
+  border: none;
+  border-radius: 50%;
+  color: #e53935;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: auto;
+
+  opacity: 0.6;  /* ✅ 기본적으로 투명도 적용 */
+  transition: all 0.2s ease-in-out;  /* hover 시 부드럽게 */
+}
+
+.delete-seed-btn:hover {
+  background: rgba(255, 205, 210, 0.9); /* hover 시 조금 더 진하게 */
+  opacity: 1;  /* ✅ 마우스 올리면 선명하게 */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+
 
 
 /*myplant page detail 추가*/
