@@ -66,4 +66,14 @@ public class FarmController {
         farmService.addPot(memberId, req);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/api/farm/deleteSeedling")
+    public ResponseEntity<Void> deleteSeedling(@RequestBody PotPositionRequest req,
+                                            HttpServletRequest httpRequest) {
+        log.info("📍 Pot 위치 요청 - x: {}, y: {}, shelfFloorId: {}",
+                req.getShelfPosition(), req.getFloorPosition(), req.getPotPosition());
+        Long memberId = getSessionMemberId(httpRequest);
+        farmService.deletePot(memberId, req);
+        return ResponseEntity.ok().build();
+    }
 }
