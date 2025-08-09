@@ -1,0 +1,3 @@
+The goal is to build an AI model trained on environmental datasets and growth datasets from a tomato farm to predict, based on the user’s environmental conditions, the total number of tomatoes for a single tomato plant and the number of ripe tomatoes per week. Using this model, we plan to provide users with a visual representation of the future appearance of the tomato via a 3D digital twin created in Unity.
+
+In addition, the system aims to link sugar content — a key characteristic of fruit — with environmental conditions to deliver meaningful insights to the user. 
