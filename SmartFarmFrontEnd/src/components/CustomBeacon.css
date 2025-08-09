@@ -1,0 +1,33 @@
+/* src/components/custom-beacon.css */
+
+.custom-beacon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 24px;
+  background: transparent;
+  animation: bounce 1s infinite alternate;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+.beacon-icon {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+
+/* 🎯 특정 스텝에만 회전 적용 */
+.vertical-beacon .beacon-icon {
+  transform: rotate(90deg);
+}

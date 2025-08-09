@@ -4,8 +4,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Joyride from "react-joyride";
 import Header from "../components/Header";
-import { addSeedling, getSeedlings, deleteSeedling } from "../api/farm"; // API 연
+import { addSeedling, getSeedlings, deleteSeedling } from "../api/farm";
+import { getCurrentUser } from "../api/auth";
+import CustomBeacon from "../components/CustomBeacon";
 import "../App.css";
+
+
 
 const ROWS_PER_SHELF = 4;
 const COLS_PER_ROW = 5;
@@ -26,44 +30,85 @@ function MyFarm() {
   });
 
   const [shelves, setShelves] = useState([createEmptyShelf()]);
-  const [runTutorial, setRunTutorial] = useState(() => {
-    return localStorage.getItem("hasSeenFarmTour") !== "true";
-  });
+  const [runTutorial, setRunTutorial] = useState(false);
+  const [userId, setUserId] = useState(null);
+  //const [userId, setUserId] = useState("dev_user");  // 🔧 개발용 하드코딩 ID (실제 서버 없을 때 기본값)
+  
+
+  useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const user = await getCurrentUser();      // /me가 phoneNumber 내려줌
+      const key = user?.phoneNumber || "guest"; // 📌 전화번호 그대로 사용
+      setUserId(key);
+    } catch (error) {
+      console.warn("서버에서 사용자 정보를 불러올 수 없습니다. 게스트로 진행합니다.");
+      setUserId("guest");                       // 서버 실패 시 게스트 처리
+    }
+  };
+  fetchUser();
+}, []);
+
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     const hasSeen = localStorage.getItem(`hasSeenFarmTour_${userId}`);
+  //     setRunTutorial(hasSeen !== "true");
+  //   }
+  // }, [userId]);
+
+  useEffect(() => {
+  if (userId) {
+    const hasSeen = localStorage.getItem(`hasSeenFarmTour_${userId}`);
+    if (hasSeen === "true") {
+      setRunTutorial(false);
+    } else {
+      setRunTutorial(true);
+    }
+  }
+}, [userId]);
+
 
   const steps = [
-    {
-      target: ".add-btn:nth-child(1)",
-      content: t("myfarm.tour.step1"),
-    },
-    {
-      target: ".add-btn:nth-child(2)",
-      content: t("myfarm.tour.step2"),
-    },
-    {
-      target: ".add-btn:nth-child(3)",
-      content: t("myfarm.tour.step3"),
-    },
-    {
-      target: ".shelf-img",
-      content: t("myfarm.tour.step4"),
-    },
-    {
-      target: ".add-seed-btn",
-      content: t("myfarm.tour.step5"),
-    },
-    {
-      target: ".plant-img",
-      content: t("myfarm.tour.step6"),
-    },
-    {
-      target: ".delete-seed-btn",
-      content: t("myfarm.tour.step7"),
-    },
+    { target: ".add-btn:nth-child(1)", content: t("myfarm.tour.step1"), customProps: {
+    style: {
+      marginTop: "30px",
+      marginLeft: "-15px"
+    }
+  } },
+    { target: ".add-btn:nth-child(2)", content: t("myfarm.tour.step2"), customProps: {
+    style: {
+      marginTop: "30px",
+      marginLeft: "-15px"
+    }
+  } },
+    { target: ".add-btn:nth-child(3)", content: t("myfarm.tour.step3"), customProps: {
+    style: {
+      marginTop: "30px",
+      marginLeft: "-15px"
+    }
+  } },
+    { target: ".shelf-img", content: t("myfarm.tour.step4"), placement: "left",disableBeacon: false, customProps: {
+    rotate: 90,
+    style: {
+      marginTop: "-40px",
+      marginLeft: "-20px"
+    }
+} },
+    { target: ".add-seed-btn", content: t("myfarm.tour.step5") , customProps: {
+    rotate: 180, 
+      style: {
+      marginTop: "-67px",
+      marginLeft: "-15px"
+    }
+  }},
   ];
 
   const handleJoyrideCallback = ({ status }) => {
     if (["finished", "skipped"].includes(status)) {
-      localStorage.setItem("hasSeenFarmTour", "true");
+      if (userId) {
+        localStorage.setItem(`hasSeenFarmTour_${userId}`, "true");
+      }
       setRunTutorial(false);
     }
   };
@@ -272,29 +317,74 @@ function MyFarm() {
   function getPlantImageSrc(plant, status) {
     const p = plant ? plant.toLowerCase() : "";
     const s = status ? status.toLowerCase() : "";
-
     if (p === "empty" || s === "empty") return null;
     return `/${p}_${s}.png`;
   }
 
   return (
     <div className="myfarm-container farm-bg">
+      {userId && (
       <Joyride
-        run={runTutorial}
-        steps={steps}
-        callback={handleJoyrideCallback}
-        continuous
-        scrollToFirstStep
-        showProgress
-        showSkipButton
-        locale={{
-          back: t("button.back") || "Back",
-          close: "닫기",
-          last: "마침",
-          next: "다음",
-          skip: "건너뛰기",
-        }}
-      />
+      run={runTutorial}
+      steps={steps}
+      callback={handleJoyrideCallback}
+      continuous
+      scrollToFirstStep
+      showProgress
+      showSkipButton
+      beaconComponent={CustomBeacon}
+      locale={{
+        back: t("button.back") || "Back",
+        close: "닫기",
+        last: "마침",
+        next: "다음",
+        skip: "건너뛰기",
+      }}
+      styles={{
+  options: {
+    arrowColor: "#ffffff",
+    backgroundColor: "#ffffff",
+    overlayColor: "rgba(0, 0, 0, 0.45)",
+    primaryColor: "#4CAF50", // 상큼한 연두
+    textColor: "#333333",
+    width: 360,
+    borderRadius: 16,
+    zIndex: 10000,
+  },
+  tooltip: {
+    padding: "20px",
+    fontSize: "15px",
+    borderRadius: "16px",
+    boxShadow: "0 12px 28px rgba(0, 0, 0, 0.15)",
+    transition: "all 0.3s ease-in-out"
+  },
+  buttonNext: {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    fontWeight: "600",
+    borderRadius: "8px",
+    padding: "10px 18px"
+  },
+  buttonBack: {
+    color: "#4CAF50",
+    fontWeight: "500",
+    backgroundColor: "#F1F8E9",
+    borderRadius: "8px",
+    padding: "10px 16px",
+    marginRight: "10px"
+  },
+  buttonClose: {
+    color: "#999999",
+    fontSize: "18px"
+  },
+  spotlight: {
+    borderRadius: 12
+  }
+}}
+
+
+    />
+    )}
 
       {isLoggedIn && (
         <Header
@@ -320,8 +410,7 @@ function MyFarm() {
       </div>
 
       <p className="farm-hint">
-        {t("myfarm.hintPart1")} <strong>{t("myfarm.addOne")}</strong>{" "}
-        {t("myfarm.hintPart2")}
+        {t("myfarm.hintPart1")} <strong>{t("myfarm.addOne")}</strong> {t("myfarm.hintPart2")}
       </p>
 
       <div className="farm-shelves">
@@ -337,23 +426,17 @@ function MyFarm() {
                       key={colIdx}
                       style={{ position: "relative" }}
                     >
-                      {plant &&
-                      plant.status !== "EMPTY" &&
-                      plant.plant !== "EMPTY" ? (
+                      {plant && plant.status !== "EMPTY" && plant.plant !== "EMPTY" ? (
                         <>
                           <img
                             src={getPlantImageSrc(plant.plant, plant.status)}
                             className="plant-img"
                             alt={`${plant.plant}-${plant.status}`}
-                            onClick={() =>
-                              handlePlantClick(shelfIdx, rowIdx, colIdx)
-                            }
+                            onClick={() => handlePlantClick(shelfIdx, rowIdx, colIdx)}
                           />
                           <button
                             className="delete-seed-btn"
-                            onClick={() =>
-                              handleDeleteSeedling(shelfIdx, rowIdx, colIdx)
-                            }
+                            onClick={() => handleDeleteSeedling(shelfIdx, rowIdx, colIdx)}
                             aria-label={t("myfarm.deleteSeedling")}
                             title={t("myfarm.deleteSeedling")}
                           >
@@ -363,9 +446,7 @@ function MyFarm() {
                       ) : (
                         <button
                           className="add-seed-btn"
-                          onClick={() =>
-                            handleAddSeedlingAt(shelfIdx, rowIdx, colIdx)
-                          }
+                          onClick={() => handleAddSeedlingAt(shelfIdx, rowIdx, colIdx)}
                         >
                           +
                         </button>
