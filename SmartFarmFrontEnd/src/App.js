@@ -4,15 +4,8 @@ import HomePages from "./pages/HomePages";
 import MyFarm from "./pages/MyFarm";
 import MyPage from "./pages/MyPage";
 import MyPlant from "./pages/MyPlant";
-import { useEffect } from "react";
-import i18n from "i18next";
 
 function App() {
-  useEffect(() => {
-    // 초기 언어를 한국어로 설정
-    i18n.changeLanguage("ko");
-  }, []);
-
   return (
     <Router>
       <Routes>
