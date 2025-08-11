@@ -32,12 +32,14 @@ function MyPlant() {
       try {
         const seedlingsData = await getSeedlings();
         // 현재 선반,줄,칸에 해당하는 식물 찾기
-        const currentPlant = seedlingsData.seedlings.find(
+        const currentPlant = seedlingsData.find(
           (seedling) =>
             seedling.shelfPosition === parseInt(shelf) &&
             seedling.floorPosition === parseInt(row) &&
             seedling.potPosition === parseInt(col)
         );
+
+        console.log("현재 식물 데이터:", currentPlant);
 
         if (currentPlant) {
           // 기존 센서 데이터와 성장/상태 정보를 결합
@@ -73,17 +75,17 @@ function MyPlant() {
     fetchWeatherData();
 
     // Mock 데이터
-    const mockData = {
-      temperature: 17.5,
-      humidity: 80,
-      light: 540,
-      ph: 10.3,
-      tds: 720,
-      status: "NORMAL",
-      growth: "FRUIT", // SPROUT, FLOWER, FRUIT, COMPLETE
-      condition: "WARNING", // NORMAL, WARNING, CRITICAL
-    };
-    setPlantData(mockData);
+    // const mockData = {
+    //   temperature: 17.5,
+    //   humidity: 80,
+    //   light: 540,
+    //   ph: 10.3,
+    //   tds: 720,
+    //   status: "NORMAL",
+    //   growth: "FRUIT", // SPROUT, FLOWER, FRUIT, COMPLETE
+    //   condition: "WARNING", // NORMAL, WARNING, CRITICAL
+    // };
+    // setPlantData(mockData);
 
     const mockSchedules = [
       { date: "2025-08-10", event: t("schedule.harvest") },
