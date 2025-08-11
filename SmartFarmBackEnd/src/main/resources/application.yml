@@ -27,9 +27,8 @@ server:
 app:
   upload:
     dir: /uploads
-
 mqtt:
-  broker: tcp://mqtt-broker:1883
-  client-id: spring-client
-  topic-sub: etboard/sensor
-  topic-pub: led/control
+  broker: ${MQTT_BROKER}
+  client-id: ${MQTT_CLIENT_ID}
+  topic-sub: ${MQTT_TOPIC_SUB}
+  topic-pub: ${MQTT_TOPIC_PUB}

@@ -77,6 +77,24 @@ public class Pot {
     //     this.humidity = humidity;
     // }
 
+    // Pot.java (메서드만 추가)
+    public void applySensor(
+            Double ph,
+            Double temperature,
+            Double lightStrength,   // cds
+            Double ttsDensity,      // tds
+            Double humidity,
+            PotStatus newStatus,    // null이면 상태 유지
+            Double expIncrease      // 누적 가산치 (null이면 0)
+    ) {
+        if (ph != null) this.ph = ph;
+        if (temperature != null) this.temperature = temperature;
+        if (lightStrength != null) this.lightStrength = lightStrength;
+        if (ttsDensity != null) this.ttsDensity = ttsDensity;
+        if (humidity != null) this.humidity = humidity;
+        if (newStatus != null) this.status = newStatus;
+        if (expIncrease != null) this.exp += expIncrease;
+    }
     public void linkShelfFloor(ShelfFloor floor) {
         this.shelfFloor = floor;
     }
