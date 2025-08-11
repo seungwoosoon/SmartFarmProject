@@ -17,6 +17,7 @@
     "react-joyride": "^3.0.0-7",
     "react-router-dom": "^7.7.1",
     "react-scripts": "5.0.1",
+    "react-unity-webgl": "^10.1.5",
     "sockjs-client": "^1.6.1",
     "web-vitals": "^2.1.4"
   },
