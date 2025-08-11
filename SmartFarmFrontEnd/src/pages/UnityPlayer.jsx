@@ -21,8 +21,6 @@ function UnityPlayer() {
         style={{
           width: "960px",
           height: "600px",
-          border: "2px solid #333",
-          background: "#1F1F1F",
         }}
       />
     </div>
