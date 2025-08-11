@@ -8,6 +8,7 @@ import Bar from "../components/Bar";
 import "../components/Bar.css";
 import "../App.css"; // 스타일 포함
 import { getWeatherData } from "../api/weather";
+import { getSeedlings } from "../api/farm";
 import "../components/WeatherModern.css";
 
 function MyPlant() {
@@ -27,8 +28,38 @@ function MyPlant() {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
-    // 날씨 데이터 가져오기 (예시 좌표: 서울)
+    const fetchPlantData = async () => {
+      try {
+        const seedlingsData = await getSeedlings();
+        // 현재 선반,줄,칸에 해당하는 식물 찾기
+        const currentPlant = seedlingsData.seedlings.find(
+          (seedling) =>
+            seedling.shelfPosition === parseInt(shelf) &&
+            seedling.floorPosition === parseInt(row) &&
+            seedling.potPosition === parseInt(col)
+        );
 
+        if (currentPlant) {
+          // 기존 센서 데이터와 성장/상태 정보를 결합
+          setPlantData({
+            temperature: currentPlant.temperature || 24.5,
+            humidity: currentPlant.humidity || 65,
+            light: currentPlant.light || 540,
+            ph: currentPlant.ph || 6.3,
+            tds: currentPlant.tds || 720,
+            growth: currentPlant.growthStage || "SPROUT", // 성장단계
+            condition: currentPlant.condition || "NORMAL", // 상태
+            status: currentPlant.status || "NORMAL",
+          });
+        }
+      } catch (err) {
+        console.error("식물 데이터 로드 실패:", err);
+      }
+    };
+
+    fetchPlantData();
+
+    // 날씨 데이터 가져오기 (예시 좌표: 서울)
     const fetchWeatherData = async () => {
       try {
         // 서울 좌표 직접 사용
@@ -41,28 +72,16 @@ function MyPlant() {
 
     fetchWeatherData();
 
-    // 실제 API 연동 시 아래 주석 해제
-    /*
-    const fetchPlant = async () => {
-      try {
-        const response = await fetch(`/api/farm-plant?shelf=${shelf}&row=${row}&col=${col}`);
-        const data = await response.json();
-        setPlantData(data);
-      } catch (err) {
-        console.error(t('error.loadPlantDataFail'), err);
-      }
-    };
-    fetchPlant();
-    */
-
     // Mock 데이터
     const mockData = {
-      temperature: 17.5, //24.5
-      humidity: 80, // 60
+      temperature: 17.5,
+      humidity: 80,
       light: 540,
-      ph: 10.3, // 6.3
+      ph: 10.3,
       tds: 720,
       status: "NORMAL",
+      growth: "FRUIT", // SPROUT, FLOWER, FRUIT, COMPLETE
+      condition: "WARNING", // NORMAL, WARNING, CRITICAL
     };
     setPlantData(mockData);
 
@@ -108,6 +127,55 @@ function MyPlant() {
     return "weather.condition." + mappedCondition;
   };
 
+  // 성장 단계와 상태에 따른 이미지 매핑
+  const getPlantImage = (growth, condition) => {
+    const imageMap = {
+      SPROUT: {
+        NORMAL: "/sprout_normal.png",
+        WARNING: "/sprout_warning.png",
+        CRITICAL: "/sprout_critical.png",
+      },
+      FLOWER: {
+        NORMAL: "/flower_normal.png",
+        WARNING: "/flower_warning.png",
+        CRITICAL: "/flower_critical.png",
+      },
+      FRUIT: {
+        NORMAL: "/fruit_normal.png",
+        WARNING: "/fruit_warning.png",
+        CRITICAL: "/fruit_critical.png",
+      },
+      COMPLETE: {
+        NORMAL: "/fruit_normal.png",
+        WARNING: "/fruit_warning.png",
+        CRITICAL: "/fruit_critical.png",
+      },
+    };
+
+    return imageMap[growth]?.[condition] || "/sprout_normal.png";
+  };
+
+  // 성장 단계 텍스트 변환
+  const getGrowthStageText = (growth) => {
+    const stageMap = {
+      SPROUT: "새싹 단계",
+      FLOWER: "개화 단계",
+      FRUIT: "결실 단계",
+      COMPLETE: "수확 단계",
+    };
+    return stageMap[growth] || "새싹 단계";
+  };
+
+  // 상태 텍스트 변환
+  const getConditionText = (condition) => {
+    const conditionMap = {
+      NORMAL: "정상 상태입니다",
+      WARNING: "주의가 필요합니다",
+      CRITICAL: "위험 상태입니다",
+    };
+    return conditionMap[condition] || "정상 상태입니다";
+  };
+
   return (
     <>
       <div className="myplant-container plant-bg">
@@ -124,12 +192,14 @@ function MyPlant() {
           <div className="plant-info-box">
             <div className="plant-left">
               <img
-                src="/tomato_red.png"
+                src={getPlantImage(plantData.growth, plantData.condition)}
                 alt={t("alt.tomato")}
                 className="plant-large-img"
               />
               <div className="plant-name">{t("plant.tomato")}</div>
-              <div className="plant-stage">{t("plant.stage")}</div>
+              <div className="plant-stage">
+                {getGrowthStageText(plantData.growth)}
+              </div>
             </div>
 
             <div className="plant-right">
@@ -237,10 +307,10 @@ function MyPlant() {
               </div>
 
               <div className="button-group">
-                <div className="status-label">
-                  {plantData.status === "NORMAL"
-                    ? t("plant.statusNormal")
-                    : plantData.status}
+                <div
+                  className={`status-label ${plantData.condition.toLowerCase()}`}
+                >
+                  {getConditionText(plantData.condition)}
                 </div>
                 <button
                   className="calendar-btn"

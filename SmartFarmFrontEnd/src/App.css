@@ -1032,7 +1032,7 @@ body {
 .custom-calendar {
   border: 1px solid #ddd; /* 회색 테두리 추가 */
   border-radius: 12px; /* 👈 모서리만 둥글게 */
-  overflow: hidden; /* 내부 요소가 둥근 테두리 벗어나지 않게 */
+  overflow: hidden; /* 내부 요소가 둥글 테두리 벗어나지 않게 */
   width: 100%;
   font-family: "Arial", sans-serif;
   background-color: transparent;
@@ -1137,4 +1137,25 @@ body {
   color: #666;
   margin-bottom: 20px;
   font-size: 14px;
+}
+
+.status-label {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.status-label.normal {
+  background-color: #4caf50;
+  color: white;
+}
+
+.status-label.warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.status-label.critical {
+  background-color: #ff5252;
+  color: white;
 }
