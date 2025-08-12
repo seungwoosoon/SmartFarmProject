@@ -34,23 +34,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // CorsConfigurationSource 빈을 자동으로 찾아 사용
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Preflight 요청 허용
+                        // 프리플라이트
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // 인증 없이 접근 가능한 경로들
-                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+
+                        // 헬스/프로브 (프록시 유무 모두 허용)
+                        .requestMatchers("/api/actuator/**", "/actuator/**").permitAll()
+
+                        // 비인증 접근 허용 API
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/image/**",
                                 "/api/farm/**",
-                                "/css/**",
-                                "/js/**",
-                                "/image/**",
-                                "/api/diagnosis"
+                                "/api/diagnosis",
+                                "/images/**", "/css/**", "/js/**", "/image/**"
                         ).permitAll()
-                        // 그 외 요청은 인증 필요
+
+                        // 나머지는 인증
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
@@ -67,38 +69,28 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // 실제 프론트엔드가 접속하는 도메인/포트를 반드시 모두 명시해야 함
+        // 프런트가 접근하는 "정확한 출처"만 명시 (와일드카드 금지: allowCredentials=true 때문)
         config.setAllowedOrigins(List.of(
+                "http://54.166.203.174",
                 "http://localhost:3000",
-                "http://10.145.189.17",
-                "http://10.145.189.17:3000",
-                "http://10.145.189.221",
-                "http://10.145.189.221:3000"
-                // 필요시 "http://127.0.0.1:3000" 등을 추가 가능
+                "http://127.0.0.1:3000"
         ));
-
-        config.setAllowCredentials(true);    // 쿠키 등 인증정보 전달 허용
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*")); // 모든 요청 헤더 허용
+        config.setAllowCredentials(true);
+        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
 
-    /**
-     * 요청 진입 시 로그를 출력하는 필터 (디버깅용)
-     */
     @Bean
     public OncePerRequestFilter loggingFilter() {
         return new OncePerRequestFilter() {
             @Override
-            protected void doFilterInternal(
-                    HttpServletRequest req,
-                    HttpServletResponse res,
-                    FilterChain chain
-            ) throws ServletException, IOException {
-                System.out.println("📥 들어온 요청: " + req.getMethod() + " " + req.getRequestURI());
+            protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+                    throws ServletException, IOException {
+                System.out.println("📥 " + req.getMethod() + " " + req.getRequestURI());
                 chain.doFilter(req, res);
             }
         };

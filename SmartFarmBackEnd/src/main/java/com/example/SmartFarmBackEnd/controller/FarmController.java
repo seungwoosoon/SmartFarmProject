@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin(
-        origins = {"http://localhost:3000", "http://10.145.189.17:3000"},
-        allowCredentials = "true"
-)
 @RestController
 @RequiredArgsConstructor
 public class FarmController {

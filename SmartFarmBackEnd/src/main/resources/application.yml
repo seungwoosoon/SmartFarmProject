@@ -3,6 +3,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -16,6 +17,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
 server:
   address: 0.0.0.0
   port: 8080
@@ -24,10 +26,12 @@ server:
       cookie:
         same-site: Lax
         secure: false
+
 app:
   upload-dir: ${APP_UPLOAD_DIR:/app/uploads}
   dev:
     allow-upload-without-session: false
+
 mqtt:
   broker: ${MQTT_BROKER}
   client-id: ${MQTT_CLIENT_ID}
