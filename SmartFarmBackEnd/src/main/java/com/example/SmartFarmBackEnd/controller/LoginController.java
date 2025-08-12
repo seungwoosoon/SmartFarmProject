@@ -37,7 +37,6 @@ public class LoginController {
     private final FarmService farmService;
     private final PasswordEncoder passwordEncoder;
     private final MemberService memberService;
-    private final ImageService imageService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Map<String, String> requestBody,
@@ -95,7 +94,6 @@ public class LoginController {
         // 5) 기본 프로필 이미지 세팅
         Member saved = memberService.findById(memberId)
                 .orElseThrow(() -> new IllegalStateException("회원 저장 중 오류 발생"));
-        imageService.createDefaultProfile(saved);
 
         // 6) 세션에 로그인 정보 저장
         HttpSession session = servletRequest.getSession(true);

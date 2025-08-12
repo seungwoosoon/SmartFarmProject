@@ -9,12 +9,11 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class Image {
-
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "image_id")
     private Long id;
 
+    @Setter
     private String imageUrl;
 
     @OneToOne(fetch = FetchType.LAZY)
