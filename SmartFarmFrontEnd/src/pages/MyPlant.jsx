@@ -12,6 +12,9 @@ import { getWeatherData } from "../api/weather";
 import { getSeedlings } from "../api/farm";
 import "../components/WeatherModern.css";
 
+// ✅ 폴링 간격(ms)
+const POLL_MS = 3000; // 필요에 따라 1000~5000 사이로 조절
+
 function MyPlant() {
   const { t } = useTranslation();
 
@@ -28,24 +31,25 @@ function MyPlant() {
   const [schedules, setSchedules] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
 
+  // 숫자형 좌표 캐시 (폴링에서도 재사용)
+  const shelfNum = Number.parseInt(shelf ?? "", 10);
+  const rowNum = Number.parseInt(row ?? "", 10);
+  const colNum = Number.parseInt(col ?? "", 10);
+
   useEffect(() => {
     const fetchPlantData = async () => {
       try {
         const seedlingsData = await getSeedlings();
         console.log("받아온 전체 데이터:", seedlingsData);
 
-        const shelfNum = parseInt(shelf, 10);
-        const rowNum = parseInt(row, 10);
-        const colNum = parseInt(col, 10);
-
         console.log("찾고있는 위치:", { shelfNum, rowNum, colNum });
 
         const currentPlant = seedlingsData.find((seedling) => {
           console.log("비교중인 식물:", JSON.stringify(seedling, null, 2));
           return (
-            seedling.position.numOfShelf === shelfNum &&
-            seedling.position.numOfShelfFloor === rowNum &&
-            seedling.position.numOfPot === colNum
+            seedling.position?.numOfShelf === shelfNum &&
+            seedling.position?.numOfShelfFloor === rowNum &&
+            seedling.position?.numOfPot === colNum
           );
         });
 
@@ -54,10 +58,10 @@ function MyPlant() {
         if (currentPlant) {
           setPlantData({
             temperature: currentPlant.temperature || 24.5,
-            humidity: currentPlant.humidity || 65,
+            humidity: currentPlant.humidity || 0,
             light: currentPlant.lightStrength || 540,
             ph: currentPlant.ph || 6.3,
-            tds: currentPlant.ttsDensity || 720,
+            tds: currentPlant.tds ?? currentPlant.ttsDensity ?? 720,
             growth: currentPlant.plant || "SPROUT",
             condition: currentPlant.status || "NORMAL",
             status: currentPlant.status || "NORMAL",
@@ -85,25 +89,100 @@ function MyPlant() {
 
     fetchWeatherData();
 
-    // Mock 데이터
-    // const mockData = {
-    //   temperature: 17.5,
-    //   humidity: 80,
-    //   light: 540,
-    //   ph: 10.3,
-    //   tds: 720,
-    //   status: "NORMAL",
-    //   growth: "FRUIT", // SPROUT, FLOWER, FRUIT, COMPLETE
-    //   condition: "WARNING", // NORMAL, WARNING, CRITICAL
-    // };
-    // setPlantData(mockData);
-
+    // 일정 데이터 예시 (실제 API 호출로 대체 필요)
     const mockSchedules = [
       { date: "2025-08-10", event: t("schedule.harvest") },
       { date: "2025-08-15", event: t("schedule.fertilizer") },
     ];
     setSchedules(mockSchedules);
-  }, [shelf, row, col, t]);
+  }, [shelfNum, rowNum, colNum, t]);
+
+  // ✅ 최소 변경: 폴링으로 currentPlant 갱신
+  useEffect(() => {
+    let timerId;
+    let aborted = false;
+    let backoff = 0; // 에러 시 간단 백오프(최대 10초)
+
+    async function tick() {
+      try {
+        if (aborted) return;
+
+        const seedlingsData = await getSeedlings();
+        if (aborted) return;
+
+        const currentPlant = seedlingsData.find((seedling) => {
+          const p = seedling.position || {};
+          return (
+            Number(p.numOfShelf) === shelfNum &&
+            Number(p.numOfShelfFloor) === rowNum &&
+            Number(p.numOfPot) === colNum
+          );
+        });
+
+        if (currentPlant) {
+          setPlantData((prev) => {
+            const next = {
+              temperature: currentPlant.temperature ?? prev?.temperature ?? 24.5,
+              humidity: currentPlant.humidity ?? prev?.humidity ?? 0,
+              light: currentPlant.lightStrength ?? prev?.light ?? 540,
+              ph: currentPlant.ph ?? prev?.ph ?? 6.3,
+              tds:
+                (currentPlant.tds ?? currentPlant.ttsDensity) ??
+                prev?.tds ??
+                720,
+              growth: currentPlant.plant ?? prev?.growth ?? "SPROUT",
+              condition: currentPlant.status ?? prev?.condition ?? "NORMAL",
+              status: currentPlant.status ?? prev?.status ?? "NORMAL",
+            };
+
+            // 얕은 비교로 변화 없으면 리렌더 스킵
+            if (
+              prev &&
+              next.temperature === prev.temperature &&
+              next.humidity === prev.humidity &&
+              next.light === prev.light &&
+              next.ph === prev.ph &&
+              next.tds === prev.tds &&
+              next.growth === prev.growth &&
+              next.condition === prev.condition &&
+              next.status === prev.status
+            ) {
+              return prev;
+            }
+            return next;
+          });
+        }
+
+        backoff = 0; // 성공 시 백오프 초기화
+      } catch (e) {
+        console.error("Polling error:", e);
+        backoff = Math.min((backoff || 1000) * 2, 10000);
+      } finally {
+        if (!aborted) {
+          const delay = backoff ? backoff : POLL_MS;
+          timerId = window.setTimeout(tick, delay);
+        }
+      }
+    }
+
+    // 탭이 보일 때 즉시 한 번 갱신(선택)
+    function onVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        clearTimeout(timerId);
+        tick();
+      }
+    }
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    // 시작 즉시 1회 실행 + 주기 반복
+    tick();
+
+    return () => {
+      aborted = true;
+      clearTimeout(timerId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [shelfNum, rowNum, colNum]);
 
   // 날씨 상태 텍스트 변환 함수
   const getWeatherText = (text) => {
@@ -162,10 +241,8 @@ function MyPlant() {
   const getPlantImage = (growth, condition) => {
     // 기본 상태별 이미지 매핑
     const baseImageMap = {
-
       NORMAL: "_NORMAL.png",
       WARNING: "_WARNING.png",
-
       GRAYMOLD: "_GRAYMOLD.png",
       POWDERYMILDEW: "_POWDERYMILDEW.png",
       NITROGENDEFICIENCY: "_NITROGENDEFICIENCY.png",
@@ -186,7 +263,7 @@ function MyPlant() {
     }
 
     const prefix = growthPrefix[growth] || "/sprout";
-    const suffix = baseImageMap[condition] || "_normal.png";
+    const suffix = baseImageMap[condition] || "_NORMAL.png";
     return prefix + suffix;
   };
 
@@ -239,7 +316,7 @@ function MyPlant() {
                     label={t("sensor.light")}
                     value={plantData.light}
                     min={0}
-                    max={1000}
+                    max={4095}
                     unit=""
                     icon="💡"
                   />

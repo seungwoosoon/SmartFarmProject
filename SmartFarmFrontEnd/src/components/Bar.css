@@ -1,3 +1,4 @@
+/* src/components/Bar.css */
 .bar-container {
   margin-bottom: 18px;
 }
@@ -8,10 +9,22 @@
   color: #388e3c;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-weight: 600;
 }
 
+/* 값이 바뀔 때 숫자 살짝 페이드/슬라이드 */
+.bar-number {
+  display: inline-block;
+  animation: number-pop 180ms ease-out;
+}
+
+@keyframes number-pop {
+  0% { opacity: 0; transform: translateY(-2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 트랙 */
 .bar-bg {
   background: #f0fdf4;
   border-radius: 12px;
@@ -23,10 +36,11 @@
   position: relative;
 }
 
+/* 채움: width 전환만으로도 충분히 부드러움 */
 .bar-fill {
   height: 100%;
   border-radius: 12px;
-  transition: width 0.3s;
+  transition: width 0.45s cubic-bezier(.22,.61,.36,1);
 }
 
 /* 정상 초록색 그라데이션 */
@@ -34,12 +48,12 @@
   background: linear-gradient(90deg, #81c784, #4caf50 80%);
 }
 
-/* 경고 노란색~주황 그라데이션 */
+/* 경고 노란~주황 */
 .bar-fill.bar-warning {
   background: linear-gradient(90deg, #ffe082, #ff9800 80%);
 }
 
-/* 위험 빨간색~오렌지 그라데이션 */
+/* 위험 빨강 */
 .bar-fill.bar-danger {
   background: linear-gradient(90deg, #ff8a65, #e53935 80%);
 }
@@ -51,4 +65,14 @@
   color: #777;
   margin-top: 2px;
   padding: 0 4px;
+}
+
+/* 접근성: 애니메이션 축소 환경이면 전환 제거 */
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill {
+    transition: none;
+  }
+  .bar-number {
+    animation: none;
+  }
 }

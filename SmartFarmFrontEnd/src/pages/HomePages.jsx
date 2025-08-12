@@ -1,54 +1,66 @@
 // src/pages/HomePages.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Header from '../components/Header';
-import LoginModal from '../components/LoginModal';
-import SignupModal from '../components/SignupModal';
-import StatusBox from '../components/StatusBox';
-import ChatBot from '../components/ChatBot'; // 답변 모달 컴포넌트
-import { logout } from '../api/auth';
-import '../App.css';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Header from "../components/Header";
+import LoginModal from "../components/LoginModal";
+import SignupModal from "../components/SignupModal";
+import StatusBox from "../components/StatusBox";
+import ChatBot from "../components/ChatBot"; // 답변 모달 컴포넌트
+import { logout } from "../api/auth";
+import { getSeedlings } from "../api/farm"; // Add this import
+import "../App.css";
 
 function getBotAnswer(query, t) {
-  const norm = (query ?? '').trim().toLowerCase();
+  const norm = (query ?? "").trim().toLowerCase();
 
-  const moistureKey = t('question.moisture').toLowerCase();
-  const harvestKey = t('question.harvest').toLowerCase();
-  const siteExplainBtnKey = t('siteExplainBtn').toLowerCase();
+  const moistureKey = t("question.moisture").toLowerCase();
+  const harvestKey = t("question.harvest").toLowerCase();
+  const siteExplainBtnKey = t("siteExplainBtn").toLowerCase();
 
-  if (norm === moistureKey || norm.includes('moisture')) {
-    return t('moisture');
+  if (norm === moistureKey || norm.includes("moisture")) {
+    return t("moisture");
   }
-  if (norm === harvestKey || norm.includes('harvest')) {
-    return t('harvest');
+  if (norm === harvestKey || norm.includes("harvest")) {
+    return t("harvest");
   }
-  if (norm === siteExplainBtnKey || norm === '사이트 설명해줘' || norm === 'explain the site') {
-    return t('siteExplain');
+  if (
+    norm === siteExplainBtnKey ||
+    norm === "사이트 설명해줘" ||
+    norm === "explain the site"
+  ) {
+    return t("siteExplain");
   }
-  return t('default');
+  return t("default");
 }
 
 function HomePages() {
   const { t } = useTranslation();
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => localStorage.getItem("isLoggedIn") === "true"
+  );
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [currentText, setCurrentText] = useState('');
-  const typingTextRef = useRef([t('typing.question1'), t('typing.question2')]);
+  const [currentText, setCurrentText] = useState("");
+  const typingTextRef = useRef([t("typing.question1"), t("typing.question2")]);
   const navigate = useNavigate();
 
   // 챗봇 상태 관리
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [chatOpen, setChatOpen] = useState(false);
-  const [chatAnswer, setChatAnswer] = useState('');
+  const [chatAnswer, setChatAnswer] = useState("");
+  const [statusCounts, setStatusCounts] = useState({
+    normal: 0,
+    warning: 0,
+    critical: 0,
+  });
 
   useEffect(() => {
-    localStorage.setItem('isLoggedIn', isLoggedIn);
+    localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
   useEffect(() => {
-    typingTextRef.current = [t('typing.question1'), t('typing.question2')];
+    typingTextRef.current = [t("typing.question1"), t("typing.question2")];
   }, [t]);
 
   useEffect(() => {
@@ -66,7 +78,7 @@ function HomePages() {
         setTimeout(() => {
           charIndex = 0;
           textIndex = (textIndex + 1) % typingTextRef.current.length;
-          setCurrentText('');
+          setCurrentText("");
           setTimeout(() => {
             typingInterval = setInterval(typeNextChar, 100);
           }, 300);
@@ -79,15 +91,59 @@ function HomePages() {
     return () => clearInterval(typingInterval);
   }, [typingTextRef]);
 
+  useEffect(() => {
+    const fetchSeedlings = async () => {
+      try {
+        const data = await getSeedlings();
+        const seedlings = data.seedlings || data || [];
+
+        const counts = seedlings.reduce(
+          (acc, seedling) => {
+            // Skip if empty
+            if (seedling.status === "EMPTY" || seedling.plant === "EMPTY") {
+              return acc;
+            }
+
+            // Count by status
+            const status = seedling.status?.toUpperCase();
+            if (status === "NORMAL") {
+              acc.normal++;
+            } else if (
+              [
+                "WARNING",
+                "POTASSIUMDEFICIENCY",
+                "PHOSPHROUSDEFICIENCY",
+                "NITROGENDEFICIENCY",
+              ].includes(status)
+            ) {
+              acc.warning++;
+            } else if (["GRAYMOLD", "POWDERYMILDEW"].includes(status)) {
+              acc.critical++;
+            }
+            return acc;
+          },
+          { normal: 0, warning: 0, critical: 0 }
+        );
+
+        setStatusCounts(counts);
+      } catch (error) {
+        console.error("Failed to fetch seedlings:", error);
+        setStatusCounts({ normal: 0, warning: 0, critical: 0 });
+      }
+    };
+
+    fetchSeedlings();
+  }, []);
+
   const handleLogout = async () => {
     try {
       await logout();
     } catch (err) {
-      console.error('백엔드 로그아웃 실패:', err);
+      console.error("백엔드 로그아웃 실패:", err);
     }
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
-    navigate('/');
+    navigate("/");
   };
 
   // 검색 제출 핸들러
@@ -97,7 +153,7 @@ function HomePages() {
     if (!query) return;
     setChatAnswer(getBotAnswer(query, t));
     setChatOpen(true);
-    setInput('');
+    setInput("");
   };
 
   // 추천 질문 클릭 핸들러
@@ -108,13 +164,17 @@ function HomePages() {
 
   return (
     <div className="home-container">
-      <img src="/background.jpg" alt={t('alt.background')} className="background-img" />
+      <img
+        src="/background.jpg"
+        alt={t("alt.background")}
+        className="background-img"
+      />
 
       <Header
         isLoggedIn={isLoggedIn}
         onLoginClick={() => setShowLogin(true)}
         onLogout={handleLogout}
-        onLogoClick={() => navigate('/')}
+        onLogoClick={() => navigate("/")}
       />
 
       {showLogin && (
@@ -147,18 +207,26 @@ function HomePages() {
 
       {/* 말풍선 + 검색바(타이핑 효과 포함) - 추천 질문 버튼은 안에 없음 */}
       <div className="bee-and-bubble">
-        <img src="/bee.png" className="bee-img" alt={t('alt.bee')} />
+        <img src="/bee.png" className="bee-img" alt={t("alt.bee")} />
         <div className="speech-bubble">
           <p className="typing">{currentText}</p>
 
           {/* 검색 입력창 */}
-          <form className="search-bar" onSubmit={handleSearch} aria-label="챗봇 질문 입력폼">
-            <img src="/search-icon.png" className="search-icon" alt={t('alt.search')} />
+          <form
+            className="search-bar"
+            onSubmit={handleSearch}
+            aria-label="챗봇 질문 입력폼"
+          >
+            <img
+              src="/search-icon.png"
+              className="search-icon"
+              alt={t("alt.search")}
+            />
             <input
               type="text"
-              placeholder={t('placeholder.search')}
+              placeholder={t("placeholder.search")}
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={(e) => setInput(e.target.value)}
               aria-label="챗봇 질문 입력창"
             />
           </form>
@@ -166,19 +234,29 @@ function HomePages() {
       </div>
 
       {/* 추천 질문 버튼 영역 - 말풍선 밖, 기존 위치/디자인 서식 유지 */}
-      <div className="suggested-questions" style={{ marginTop: '16px' }}>
-        <button onClick={() => handleReco(t('question.moisture'))}>{t('question.moisture')}</button>
-        <button onClick={() => handleReco(t('question.harvest'))}>{t('question.harvest')}</button>
-        <button onClick={() => handleReco(t('siteExplainBtn'))}>{t('siteExplainBtn')}</button>
+      <div className="suggested-questions" style={{ marginTop: "16px" }}>
+        <button onClick={() => handleReco(t("question.moisture"))}>
+          {t("question.moisture")}
+        </button>
+        <button onClick={() => handleReco(t("question.harvest"))}>
+          {t("question.harvest")}
+        </button>
+        <button onClick={() => handleReco(t("siteExplainBtn"))}>
+          {t("siteExplainBtn")}
+        </button>
       </div>
 
       {/* 답변 모달 */}
-      <ChatBot open={chatOpen} answer={chatAnswer} onClose={() => setChatOpen(false)} />
+      <ChatBot
+        open={chatOpen}
+        answer={chatAnswer}
+        onClose={() => setChatOpen(false)}
+      />
 
       <div className="status-box-container">
-        <StatusBox type="critical" count={0} />
-        <StatusBox type="warning" count={0} />
-        <StatusBox type="normal" count={0} />
+        <StatusBox type="critical" count={statusCounts.critical} />
+        <StatusBox type="warning" count={statusCounts.warning} />
+        <StatusBox type="normal" count={statusCounts.normal} />
       </div>
     </div>
   );

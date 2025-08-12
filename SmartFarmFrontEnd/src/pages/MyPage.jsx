@@ -53,7 +53,6 @@ function MyPage() {
   };
 
   return (
-
     <div className="mypage-container">
       <div className="mypage-header">
         <div className="left-buttons">
@@ -69,6 +68,7 @@ function MyPage() {
             ✏️ {t("mypage.editProfile")}
           </button>
         </div>
+      </div>
 
       {/* 인사말 */}
       <p className="mypage-greeting">
@@ -147,7 +147,7 @@ function MyPage() {
             {t("mypage.deleteAccount")}
           </button>
         </div>
-
+      </div>
 
       {/* 수정 모달 */}
       {showEditModal && (
