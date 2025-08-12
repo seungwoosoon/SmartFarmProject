@@ -41,8 +41,10 @@ services:
       MQTT_CLIENT_ID: ${MQTT_CLIENT_ID}
       MQTT_TOPIC_SUB: ${MQTT_TOPIC_SUB}
       MQTT_TOPIC_PUB: ${MQTT_TOPIC_PUB}
+      APP_UPLOAD_DIR: /app/uploads
+
     volumes:
-      - ./uploads:/uploads
+      - /Users/SEUNGWOO/Desktop/SmartFarmProject/uploads:/app/uploads:rw
     depends_on:
       - db
       - mqtt-broker
