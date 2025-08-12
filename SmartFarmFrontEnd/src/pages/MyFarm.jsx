@@ -316,7 +316,7 @@ function MyFarm() {
 
   function getPlantImageSrc(plant, status) {
     const p = plant ? plant.toLowerCase() : "";
-    const s = status ? status.toLowerCase() : "";
+    const s = status ? status.toUpperCase() : "";
     if (p === "empty" || s === "empty") return null;
     return `/${p}_${s}.png`;
   }

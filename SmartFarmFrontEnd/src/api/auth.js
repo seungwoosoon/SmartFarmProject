@@ -1,24 +1,22 @@
 // src/api/auth.js
-import axios from 'axios';
+import axios from "axios";
 
 const API_ROOT = process.env.REACT_APP_BACKEND_URL;
 const AUTH_BASE = `${API_ROOT}/api/auth`;
 
 export const login = async (loginId, password) => {
   const { data } = await axios.post(
-      `${AUTH_BASE}/login`,
-      { login: loginId, password },
-      { withCredentials: true }
+    `${AUTH_BASE}/login`,
+    { login: loginId, password },
+    { withCredentials: true }
   );
   return data;
 };
 
 export const signup = async (userData) => {
-  const { data } = await axios.post(
-      `${AUTH_BASE}/join`,
-      userData,
-      { withCredentials: true }
-  );
+  const { data } = await axios.post(`${AUTH_BASE}/join`, userData, {
+    withCredentials: true,
+  });
   return data;
 };
 
@@ -32,17 +30,30 @@ export const checkLogin = async (login) => {
 };
 
 export const logout = async () => {
-  await axios.post(
-      `${AUTH_BASE}/logout`,
-      {},
-      { withCredentials: true }
-  );
+  await axios.post(`${AUTH_BASE}/logout`, {}, { withCredentials: true });
 };
 
 export const getCurrentUser = async () => {
-  const { data } = await axios.get(
-      `${AUTH_BASE}/me`,
-      { withCredentials: true }
-  );
+  const { data } = await axios.get(`${AUTH_BASE}/me`, {
+    withCredentials: true,
+  });
   return data;
+};
+
+/**
+ * 사용자 프로필 정보 수정 (이름, 주소 등)
+ * @param {Object} profile { name, address: { street, city, zipcode } }
+ */
+export const updateProfile = async (profile) => {
+  const { data } = await axios.patch(`${AUTH_BASE}/me`, profile, {
+    withCredentials: true,
+  });
+  return data;
+};
+
+/**
+ * 계정 삭제
+ */
+export const deleteAccount = async () => {
+  await axios.delete(`${AUTH_BASE}/me`, { withCredentials: true });
 };
