@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import i18n from "i18next"; // i18n import 추가
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Bar from "../components/Bar";
@@ -31,28 +32,38 @@ function MyPlant() {
     const fetchPlantData = async () => {
       try {
         const seedlingsData = await getSeedlings();
-        // 현재 선반,줄,칸에 해당하는 식물 찾기
-        const currentPlant = seedlingsData.find(
-          (seedling) =>
-            seedling.shelfPosition === parseInt(shelf) &&
-            seedling.floorPosition === parseInt(row) &&
-            seedling.potPosition === parseInt(col)
-        );
+        console.log("받아온 전체 데이터:", seedlingsData);
 
-        console.log("현재 식물 데이터:", currentPlant);
+        const shelfNum = parseInt(shelf, 10);
+        const rowNum = parseInt(row, 10);
+        const colNum = parseInt(col, 10);
+
+        console.log("찾고있는 위치:", { shelfNum, rowNum, colNum });
+
+        const currentPlant = seedlingsData.find((seedling) => {
+          console.log("비교중인 식물:", JSON.stringify(seedling, null, 2));
+          return (
+            seedling.position.numOfShelf === shelfNum &&
+            seedling.position.numOfShelfFloor === rowNum &&
+            seedling.position.numOfPot === colNum
+          );
+        });
+
+        console.log("찾은 식물:", currentPlant);
 
         if (currentPlant) {
-          // 기존 센서 데이터와 성장/상태 정보를 결합
           setPlantData({
             temperature: currentPlant.temperature || 24.5,
             humidity: currentPlant.humidity || 65,
-            light: currentPlant.light || 540,
+            light: currentPlant.lightStrength || 540,
             ph: currentPlant.ph || 6.3,
-            tds: currentPlant.tds || 720,
-            growth: currentPlant.growthStage || "SPROUT", // 성장단계
-            condition: currentPlant.condition || "NORMAL", // 상태
+            tds: currentPlant.ttsDensity || 720,
+            growth: currentPlant.plant || "SPROUT",
+            condition: currentPlant.status || "NORMAL",
             status: currentPlant.status || "NORMAL",
           });
+        } else {
+          console.log("해당 위치에 식물을 찾을 수 없습니다.");
         }
       } catch (err) {
         console.error("식물 데이터 로드 실패:", err);
@@ -64,8 +75,8 @@ function MyPlant() {
     // 날씨 데이터 가져오기 (예시 좌표: 서울)
     const fetchWeatherData = async () => {
       try {
-        // 서울 좌표 직접 사용
         const weatherObj = await getWeatherData(37.5665, 126.978);
+        console.log("날씨 데이터:", weatherObj); // 디버깅용
         setWeatherData(weatherObj);
       } catch (err) {
         console.error("날씨 데이터 로드 실패:", err);
@@ -94,88 +105,87 @@ function MyPlant() {
     setSchedules(mockSchedules);
   }, [shelf, row, col, t]);
 
-  // 날씨 상태 텍스트를 번역 키로 매핑하는 함수
-  const getWeatherConditionKey = (text) => {
+  // 날씨 상태 텍스트 변환 함수
+  const getWeatherText = (text) => {
     if (!text) return "";
+    console.log("받은 날씨 상태:", text); // 디버깅용
 
-    // 텍스트를 표준화된 형식으로 변환
-    const normalizedText = text.toLowerCase().trim();
-
-    const map = {
-      sunny: "sunny",
-      clear: "clear",
-      "partly cloudy": "partlycloudy",
-      cloudy: "cloudy",
-      overcast: "overcast",
-      rain: "rain",
-      "light rain": "lightrain",
-      "moderate rain": "rain",
-      "heavy rain": "heavyrain",
-      showers: "showers",
-      snow: "snow",
-      "light snow": "lightsnow",
-      "patchy light snow": "lightsnow",
-      "moderate snow": "snow",
-      "heavy snow": "heavysnow",
-      sleet: "sleet",
-      fog: "fog",
-      mist: "mist",
-      thunder: "thunder",
-      "thundery outbreaks": "thunder",
-      "thunder/lightning": "thunder",
-    };
-    const mappedCondition =
-      map[normalizedText] || normalizedText.replace(/\s+/g, "");
-    return "weather.condition." + mappedCondition;
-  };
-
-  // 성장 단계와 상태에 따른 이미지 매핑
-  const getPlantImage = (growth, condition) => {
-    const imageMap = {
-      SPROUT: {
-        NORMAL: "/sprout_normal.png",
-        WARNING: "/sprout_warning.png",
-        CRITICAL: "/sprout_critical.png",
-      },
-      FLOWER: {
-        NORMAL: "/flower_normal.png",
-        WARNING: "/flower_warning.png",
-        CRITICAL: "/flower_critical.png",
-      },
-      FRUIT: {
-        NORMAL: "/fruit_normal.png",
-        WARNING: "/fruit_warning.png",
-        CRITICAL: "/fruit_critical.png",
-      },
-      COMPLETE: {
-        NORMAL: "/fruit_normal.png",
-        WARNING: "/fruit_warning.png",
-        CRITICAL: "/fruit_critical.png",
-      },
+    const weatherMap = {
+      Clear: "맑음",
+      Sunny: "맑음",
+      "Partly cloudy": "구름 조금",
+      Cloudy: "흐림",
+      Overcast: "매우 흐림",
+      Mist: "박무",
+      "Patchy rain nearby": "근처에 비",
+      "Patchy snow nearby": "근처에 눈",
+      "Patchy sleet nearby": "근처에 진눈깨비",
+      "Light rain": "약한 비",
+      "Moderate rain": "보통 비",
+      "Heavy rain": "강한 비",
+      "Light snow": "약한 눈",
+      "Moderate snow": "보통 눈",
+      "Heavy snow": "강한 눈",
     };
 
-    return imageMap[growth]?.[condition] || "/sprout_normal.png";
+    // i18n.language로 현재 언어 확인
+    return i18n.language === "ko" ? weatherMap[text] || text : text;
   };
 
   // 성장 단계 텍스트 변환
   const getGrowthStageText = (growth) => {
     const stageMap = {
-      SPROUT: "새싹 단계",
-      FLOWER: "개화 단계",
-      FRUIT: "결실 단계",
-      COMPLETE: "수확 단계",
+      SPROUT: "growth.stage.sprout",
+      FLOWER: "growth.stage.flower",
+      FRUIT: "growth.stage.fruit",
+      COMPLETE: "growth.stage.complete",
     };
-    return stageMap[growth] || "새싹 단계";
+    return t(stageMap[growth] || "growth.stage.sprout");
   };
 
   // 상태 텍스트 변환
   const getConditionText = (condition) => {
     const conditionMap = {
-      NORMAL: "정상 상태입니다",
-      WARNING: "주의가 필요합니다",
-      CRITICAL: "위험 상태입니다",
+      NORMAL: "plant.condition.normal",
+      WARNING: "plant.condition.warning",
+      EMPTY: "plant.condition.empty",
+      GRAYMOLD: "plant.condition.graymold",
+      POWDERYMILDEW: "plant.condition.powderymildew",
+      NITROGENDEFICIENCY: "plant.condition.nitrogen",
+      PHOSPHROUSDEFICIENCY: "plant.condition.phosphrous",
+      POTASSIUMDEFICIENCY: "plant.condition.potassium",
     };
-    return conditionMap[condition] || "정상 상태입니다";
+    return t(conditionMap[condition] || "plant.condition.normal");
+  };
+
+  // 성장 단계와 상태에 따른 이미지 매핑
+  const getPlantImage = (growth, condition) => {
+    // 기본 상태별 이미지 매핑
+    const baseImageMap = {
+      NORMAL: "_normal.png",
+      WARNING: "_warning.png",
+      GRAYMOLD: "_GRAYMOLD.png",
+      POWDERYMILDEW: "_POWDERYMILDEW.png",
+      NITROGENDEFICIENCY: "_NITROGENDEFICIENCY.png",
+      PHOSPHROUSDEFICIENCY: "_PHOSPHROUSDEFICIENCY.png",
+      POTASSIUMDEFICIENCY: "_POTASSIUMDEFICIENCY.png",
+    };
+
+    // 성장 단계별 기본 이미지 경로
+    const growthPrefix = {
+      SPROUT: "/sprout",
+      FLOWER: "/flower",
+      FRUIT: "/fruit",
+      COMPLETE: "/complete", // 완성 단계는 fruit 이미지 사용
+    };
+
+    if (condition === "EMPTY") {
+      return "/empty.png";
+    }
+
+    const prefix = growthPrefix[growth] || "/sprout";
+    const suffix = baseImageMap[condition] || "_normal.png";
+    return prefix + suffix;
   };
 
   return (
@@ -252,7 +262,7 @@ function MyPlant() {
                   <div className="weather-modern-header">
                     <span className="weather-modern-icon">🌤️</span>
                     <span className="weather-modern-title">
-                      {t("weather.today")}
+                      {t("todaysWeather")}
                     </span>
                   </div>
                   <div className="weather-modern-content">
@@ -260,7 +270,7 @@ function MyPlant() {
                       <>
                         <div className="weather-modern-row">
                           <span className="weather-modern-label">
-                            🌡️ {t("weather.temp")}
+                            🌡️ {t("temperature")}
                           </span>
                           <span className="weather-modern-value">
                             {weatherData.temp}°C
@@ -268,7 +278,7 @@ function MyPlant() {
                         </div>
                         <div className="weather-modern-row">
                           <span className="weather-modern-label">
-                            💧 {t("weather.humidity")}
+                            💧 {t("humidity")}
                           </span>
                           <span className="weather-modern-value">
                             {weatherData.humidity}%
@@ -276,15 +286,15 @@ function MyPlant() {
                         </div>
                         <div className="weather-modern-row">
                           <span className="weather-modern-label">
-                            ☀️ {t("weather.condition")}
+                            ☀️ {t("condition")}
                           </span>
                           <span className="weather-modern-value">
-                            {t(getWeatherConditionKey(weatherData.condition))}
+                            {getWeatherText(weatherData.condition)}
                           </span>
                         </div>
                         <div className="weather-modern-row">
                           <span className="weather-modern-label">
-                            🌬️ {t("weather.wind")}
+                            🌬️ {t("windSpeed")}
                           </span>
                           <span className="weather-modern-value">
                             {weatherData.wind} m/s
@@ -292,7 +302,7 @@ function MyPlant() {
                         </div>
                         <div className="weather-modern-row">
                           <span className="weather-modern-label">
-                            🌡️ {t("weather.feelsLike")}
+                            🌡️ {t("feelsLike")}
                           </span>
                           <span className="weather-modern-value">
                             {weatherData.feelsLike}°C
@@ -364,5 +374,4 @@ function MyPlant() {
     </>
   );
 }
-
 export default MyPlant;
