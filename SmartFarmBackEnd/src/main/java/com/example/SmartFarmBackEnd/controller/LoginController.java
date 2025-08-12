@@ -6,6 +6,7 @@ import com.example.SmartFarmBackEnd.domain.Shelf;
 import com.example.SmartFarmBackEnd.dto.AddressDto;
 import com.example.SmartFarmBackEnd.dto.MemberJoinRequestDto;
 import com.example.SmartFarmBackEnd.dto.MemberResponseDto;
+import com.example.SmartFarmBackEnd.dto.ProfileUpdateRequest;
 import com.example.SmartFarmBackEnd.service.FarmService;
 import com.example.SmartFarmBackEnd.service.ImageService;
 import com.example.SmartFarmBackEnd.service.LoginService;
@@ -128,5 +129,43 @@ public class LoginController {
         dto.setAddress(addressDto);
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity<MemberResponseDto> updateMe(
+            @RequestBody @Validated ProfileUpdateRequest request,
+            HttpSession session
+    ) {
+        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Member updated = memberService.updateProfile(memberId, request);
+
+        AddressDto addressDto = new AddressDto(
+                updated.getAddress().getCity(),
+                updated.getAddress().getStreet(),
+                updated.getAddress().getZipcode()
+        );
+        MemberResponseDto dto = new MemberResponseDto();
+        dto.setName(updated.getName());
+        dto.setPhoneNumber(updated.getPhoneNumber());
+        dto.setAddress(addressDto);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMe(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("LOGIN_MEMBER");
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        memberService.deleteAccount(memberId);
+        session.invalidate(); // 세션 종료
+
+        return ResponseEntity.noContent().build(); // 204
     }
 }
