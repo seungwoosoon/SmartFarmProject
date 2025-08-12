@@ -1,18 +1,23 @@
 package com.example.SmartFarmBackEnd.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.OffsetDateTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class DiagnosisRequest {
-
     private String deviceId;
-    private OffsetDateTime timestamp; // ISO 8601 형식을 받기 위해 OffsetDateTime 사용
-    private DetectionInfo detection;
+    private String timestamp; // 또는 Instant/OffsetDateTime로 받고 @JsonFormat 지정
+    private Detection detection;
 
-    @Data
-    public static class DetectionInfo {
+    @Getter @Setter @NoArgsConstructor
+    public static class Detection {
         private String className;
-        private double confidence;
+        private Double confidence;
     }
 }

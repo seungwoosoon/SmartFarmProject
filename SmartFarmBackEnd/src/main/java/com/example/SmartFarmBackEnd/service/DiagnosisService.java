@@ -48,12 +48,25 @@ public class DiagnosisService {
     @Transactional
     public void applyDiagnosis(String className) {
         Pot pot = potRepository.findByPosition(MEMBER_ID, X, Y, G);
-        if (pot == null) { log.debug("[AI] Pot (member=1,0,0,0) 없음 → 스킵"); return; }
-        if (pot.getStatus() == PotStatus.EMPTY || pot.getPotPlant() == Plant.EMPTY) {
-            log.debug("[AI] Pot (0,0,0) EMPTY/Plant.EMPTY → 스킵"); return;
+        if (pot == null) {
+            log.info("[AI] Pot (member={}, x={}, y={}, g={}) 없음 → 스킵", MEMBER_ID, X, Y, G);
+            return;
         }
-        PotStatus newStatus = mapClassNameToStatus(className);
-        pot.applyStatus(newStatus);
-        log.info("[AI] Pot(0,0,0) 상태 업데이트: {}", newStatus);
+
+        PotStatus before = pot.getStatus();
+        Plant plant = pot.getPotPlant();
+        PotStatus after = mapClassNameToStatus(className);
+
+        if (before == PotStatus.EMPTY || plant == Plant.EMPTY) {
+            log.info("[AI] 스킵: before={}, plant={}, mapped={}", before, plant, after);
+            return;
+        }
+        if (before == after) {
+            log.info("[AI] 상태 동일 → 변경 없음: {}", before);
+            return;
+        }
+
+        pot.applyStatus(after);
+        log.info("[AI] 상태 업데이트: {} → {}", before, after);
     }
 }

@@ -97,7 +97,7 @@ public class Pot {
         if (lightStrength != null) this.lightStrength = lightStrength;
         if (ttsDensity != null) this.ttsDensity = ttsDensity;
         if (humidity != null) this.humidity = humidity;
-        if (newStatus != null) this.status = newStatus;
+        if (newStatus != null) this.status = this.status;
         if (expIncrease != null) this.exp += expIncrease;
     }
     public void linkShelfFloor(ShelfFloor floor) {

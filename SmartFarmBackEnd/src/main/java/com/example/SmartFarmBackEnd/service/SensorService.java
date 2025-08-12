@@ -53,12 +53,6 @@ public class SensorService {
             Double humi = parseD(j.get("humi"));
 
             PotStatus status = null;
-            if ((temp != null && (temp > 35 || temp < 5)) ||
-                    (ph   != null && (ph   < 5.5 || ph   > 8.5))) {
-                status = PotStatus.WARNING;
-            } else if (ph!=null || temp!=null || cds!=null || tds!=null || humi!=null) {
-                status = PotStatus.NORMAL;
-            }
 
             pot.applySensor(ph, temp, cds, tds, humi, status, 0.1);
 
