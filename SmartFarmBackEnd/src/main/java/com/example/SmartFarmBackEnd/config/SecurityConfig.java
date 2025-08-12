@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/api/farm/**",
                                 "/css/**",
                                 "/js/**",
-                                "/image/**"
+                                "/image/**",
+                                "/api/diagnosis"
                         ).permitAll()
                         // 그 외 요청은 인증 필요
                         .anyRequest().authenticated()
@@ -68,7 +69,8 @@ public class SecurityConfig {
         // 실제 프론트엔드가 접속하는 도메인/포트를 반드시 모두 명시해야 함
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "http://10.145.189.17:3000"
+                "http://10.145.189.17:3000",
+                "http://10.145.189.221"
                 // 필요시 "http://127.0.0.1:3000" 등을 추가 가능
         ));
 

@@ -1,5 +1,5 @@
-//package com.example.SmartFarmBackEnd.controller;
-//
+package com.example.SmartFarmBackEnd.controller;
+
 //import com.example.SmartFarmBackEnd.service.SensorService;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.http.ResponseEntity;
