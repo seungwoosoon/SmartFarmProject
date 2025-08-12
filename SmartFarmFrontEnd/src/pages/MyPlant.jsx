@@ -54,7 +54,7 @@ function MyPlant() {
         if (currentPlant) {
           setPlantData({
             temperature: currentPlant.temperature || 24.5,
-            humidity: currentPlant.humidity || 65,
+            humidity: currentPlant.humidity || 0,
             light: currentPlant.lightStrength || 540,
             ph: currentPlant.ph || 6.3,
             tds: currentPlant.ttsDensity || 720,
@@ -85,19 +85,8 @@ function MyPlant() {
 
     fetchWeatherData();
 
-    // Mock 데이터
-    // const mockData = {
-    //   temperature: 17.5,
-    //   humidity: 80,
-    //   light: 540,
-    //   ph: 10.3,
-    //   tds: 720,
-    //   status: "NORMAL",
-    //   growth: "FRUIT", // SPROUT, FLOWER, FRUIT, COMPLETE
-    //   condition: "WARNING", // NORMAL, WARNING, CRITICAL
-    // };
-    // setPlantData(mockData);
-
+    // 일정 데이터 예시 (실제 API 호출로 대체 필요)
+    // 이 부분은 실제 API 호출로 대체해야 합니다.
     const mockSchedules = [
       { date: "2025-08-10", event: t("schedule.harvest") },
       { date: "2025-08-15", event: t("schedule.fertilizer") },
@@ -184,7 +173,7 @@ function MyPlant() {
     }
 
     const prefix = growthPrefix[growth] || "/sprout";
-    const suffix = baseImageMap[condition] || "_normal.png";
+    const suffix = baseImageMap[condition] || "_NORMAL.png";
     return prefix + suffix;
   };
 
@@ -237,7 +226,7 @@ function MyPlant() {
                     label={t("sensor.light")}
                     value={plantData.light}
                     min={0}
-                    max={1000}
+                    max={4095}
                     unit=""
                     icon="💡"
                   />
