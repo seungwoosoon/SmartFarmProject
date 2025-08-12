@@ -100,12 +100,12 @@ i18n.use(initReactI18next).init({
         "myfarm.tour.step7": "여기 X 버튼을 누르면 세싹을 삭제할 수 있어요.",
         // 필요한 번역 키 추가
         // 날씨 관련 키 수정
-        "todaysWeather": "오늘의 날씨",
-        "temperature": "기온",
-        "humidity": "습도",
-        "condition": "날씨",
-        "windSpeed": "풍속",
-        "feelsLike": "체감온도",
+        todaysWeather: "오늘의 날씨",
+        temperature: "기온",
+        humidity: "습도",
+        condition: "날씨",
+        windSpeed: "풍속",
+        feelsLike: "체감온도",
         "weather.cloudy": "흐림",
         "weather.rain": "비",
         "weather.patchyrain": "가끔 비",
@@ -123,6 +123,8 @@ i18n.use(initReactI18next).init({
 
         // 날씨 상태
         "weather.condition.patchyrainnearby": "근처에 비",
+
+        plantTwin: "식물 트윈",
       },
     },
     en: {
@@ -227,6 +229,8 @@ i18n.use(initReactI18next).init({
 
         // Weather conditions
         "weather.condition.patchyrainnearby": "Patchy Rain Nearby",
+
+        plantTwin: "Plant Twin",
       },
     },
   },
