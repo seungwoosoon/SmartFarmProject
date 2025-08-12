@@ -25,8 +25,9 @@ server:
         same-site: Lax
         secure: false
 app:
-  upload:
-    dir: /uploads
+  upload-dir: ${APP_UPLOAD_DIR:/app/uploads}
+  dev:
+    allow-upload-without-session: false
 mqtt:
   broker: ${MQTT_BROKER}
   client-id: ${MQTT_CLIENT_ID}

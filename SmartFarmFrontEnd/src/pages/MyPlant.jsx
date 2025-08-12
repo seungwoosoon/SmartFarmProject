@@ -151,8 +151,10 @@ function MyPlant() {
   const getPlantImage = (growth, condition) => {
     // 기본 상태별 이미지 매핑
     const baseImageMap = {
+
       NORMAL: "_NORMAL.png",
       WARNING: "_WARNING.png",
+
       GRAYMOLD: "_GRAYMOLD.png",
       POWDERYMILDEW: "_POWDERYMILDEW.png",
       NITROGENDEFICIENCY: "_NITROGENDEFICIENCY.png",
