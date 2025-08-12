@@ -130,7 +130,8 @@ i18n.use(initReactI18next).init({
         // 날씨 상태
         "weather.condition.patchyrainnearby": "근처에 비",
 
-        plantTwin: "식물 트윈",
+        plantTwin: "Plant Twin🌱",
+        plantTwinDesc: "3D Plant Twin에서 내 스마트팜의 상태를 실시간으로 확인하고 다양한 시각화 기능을 체험해보세요.",
       },
     },
     en: {
@@ -241,7 +242,8 @@ i18n.use(initReactI18next).init({
         // Weather conditions
         "weather.condition.patchyrainnearby": "Patchy Rain Nearby",
 
-        plantTwin: "Plant Twin",
+        plantTwin: "Plant Twin🌱",
+        plantTwinDesc: "Check your smart farm status in real time and experience various visualization features in the 3D Plant Twin.",
       },
     },
   },
