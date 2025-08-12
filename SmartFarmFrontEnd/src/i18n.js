@@ -126,6 +126,7 @@ i18n.use(initReactI18next).init({
         "plant.condition.phosphrous": "인 결핍",
         "plant.condition.potassium": "칼륨 결핍",
 
+
         // 날씨 상태
         "weather.condition.patchyrainnearby": "근처에 비",
 

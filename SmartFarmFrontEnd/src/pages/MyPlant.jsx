@@ -132,6 +132,7 @@ function MyPlant() {
     return i18n.language === "ko" ? weatherMap[text] || text : text;
   };
 
+
   // 성장 단계 텍스트 변환
   const getGrowthStageText = (growth) => {
     const stageMap = {
