@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 파이썬 임시 캐시 파일 및 폴더
+__pycache__/
+*.pyc
+
+# 주피터 노트북 체크포인트 폴더
+.ipynb_checkpoints/
+
+# 파이썬 가상환경 폴더
+.venv/
+
+# AI 모델 학습 가중치 파일 (용량이 크므로 제외)
+*.pt
+*.pth
