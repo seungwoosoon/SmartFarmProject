@@ -77,6 +77,11 @@ public class Pot {
     //     this.humidity = humidity;
     // }
 
+    public void applyStatus(PotStatus newStatus) {
+        if (newStatus != null && !newStatus.equals(this.status)) {
+            this.status = newStatus;
+        }
+    }
     // Pot.java (메서드만 추가)
     public void applySensor(
             Double ph,

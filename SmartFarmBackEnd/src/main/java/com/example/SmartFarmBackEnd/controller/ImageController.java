@@ -37,7 +37,6 @@ public class ImageController {
             System.out.println("⚠️ 세션 없음 → 개발용 임시 memberId 사용");
             memberId = 1L;  // 👈 테스트용 memberId (DB에 존재하는 ID여야 함)
         }
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
 
