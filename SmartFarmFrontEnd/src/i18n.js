@@ -119,7 +119,13 @@ i18n.use(initReactI18next).init({
         // 식물 상태
         "plant.condition.normal": "정상 상태입니다",
         "plant.condition.warning": "주의가 필요합니다",
-        "plant.condition.critical": "위험 상태입니다",
+        "plant.condition.empty": "비어있음",
+        "plant.condition.graymold": "잿빛곰팡이병 감염",
+        "plant.condition.powderymildew": "흰가루병 감염",
+        "plant.condition.nitrogen": "질소 결핍",
+        "plant.condition.phosphrous": "인 결핍",
+        "plant.condition.potassium": "칼륨 결핍",
+
 
         // 날씨 상태
         "weather.condition.patchyrainnearby": "근처에 비",
@@ -225,7 +231,12 @@ i18n.use(initReactI18next).init({
         // Plant conditions
         "plant.condition.normal": "Normal Condition",
         "plant.condition.warning": "Needs Attention",
-        "plant.condition.critical": "Critical Condition",
+        "plant.condition.empty": "Empty",
+        "plant.condition.graymold": "Gray Mold Infection",
+        "plant.condition.powderymildew": "Powdery Mildew Infection",
+        "plant.condition.nitrogen": "Nitrogen Deficiency",
+        "plant.condition.phosphrous": "Phosphrous Deficiency",
+        "plant.condition.potassium": "Potassium Deficiency",
 
         // Weather conditions
         "weather.condition.patchyrainnearby": "Patchy Rain Nearby",

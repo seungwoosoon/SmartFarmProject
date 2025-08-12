@@ -148,37 +148,44 @@ function MyPlant() {
     const conditionMap = {
       NORMAL: "plant.condition.normal",
       WARNING: "plant.condition.warning",
-      CRITICAL: "plant.condition.critical",
+      EMPTY: "plant.condition.empty",
+      GRAYMOLD: "plant.condition.graymold",
+      POWDERYMILDEW: "plant.condition.powderymildew",
+      NITROGENDEFICIENCY: "plant.condition.nitrogen",
+      PHOSPHROUSDEFICIENCY: "plant.condition.phosphrous",
+      POTASSIUMDEFICIENCY: "plant.condition.potassium",
     };
     return t(conditionMap[condition] || "plant.condition.normal");
   };
 
   // 성장 단계와 상태에 따른 이미지 매핑
   const getPlantImage = (growth, condition) => {
-    const imageMap = {
-      SPROUT: {
-        NORMAL: "/sprout_normal.png",
-        WARNING: "/sprout_warning.png",
-        CRITICAL: "/sprout_critical.png",
-      },
-      FLOWER: {
-        NORMAL: "/flower_normal.png",
-        WARNING: "/flower_warning.png",
-        CRITICAL: "/flower_critical.png",
-      },
-      FRUIT: {
-        NORMAL: "/fruit_normal.png",
-        WARNING: "/fruit_warning.png",
-        CRITICAL: "/fruit_critical.png",
-      },
-      COMPLETE: {
-        NORMAL: "/fruit_normal.png",
-        WARNING: "/fruit_warning.png",
-        CRITICAL: "/fruit_critical.png",
-      },
+    // 기본 상태별 이미지 매핑
+    const baseImageMap = {
+      NORMAL: "_normal.png",
+      WARNING: "_warning.png",
+      GRAYMOLD: "_GRAYMOLD.png",
+      POWDERYMILDEW: "_POWDERYMILDEW.png",
+      NITROGENDEFICIENCY: "_NITROGENDEFICIENCY.png",
+      PHOSPHROUSDEFICIENCY: "_PHOSPHROUSDEFICIENCY.png",
+      POTASSIUMDEFICIENCY: "_POTASSIUMDEFICIENCY.png",
     };
 
-    return imageMap[growth]?.[condition] || "/sprout_normal.png";
+    // 성장 단계별 기본 이미지 경로
+    const growthPrefix = {
+      SPROUT: "/sprout",
+      FLOWER: "/flower",
+      FRUIT: "/fruit",
+      COMPLETE: "/complete", // 완성 단계는 fruit 이미지 사용
+    };
+
+    if (condition === "EMPTY") {
+      return "/empty.png";
+    }
+
+    const prefix = growthPrefix[growth] || "/sprout";
+    const suffix = baseImageMap[condition] || "_normal.png";
+    return prefix + suffix;
   };
 
   return (
