@@ -41,5 +41,43 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      (function () {
+        // 유니티 준비 전 호출을 보관하는 큐
+        const queue = [];
+        let ready = false;
+
+        function safeSend(go, method, payload) {
+          try {
+            const json = typeof payload === "string" ? payload : JSON.stringify(payload);
+            window.unityInstance?.SendMessage(go, method, json);
+          } catch (e) {
+            console.error(`[UnityBridge] SendMessage 실패: ${go}.${method}`, e);
+          }
+        }
+
+        // 유니티 인스턴스 등록: 로더에서 createUnityInstance 완료 후 호출해야 함
+        window.setUnityInstance = function (instance) {
+          window.unityInstance = instance;
+          ready = true;
+          while (queue.length) {
+            const { go, method, payload } = queue.shift();
+            safeSend(go, method, payload);
+          }
+        };
+
+        function send(go, method, payload) {
+          if (ready && window.unityInstance) safeSend(go, method, payload);
+          else queue.push({ go, method, payload });
+        }
+
+        // React에서 사용할 공개 API
+        window.UnityBridge = {
+          pushGrid(payload) { send("NetworkBridge", "OnGrid", payload); },
+          pushCell(payload) { send("NetworkBridge", "OnCell", payload); },
+        };
+      })();
+    </script>
   </body>
 </html>
+
