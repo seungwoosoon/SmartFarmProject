@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getCurrentUser, logout, deleteAccount } from "../api/auth";
+import { getCurrentUser } from "../api/auth";
 import { getProfileImageUrl, uploadProfileImage } from "../api/image";
 import EditProfileModal from "../components/EditProfileModal";
 import "../App.css";
@@ -37,18 +37,6 @@ function MyPage() {
       setProfileImageUrl(imageUrl);
     } catch (error) {
       console.error(t("error.imageUploadFail"), error);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    if (!window.confirm(t("mypage.deleteConfirm"))) return;
-    try {
-      await deleteAccount();
-      await logout();
-      navigate("/", { replace: true });
-    } catch (err) {
-      alert(t("error.deleteAccountFail"));
-      console.error(err);
     }
   };
 
@@ -141,11 +129,7 @@ function MyPage() {
             </label>
           </div>
 
-          {/* 삭제 전 경고 */}
-          <p className="delete-warning">{t("mypage.deleteWarning")}</p>
-          <button className="delete-btn" onClick={handleDeleteAccount}>
-            {t("mypage.deleteAccount")}
-          </button>
+          {/* 삭제 버튼/경고 제거됨 */}
         </div>
       </div>
 
