@@ -51,9 +51,3 @@ export const updateProfile = async (profile) => {
   return data;
 };
 
-/**
- * 계정 삭제
- */
-export const deleteAccount = async () => {
-  await axios.delete(`${AUTH_BASE}/me`, { withCredentials: true });
-};
