@@ -1,0 +1,61 @@
+# ==================================
+# Java / Spring (Backend)
+# ==================================
+/build/
+/out/
+.gradle/
+*.iml
+
+# ==================================
+# Node.js / React (Frontend)
+# ==================================
+/node_modules/
+/build/
+/coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# ==================================
+# Python / AI
+# ==================================
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.pt
+*.pth
+
+# ==================================
+# Camera Sensor / Embedded
+# ==================================
+*.o
+*.bin
+*.elf
+
+# ==================================
+# Sensitive Information & Credentials
+# ==================================
+.env
+.env.*
+!.env.example
+config.cpp
+credentials.h
+config.h
+secrets.h
+
+# ==================================
+# IDE & OS Specific
+# ==================================
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ==================================
+# General
+# ==================================
+*.log

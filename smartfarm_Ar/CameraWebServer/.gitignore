@@ -1,0 +1,17 @@
+# 민감한 정보 파일들
+credentials.h
+config.h
+secrets.h
+
+# 컴파일 파일들
+*.o
+*.bin
+*.elf
+
+# IDE 관련 파일들
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 로그 파일들
+*.log
