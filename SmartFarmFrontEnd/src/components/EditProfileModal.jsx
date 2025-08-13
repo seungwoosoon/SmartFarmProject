@@ -31,7 +31,7 @@ function EditProfileModal({ user, onClose, onSave }) {
   return (
     <div className="modal-overlay">
       <div
-        className="modal-content"
+        className="modal-content edit-profile-modal"
         style={{
           borderRadius: 16,
           background: "#fff",

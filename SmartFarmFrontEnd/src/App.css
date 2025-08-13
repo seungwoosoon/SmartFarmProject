@@ -8,117 +8,145 @@
 @media (max-width: 480px){
 
   .home-container{
-    min-height: 100svh;
-    padding-left: 10px;
-    padding-right: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    min-height: 100svh !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    display: flex !important;
+    flex-direction: column!important;
+    align-items: center !important;
+    gap: 6px !important;
   }
 
-  .header{
-    padding: 8px 8px;
-    gap: 6px;
-    flex-wrap: wrap;
+  .header {
+    display: flex !important;
+    justify-content: space-between !important; /* 좌/우로 배치 */
+    align-items: center !important;
+    width: 100% !important;
+    padding: 4px 8px !important;
+    position: relative; /* 로고 고정 기준 */
   }
-  .logo{ height: 42px; }
-  .login-btn, .nav-btn, .logout-btn{
-    font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 6px;
+
+  /* 로고는 좌측에 */
+  .logo {
+    height: 46px !important;
+    flex-shrink: 0;
+  }
+
+  /* 버튼 그룹: 우측 끝으로 */
+  .header .login-btn,
+  .header .nav-btn,
+  .header .logout-btn {
+    margin-left: 1px !important; /* 버튼 간격 */
+    font-size: 11px !important;
+    padding: 1px 0px !important;
+    border-radius: 6px!important;
+  }
+
+  /* 버튼들 한 줄 정렬 */
+  .header > :not(.logo) {
+    margin-left: auto !important; /* 로고 다음부터 오른쪽으로 밀기 */
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
   }
 
   /* 벌 + 말풍선 */
   .bee-and-bubble{
-    width: 100%;
-    justify-content: flex-start;      /* 모바일에선 왼쪽 정렬 */
-    align-items: center;
-    gap: 8px;                          /* 벌-말풍선 간격 */
-    margin-top: 6px;
-    padding: 0 10px;
+    width: 100% !important;
+    /* justify-content: flex-start !important; */
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;               /* 간격 축소 */
+    margin-top: 4px !important;
+    padding: 0 16px !important;
   }
   .bee-img{
-    flex: 0 0 56px;                    /* 벌 고정폭 (필요시 50~64px 조절) */
-    width: 56px;
-    height: auto;
+    flex: 0 0 78px !important;     /* 56 → 48 */
+    width: 78px !important;
+    height: auto !important;
   }
   .speech-bubble{
-    /* ✅ 데스크탑 기본 min-width(480px) 무력화 + 화면폭에 맞게 수축 */
     min-width: 0 !important;
-    max-width: calc(100% - 56px - 8px) !important;  /* 전체폭 - 벌폭 - 간격 */
+    max-width: calc(100% - 60px) !important; /*100% - 벌 이미지 여백 */ 
+    max-height: 50px;
     width: auto !important;
 
-    min-height: 44px;                  /* 더 줄이고 싶으면 40px */
-    padding: 6px 8px;
-    border-radius: 10px;
+    min-height: 36px !important;       /* 44 → 40 */
+    padding: 5px 6px !important;       /* 6/8 → 5/7 */
+    border-radius: 10px !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center; /* 내용 세로 중앙 */
+    gap: 2px; /* 타이핑 영역과 검색창 간격 최소화 */
   }
   .speech-bubble::after{
-    width: 12px;
-    height: 12px;
-    left: -6px;
-    top: 22px;
+    width: 10px !important;            /* 12 → 10 */
+    height: 10px !important;          /* 12 → 10 */
+    left: -5px !important;
+    top: 18px !important;
   }
   .typing{
-    font-size: 11.5px;
-    line-height: 1.3;
-    margin-bottom: 2px;
-    white-space: normal;
-    word-break: keep-all;
+    font-size: 10.5px !important;      /* 11.5 → 10.5 */
+    line-height: 1.25 !important;
+    margin-bottom: 2px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
   }
 
-  /* 검색창 축소 (말풍선 안에서 꽉 차게) */
+  /* 검색창 축소 */
   .speech-bubble .search-bar{
-    box-sizing: border-box;
-    height: 22px !important;
+    box-sizing: border-box !important;
+    height: 20px !important;              /* 22 → 20 */
     padding: 0 6px !important;
     gap: 4px !important;
     border-radius: 6px !important;
     width: 100% !important;
   }
-  .speech-bubble .search-icon{ width: 12px; height: 12px; }
+  .speech-bubble .search-icon{ width: 11px; height: 11px; }
   .speech-bubble .search-bar input{
-    font-size: 10.5px !important;
-    line-height: 22px !important;
+    font-size: 10px !important;
+    line-height: 20px !important;
     height: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  /* 추천 질문 */
+  /* 추천 질문(추천문구) */
   .suggested-questions{
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 6px;
-    padding: 0 10px;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    margin-top: 4px !important;
+    padding: 0 8px !important;
   }
   .suggested-questions button{
-    font-size: 10.5px;
-    padding: 3px 6px;
-    border-radius: 10px;
+    font-size: 10px !important;         /* 10.5 → 10 */
+    padding: 2.5px 6px !important;      /* 살짝 더 줄임 */
+    border-radius: 10px !important;
+    max-width: 100% !important;
   }
 
   /* status 박스: 3칸 가로 한 줄 */
   .status-box-container{
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 6px;
-    margin-top: 10px;
-    padding: 0 10px;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 10px !important;
+    margin-top: 8px !important;         /* 10 → 8 */
+    padding: 0 8px !important;
   }
   .status-box{
     width: auto !important;
-    padding: 8px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 11px;
+    padding: 6px !important;            /* 8 → 6 */
+    border-radius: 10px!important;
+    text-align: center !important;
+    font-size: 10.5px!important;       /* 11 → 10.5 */
   }
   .tomato-icon{
-    height: 24px;
-    margin-bottom: 2px;
+    height: 30px!important;            /* 24 → 20 */
+    margin-bottom: 2px!important;
   }
 
+  /* 배경은 터치 방지 */
   .background-img{ pointer-events: none; }
-
 
   /* my farm */
 
@@ -188,91 +216,102 @@
 
   /* 전체 컨테이너 여백 축소 */
   .mypage-container{
-    padding: 14px 12px;
-    position: relative; /* 버튼 절대 위치 기준 */
+    padding: 14px 12px !important;
+    position: relative !important; /* 버튼 절대 위치 기준 */
   }
 
   /* 헤더: 세로 스택 해제, 버튼은 절대 배치 */
   .mypage-header{
-    position: relative;
-    display: flex;
-    justify-content: center; /* 제목 중앙 */
-    align-items: center;
-    height: 40px; /* 높이 줄임 */
-    margin-bottom: 12px;
+    position: relative !important;  
+    display: flex !important; 
+    justify-content: center !important; /* 제목 중앙 */
+    align-items: center !important;
+    height: 40px !important; /* 높이 줄임 */
+    margin-bottom: 12px !important; /* 아래쪽 여백 줄임 */  
   }
 
   /* Back 버튼: 왼쪽 상단 */
   .mypage-container .back-btn{
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 16px;
-    color: #388e3c;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    font-size: 16px !important;
+    color: #388e3c !important; /* 녹색 */
+    padding: 6px 12px !important; /* 여백 줄임 */
+    z-index: 10 !important; /* 다른 요소 위에 */
+    margin-bottom: 0 !important; /* 고정이므로 아래쪽 간격 불필요 */
   }
 
   /* Edit 버튼: 오른쪽 상단 */
   .edit-btn{
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 12px;
-    gap: 4px;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    font-size: 12px !important; 
+    gap: 4px !important;
   }
 
   /* 제목 중앙 */
   .mypage-title{
-    font-size: 20px;
-    line-height: 1.2;
-    margin: 0;
+    font-size: 20px !important; /* 줄임 */  
+    line-height: 1.2 !important;
+    margin: 0 !important;
   }
 
   /* 인사 문구(부제) 축소 */
   .mypage-greeting{
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-size: 13px  !important; /* 줄임 */
+    margin-bottom: 12px !important; 
   }
 
   /* 카드: 가로폭 꽉 차게, 패딩/간격 축소, 세로 스택 */
   .mypage-body{
-    flex-direction: column;       
-    gap: 16px;
-    max-width: 100%;
-    padding: 16px;
-    border-radius: 16px;
+    flex-direction: column !important;     
+    gap: 16px !important; /* 요소 간격 축소 */  
+    max-width: 100% !important; /* 가로 꽉 채움 */  
+    padding: 16px !important; /* 패딩 줄임 */
+    border-radius: 16px !important; 
   }
 
   /* 프로필 섹션: 가운데, 이미지 작게 */
-  .profile-section{ align-items: center; }
-  .profile-title{ font-size: 16px; margin-bottom: 8px; }
-
+  .profile-section{ align-items: center !important;
+    gap: 8px !important; /* 요소 간격 축소 */ }
+  .profile-title{ font-size: 16px !important; margin-bottom: 8px !important; } 
+  
+  
   .profile-image-box{
-    width: 120px;           
-    height: 140px;          
-    border-radius: 10px;
-    font-size: 12px;
-    margin-bottom: 6px;
+    width: 150px !important;           /* 줄임 */
+    height: 180px !important;          /* 줄임 */
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
   }
-  .image-placeholder{ font-size: 12px; }
+
+  .image-placeholder{ font-size: 12px !important;
+    line-height: 1.4 !important; /* 줄임 */
+    padding: 6px !important; /* 줄임 */
+   }
 
   /* 정보 섹션: 프로필 아래 */
   .info-section{
-    font-size: 14px;
-    gap: 8px;
+    font-size: 14px !important;
+    gap: 8px !important; /* 요소 간격 축소 */
   }
-  .notify-section{ font-size: 12px; }
+  .notify-section{ font-size: 12px !important;
+    margin-top: 8px !important; /* 위쪽 여백 줄임 */
+    padding: 8px !important; /* 패딩 줄임 */
+    border-radius: 10px !important; /* 모서리 둥글게 */
+    background: #f0f8e0 !important; /* 연한 녹색 배경 */}
 
   /* 경고/설명 텍스트도 줄임 */
-  .delete-warning{ font-size: 12px; }
+  .delete-warning{ font-size: 12px !important;
+    margin-top: 8px !important; /* 위쪽 여백 줄임 */
+    padding: 6px !important; /* 패딩 줄임 */
+    border-radius: 8px !important; /* 모서리 둥글게 */
+    background: #fff3e0 !important; /* 연한 주황색 배경 */  }
 
-  /* 버튼/링크 크기 축소 */
-  .delete-btn{
-    font-size: 12px;
-    padding: 8px 12px;
-    border-radius: 8px;
-  }
-
-  .footer-info{ font-size: 12px; margin-top: 18px; }
+  .footer-info{ font-size: 12px !important; margin-top: 18px !important; /* 아래쪽 여백 줄임 */
+    text-align: center !important; /* 가운데 정렬 */}
 
    /* 오버레이는 중앙 정렬 */
   .mypage-container .modal-overlay{
@@ -360,50 +399,56 @@
   /* Unity Player를 감싸는 래퍼 */
   /* back 버튼: 좌상단 고정 (PC에는 영향 없음) */
   .unityplayer-container .unity-back-btn{
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    margin-bottom: 0; /* 고정이므로 아래쪽 간격 불필요 */
-    z-index: 10;
-    font-size: 16px;
-    padding: 6px 14px;
+    position: absolute !important;  
+    top: 16px !important;
+    left: 16px !important;  
+    margin-bottom: 0 !important; /* 고정이므로 아래쪽 간격 불필요 */
+    z-index: 10 !important; /* 다른 요소 위에 */
+    font-size: 16px !important;
+    color: #388e3c !important; /* 녹색 */
+    padding: 6px 14px !important; /* 여백 줄임 */ 
   }
 
   /* 제목/부제목/Unity 화면만 아래로 내리기 */
   .unity-content{
-    margin-top: 64px; /* 버튼 높이만큼 내려줌 */
+    margin-top: 64px !important; /* 버튼 높이만큼 내려줌 */
   }
 
   /* Unity 화면: 좌우 여백 조금 남기고 16:9 유지 */
   .unity-player-wrapper{
-    width: 94vw;        /* 좌우 약 3vw씩 여백 */
-    max-width: 94vw;
-    aspect-ratio: 16 / 9;
+    width: 94vw !important;         /* 좌우 약 3vw씩 여백 */
+    max-width: 94vw !important;
+    aspect-ratio: 16 / 9 !important; /* 16:9 비율 유지 */
+    margin: 0 auto !important;      /* 중앙 정렬 */
+    border-radius: 16px !important; /* 모서리 둥글게 */
   }
 
   /* 제목/부제목 폰트 살짝 축소 */
-  .unityplayer-title{ font-size: 22px; }
-  .unityplayer-desc{ font-size: 14px; }
+  .unityplayer-title{ font-size: 22px !important; }
+  .unityplayer-desc{ font-size: 13px !important; }
 
   /* my plant */
 
    /* 화면 패딩/배경/글꼴 유지 + 상단 여백 확보 */
   .myplant-container{
-    min-height: 100svh;
-    padding: 14px 12px 18px 12px;
-    box-sizing: border-box;
-    display: block;
-    position: relative;
+    min-height: 100svh !important;
+    padding: 14px 12px 18px 12px !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important; /* 버튼 절대 위치 기준 */
   }
 
   /* ⬅️ 뒤로가기: 최상단 좌측 고정 */
   .myplant-container .back-btn{
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    font-size: 18px;
-    z-index: 20;
-    padding: 0;
+    position: absolute !important;  
+    top: 12px !important;
+    left: 12px !important;    
+    font-size: 18px !important;
+    z-index: 20  !important; /* 다른 요소 위에 */
+    color: #388e3c !important; /* 녹색 */
+    padding: 6px 12px !important; /* 여백 줄임 */
+    padding: 0 !important; /* 여백 최소화 */
+    margin-bottom: 0 !important; /* 고정이므로 아래쪽 간격 불필요 */
   }
 
   /* 제목: 중앙 정렬(절대 위치 제거) */
@@ -422,146 +467,329 @@
     text-align: center !important;
     font-size: 13px !important;
     margin: 0 0 12px 0 !important;
-    color: #666;
+    color: #666 !important;
+    padding: 0 12px !important; /* 좌우 여백 */
+    line-height: 1.4 !important; /* 줄 간격 */
   }
 
   /* 본문 카드 레이아웃: 세로 스택 */
   .plant-info-layout{
-    display: flex;
-    flex-direction: column;          /* 가로 → 세로 */
-    align-items: center;
-    justify-content: flex-start;
-    gap: 14px;                       /* 요소 간격 축소 */
+    display: flex !important;
+    flex-direction: column !important;        /* 가로 → 세로 */
+    align-items: center !important; /* 중앙 정렬 */
+    gap: 12px !important;                     /* 요소 간격 축소 */
+    justify-content: flex-start !important; /* 위에서 아래로 */
+    gap: 14px !important;                     /* 요소 간격 축소 */
     padding: 14px !important;        /* 카드 패딩 축소 */
-    border-radius: 16px;
-    width: 100%;
-    max-width: 640px;
-    margin: 0 auto 12px auto;
+    border-radius: 16px !important;
+    background: #fff !important; /* 배경색 유지 */
+    width: 100% !important; /* 가로 꽉 채움 */
+    max-width: 480px !important; /* 최대 너비 제한 */
+    max-width: 640px !important; /* 최대 너비 제한 */
+    margin: 0 auto 12px auto !important; /* 중앙 정렬 */
+    box-shadow: 0 4px 16px rgba(60, 120, 60, 0.1) !important; /* 그림자 효과 */
   }
 
   /* 이미지 영역 먼저 */
   .plant-left{
-    order: 1;
-    width: 100%;
-    text-align: center;
+    order: 1 !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 12px !important; /* 이미지 아래 여백 */
+    display: flex !important;
+    flex-direction: column !important;
   }
   .plant-large-img{
-    width: 62vw;                     /* 화면 기준 축소 */
-    max-width: 260px;
-    height: auto;
-    border-radius: 16px;
+    width: 62vw !important;                 /* 화면 기준 축소 */
+    max-width: 260px !important; /* 최대 너비 제한 */
+    height: auto !important; /* 비율 유지 */
+    object-fit: contain !important; /* 이미지 비율 유지 */
+    border-radius: 16px !important; /* 모서리 둥글게 */
   }
-  .plant-name{ font-size: 18px; margin-top: 8px; }
-  .plant-stage{ font-size: 13px; }
+  .plant-name{ font-size: 18px !important; margin-top: 8px !important; }
+  .plant-stage{ font-size: 13px !important; color: #666 !important; }
 
   /* 성장 상태(버튼/라벨) 다음 */
   .button-group{
-    order: 2;
-    width: 100%;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    order: 2 !important;
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important; /* 아래쪽 여백 */
+    flex-wrap: wrap !important; /* 줄바꿈 허용 */
   }
   .status-button{
-    padding: 10px 14px;
-    font-size: 14px;
-    border-radius: 14px;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important; /* 아이콘과 텍스트 간격 */
+    min-width: 80px !important; /* 최소 너비 */
   }
   .status-label{
-    order: 2;
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 13px;
-    padding: 10px 16px;
-    border-radius: 16px;
+    order: 2 !important;
+    font-size: 14px !important;
+    display: inline-block !important;
+    margin-top: 6px !important;
+    color: #666 !important;
+    font-size: 13px !important; 
+    padding: 10px 16px !important;  
+    border-radius: 16px !important;
+    background: #f0f8e0 !important; /* 연한 녹색 배경 */
+    text-align: center !important;
   }
 
   /* 센서 카드들 */
   .sensor-cards{
-    order: 3;
-    width: 100%;
-    gap: 8px;
-    margin: 6px 0 4px 0;
+    order: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 480px !important; /* 최대 너비 제한 */
+    margin: 0 auto !important; /* 중앙 정렬 */
+    padding: 12px !important; /* 카드 패딩 */
+    gap: 8px !important; /* 카드 간격 */
+    background: #fff !important; /* 배경색 유지 */
+    margin: 6px 0 4px 0 !important; /* 위쪽 여백 줄임 */
+    border-radius: 16px !important;
+    box-shadow: 0 4px 16px rgba(60, 120, 60, 0.1) !important; /* 그림자 효과 */ 
   }
   .sensor-card{
-    font-size: 14px;
-    padding: 10px 14px;
-    border-radius: 10px;
+    font-size: 14px !important;
+    padding: 10px 14px !important; 
+    border-radius: 10px !important;
+    display: flex !important; 
+    flex-direction: column !important;
+    gap: 6px !important; /* 요소 간격 축소 */
+    background: #f9f9f9 !important; /* 연한 회색 배경 */
+    box-shadow: 0 2px 8px rgba(0, 0,  0, 0.1) !important; /* 그림자 효과 */
+    margin-bottom: 8px !important; /* 카드 간격 */
   }
 
   /* 날씨 섹션(실제 클래스명에 따라 커버) */
   .weather-section,
   .weather-info,
   [class*="weather"]{
-    order: 4;
-    width: 100%;
-    margin-top: 6px;
-    font-size: 14px;
+    order: 4 !important;
+    display: flex !important;
+    width: 100% !important;
+    max-width: 480px !important; /* 최대 너비 제한 */
+    margin-top: 6px !important; /* 위쪽 여백 줄임 */
+    padding: 12px !important; /* 카드 패딩 */ 
+    font-size: 14px !important;
+    border-radius: 16px !important;
   }
 
   /* 이미지 옆 토마토 아이콘(있다면) */
   .tomato-icon{
-    height: 36px;
-    margin: 8px 0 0 0;
+    height: 36px !important; /* 줄임 */
+    margin-right: 8px !important; /* 오른쪽 여백 */ 
+    margin-bottom: 0 !important; /* 아래쪽 여백 제거 */
+    flex-shrink: 0 !important; /* 이미지 크기 유지 */
   }
 
   /* 달력 버튼 등 기타 버튼 */
   .calendar-btn{
-    padding: 10px 18px;
-    font-size: 14px;
-    border-radius: 14px;
+    padding: 10px 18px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+    display: inline-flex !important;  
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important; /* 아이콘과 텍스트 간격 */ 
+    min-width: 80px !important; /* 최소 너비 */ 
+    margin-top: 12px !important; /* 위쪽 여백 */  
+    margin-bottom: 12px !important; /* 아래쪽 여백 */ 
+    background: #e0f7fa !important; /* 연한 파란색 배경 */
+    color: #00796b !important; /* 어두운 청록색 텍스트 */ 
   }
 
   /* 푸터는 맨 아래 */
   .footer-info{
-    order: 5;
-    text-align: center;
-    font-size: 12px;
-    margin-top: 14px;
+    order: 5 !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    margin-top: 18px !important; /* 위쪽 여백 */
   }
-  
+
+  /* login modal */
+  .login-modal .modal-content,
+  .login-modal-content {
+    width: 86vw;
+    max-width: 320px;
+    max-height: 86svh;
+    padding: 18px 14px 16px;
+    border-radius: 12px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    left: auto; top: auto; transform: none; margin: 0 auto;
+  }
+
+  .login-modal .modal-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .login-modal .login-input-group {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .login-modal .login-input-group label {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .login-modal .login-input-group input {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .login-modal .login-btn-modal {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .login-modal .switch-links {
+    display: block;
+    font-size: 12px;
+  }
+
+  .login-modal .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+  }
+
+  /* signup */
+
+  .signup-modal .modal-content,
+  .signup-modal-content {
+    width: 88vw;
+    max-width: 320px;
+    max-height: 90svh;
+    padding: 14px 12px;
+    border-radius: 10px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .signup-modal .modal-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .signup-modal .signup-input-group {
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .signup-modal .signup-input-group label {
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .signup-modal .signup-input-group input {
+    font-size: 12.5px;
+    padding: 6px;
+    border-radius: 6px;
+  }
+
+  .signup-modal .check-id-btn {
+    padding: 6px 8px;
+    font-size: 11.5px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .signup-modal .signup-btn-modal {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 8px;
+  }
+
+  .signup-modal .to-login-link {
+    display: block;
+    font-size: 11.5px;
+    margin-top: 6px;
+  }
+
+  .signup-modal .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+  }
+
+  /* edit modal */
+  .edit-profile-modal {
+    padding: 24px 20px 20px 20px !important;
+    min-width: 260px !important;
+    max-width: 320px !important;
+  }
+
+  /* 제목 크기 줄이기 */
+  .edit-profile-modal .modal-title {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* 입력 필드 패딩/폰트 축소 */
+  .edit-profile-modal input {
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+  }
+
+  /* 저장 버튼 크기 축소 */
+  .edit-profile-modal .save-btn {
+    min-width: 100px !important;
+    font-size: 16px !important;
+    padding: 10px 0 !important;
+  }
+
+  /* 닫기 버튼 위치 조정 */
+  .edit-profile-modal .close-btn {
+    top: 12px !important;
+    right: 12px !important;
+    font-size: 20px !important;
+  }
 }
 
 /* ── 360px 이하 (아주 작은 폰) ────────────────────────── */
 @media (max-width: 360px){
 
-  .bee-img{
-    flex: 0 0 50px;
-    width: 50px;
-  }
-  .speech-bubble{
-    max-width: calc(100% - 50px - 8px) !important;
-    min-height: 40px;
-    padding: 4px 6px;
-    border-radius: 8px;
-  }
-  .speech-bubble .search-bar{
-    height: 20px !important;
-    border-radius: 6px !important;
-  }
-  .speech-bubble .search-icon{ width: 11px; height: 11px; }
-  .speech-bubble .search-bar input{
-    font-size: 10px !important;
-    line-height: 20px !important;
-  }
+  .bee-img{ flex: 0 0 42px; width: 42px; }
+  .speech-bubble{ min-height: 36px; padding: 4px 6px; }
+  .speech-bubble .search-bar{ height: 18px !important; }
+  .typing{ font-size: 10px; }
+  .suggested-questions button{ font-size: 9.5px; padding: 2px 5px; }
+  .status-box{ padding: 5px; font-size: 10px; }
+  .tomato-icon{ height: 18px; }
 
-  .typing{
-    font-size: 10.5px;
-    line-height: 1.28;
-    margin-bottom: 2px;
-  }
-
-  .suggested-questions button{
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 8px;
-  }
-
-  .status-box{
-    padding: 6px;
-    font-size: 10.5px;
-  }
-  .tomato-icon{ height: 22px; }
 
   /* myfarm */
 
@@ -626,6 +854,12 @@
   .status-button{ font-size: 13px; padding: 8px 12px; }
   .status-label{ font-size: 12.5px; padding: 8px 12px; }
   .sensor-card{ font-size: 13px; padding: 9px 12px; }
+
+  /* signup */
+
+  .signup-modal .modal-title { font-size: 15px; }
+  .signup-modal .signup-input-group input { font-size: 12px; padding: 5px; }
+  .signup-modal .signup-btn-modal { font-size: 12px; padding: 7px 9px; }
 }
 
 /* ── 481~768px (작은 태블릿/큰 폰) ────────────────────── */

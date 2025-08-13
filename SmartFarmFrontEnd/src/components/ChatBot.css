@@ -60,5 +60,10 @@
 @media (max-width: 480px) {
   .chatbot-modal {
     padding: 14px 7vw 20px 7vw; min-width: unset; width: 89vw;
+
+    max-width: 100vw; /* 모바일에서 최대 너비를 화면 너비로 설정 */
+    border-radius: 16px;
   }
+
+  
 }

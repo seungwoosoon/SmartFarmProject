@@ -68,3 +68,48 @@
 .lang-toggle-switch.english .lang-toggle-knob {
   transform: translate(27px, -50%); /* 오른쪽+수직중앙 */
 }
+
+
+/* ── 480px 이하: 한/영 토글 컴팩트 ───────────────────── */
+@media (max-width: 480px) {
+  .lang-toggle-switch {
+    width: 54px;
+    height: 28px;
+    border-radius: 14px;
+    box-shadow: 0 1px 6px rgba(50, 100, 50, 0.10);
+    padding: 0;          /* 여백 최소화 */
+    margin-left: 6px;    /* 헤더 우측 버튼들과 간격 */
+  }
+
+  .lang-toggle-labels {
+    width: 50px;
+    height: 28px;
+    font-size: 12px;     /* 글자 축소 */
+  }
+
+  .lang-label {
+    line-height: 28px;
+    height: 28px;
+  }
+
+  .lang-toggle-knob {
+    left: 3px;
+    width: 22px;         /* 손잡이 축소 */
+    height: 22px;
+    transform: translateY(-50%);
+  }
+
+  .lang-toggle-switch.english .lang-toggle-knob {
+    transform: translate(24px, -50%); /* 오른쪽 위치 보정 */
+  }
+}
+
+/* ── 360px 이하: 더 작은 폰일 때 ─────────────────────── */
+@media (max-width: 360px) {
+  .lang-toggle-switch { width: 50px; height: 26px; }
+  .lang-toggle-labels  { width: 46px; height: 26px; font-size: 11px; }
+  .lang-label          { line-height: 26px; height: 26px; }
+  .lang-toggle-knob    { width: 20px; height: 20px; }
+  .lang-toggle-switch.english .lang-toggle-knob { transform: translate(22px, -50%); }
+}
+
