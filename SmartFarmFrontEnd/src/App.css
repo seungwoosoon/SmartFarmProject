@@ -1,4 +1,709 @@
 /* src/App.css */
+
+/* =========================================================
+   📱 Mobile-only overrides (Desktop 영향 없음)
+   ========================================================= */
+
+/* ── 480px 이하 ────────────────────────────────────────── */
+@media (max-width: 480px){
+
+  .home-container{
+    min-height: 100svh;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header{
+    padding: 8px 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .logo{ height: 42px; }
+  .login-btn, .nav-btn, .logout-btn{
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
+  /* 벌 + 말풍선 */
+  .bee-and-bubble{
+    width: 100%;
+    justify-content: flex-start;      /* 모바일에선 왼쪽 정렬 */
+    align-items: center;
+    gap: 8px;                          /* 벌-말풍선 간격 */
+    margin-top: 6px;
+    padding: 0 10px;
+  }
+  .bee-img{
+    flex: 0 0 56px;                    /* 벌 고정폭 (필요시 50~64px 조절) */
+    width: 56px;
+    height: auto;
+  }
+  .speech-bubble{
+    /* ✅ 데스크탑 기본 min-width(480px) 무력화 + 화면폭에 맞게 수축 */
+    min-width: 0 !important;
+    max-width: calc(100% - 56px - 8px) !important;  /* 전체폭 - 벌폭 - 간격 */
+    width: auto !important;
+
+    min-height: 44px;                  /* 더 줄이고 싶으면 40px */
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+  .speech-bubble::after{
+    width: 12px;
+    height: 12px;
+    left: -6px;
+    top: 22px;
+  }
+  .typing{
+    font-size: 11.5px;
+    line-height: 1.3;
+    margin-bottom: 2px;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  /* 검색창 축소 (말풍선 안에서 꽉 차게) */
+  .speech-bubble .search-bar{
+    box-sizing: border-box;
+    height: 22px !important;
+    padding: 0 6px !important;
+    gap: 4px !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+  }
+  .speech-bubble .search-icon{ width: 12px; height: 12px; }
+  .speech-bubble .search-bar input{
+    font-size: 10.5px !important;
+    line-height: 22px !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 추천 질문 */
+  .suggested-questions{
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 0 10px;
+  }
+  .suggested-questions button{
+    font-size: 10.5px;
+    padding: 3px 6px;
+    border-radius: 10px;
+  }
+
+  /* status 박스: 3칸 가로 한 줄 */
+  .status-box-container{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 6px;
+    margin-top: 10px;
+    padding: 0 10px;
+  }
+  .status-box{
+    width: auto !important;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 11px;
+  }
+  .tomato-icon{
+    height: 24px;
+    margin-bottom: 2px;
+  }
+
+  .background-img{ pointer-events: none; }
+
+
+  /* my farm */
+
+  /* 페이지 여백 & 상단 버튼들 살짝 컴팩트 */
+  .myfarm-container{ padding: 12px 8px; }
+  .farm-buttons{ gap: 8px; margin-bottom: 12px; }
+  .farm-buttons .add-btn{ font-size: 12px; padding: 6px 10px; border-radius: 8px; }
+
+  /* 선반 폭은 화면에 맞게, 가운데 정렬 */
+  .shelf{ width: 100%; max-width: 380px; margin: 0 auto; }
+
+  /* 각 줄: 좌/우 패딩 조금, 5칸이 공간 나눠 갖도록 */
+  .pots-row{
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 0 6px;                 /* 좌우 살짝 여백 */
+    gap: 6px;                        /* 칸 사이 간격 */
+    justify-content: space-between;  /* 양쪽 정렬로 5칸 꽉 채우기 */
+  }
+
+  /* 포트 슬롯: 고정 100px 대신 '가변 정사각'을 사용 */
+  .pot-slot{
+    /* 기존 width/height:100px 덮어쓰기 */
+    width: auto !important;
+    height: auto !important;
+
+    flex: 0 0 calc((100% - 24px) / 5); /* (gap 6px * 4 = 24px) 제외한 나머지를 5등분 */
+    aspect-ratio: 1 / 1;               /* 정사각형 유지 */
+    overflow: visible;
+  }
+
+  /* + 버튼: 슬롯 안에서 작은 정사각 */
+  .add-seed-btn{
+    width: 72%;
+    height: 72%;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+
+  /* 식물 이미지: 슬롯보다 살짝 작게 (터치 여유) */
+  .plant-img{
+    width: 88% !important;
+    height: 88% !important;
+    object-fit: contain;
+  }
+
+  /* X 삭제 버튼도 작게 & 모서리에 고정 */
+  .delete-seed-btn{
+    top: -4px !important;
+    right: -4px !important;
+    transform: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 12px !important;
+    opacity: 0.8;
+  }
+
+  /* + 버튼: 슬롯 안에서 더 작게 */
+  .add-seed-btn{
+    width: 54% !important;       /* 기존 72% → 60% */
+    height: 54% !important;      /* 기존 72% → 60% */
+    font-size: 14px;   /* 아이콘/플러스 크기 축소 */
+    border-radius: 6px;}
+
+  /* my page */
+
+  /* 전체 컨테이너 여백 축소 */
+  .mypage-container{
+    padding: 14px 12px;
+    position: relative; /* 버튼 절대 위치 기준 */
+  }
+
+  /* 헤더: 세로 스택 해제, 버튼은 절대 배치 */
+  .mypage-header{
+    position: relative;
+    display: flex;
+    justify-content: center; /* 제목 중앙 */
+    align-items: center;
+    height: 40px; /* 높이 줄임 */
+    margin-bottom: 12px;
+  }
+
+  /* Back 버튼: 왼쪽 상단 */
+  .mypage-container .back-btn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 16px;
+    color: #388e3c;
+  }
+
+  /* Edit 버튼: 오른쪽 상단 */
+  .edit-btn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  /* 제목 중앙 */
+  .mypage-title{
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  /* 인사 문구(부제) 축소 */
+  .mypage-greeting{
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* 카드: 가로폭 꽉 차게, 패딩/간격 축소, 세로 스택 */
+  .mypage-body{
+    flex-direction: column;       
+    gap: 16px;
+    max-width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  /* 프로필 섹션: 가운데, 이미지 작게 */
+  .profile-section{ align-items: center; }
+  .profile-title{ font-size: 16px; margin-bottom: 8px; }
+
+  .profile-image-box{
+    width: 120px;           
+    height: 140px;          
+    border-radius: 10px;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .image-placeholder{ font-size: 12px; }
+
+  /* 정보 섹션: 프로필 아래 */
+  .info-section{
+    font-size: 14px;
+    gap: 8px;
+  }
+  .notify-section{ font-size: 12px; }
+
+  /* 경고/설명 텍스트도 줄임 */
+  .delete-warning{ font-size: 12px; }
+
+  /* 버튼/링크 크기 축소 */
+  .delete-btn{
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .footer-info{ font-size: 12px; margin-top: 18px; }
+
+   /* 오버레이는 중앙 정렬 */
+  .mypage-container .modal-overlay{
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  /* 모달 본체: 폭/높이 제한 + 기준점 제공 */
+  .mypage-container .modal-content,
+  .mypage-container .edit-profile-modal,
+  .mypage-container .modal-content.edit-profile{
+    width: 86vw !important;           /* 가로 더 줄임 */
+    max-width: 320px !important;
+    max-height: 86svh !important;
+    overflow-y: auto !important;
+    padding: 18px 14px 16px 14px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+
+    /* X 버튼의 절대 위치 기준 */
+    position: relative !important;
+
+    /* 중앙 고정 흔적 제거 */
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+
+  /* 입력창/버튼 폭 더 줄임 (여백 확보) */
+  .mypage-container .modal-content input{
+    width: 86% !important;            /* 90% → 86% */
+    font-size: 14px !important;
+    padding: 8px !important;
+    display: block !important;
+    margin: 0 auto 10px auto !important;
+  }
+  .mypage-container .modal-content button{
+    width: 86% !important;            /* 90% → 86% */
+    font-size: 14px !important;
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    display: block !important;
+    margin: 10px auto 0 auto !important;
+  }
+
+  /* 헤더가 있으면 가운데 정렬 무력화 */
+  .mypage-container .modal-content .modal-header{
+    position: relative !important;
+    text-align: left !important;
+    padding-right: 40px !important;   /* X 버튼 자리 */
+    justify-content: flex-start !important;
+  }
+
+  /* ✅ X 버튼: 어떤 기존 스타일이 있어도 '우상단' 고정 */
+  .mypage-container .modal-content .close-btn,
+  .mypage-container .modal-content .modal-close,
+  .mypage-container .modal-content [class*="close"]{
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+
+    /* 중앙 배치 잔존 스타일 완전 무효화 */
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    text-align: right !important;
+    align-self: flex-start !important;
+    order: 2 !important;              /* flex 컨테이너여도 오른쪽 끝 */
+
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    z-index: 10000 !important;
+    font-size: 18px !important;
+    color: #888 !important;
+    cursor: pointer !important;
+  }
+
+  /* Unity Player를 감싸는 래퍼 */
+  /* back 버튼: 좌상단 고정 (PC에는 영향 없음) */
+  .unityplayer-container .unity-back-btn{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin-bottom: 0; /* 고정이므로 아래쪽 간격 불필요 */
+    z-index: 10;
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+
+  /* 제목/부제목/Unity 화면만 아래로 내리기 */
+  .unity-content{
+    margin-top: 64px; /* 버튼 높이만큼 내려줌 */
+  }
+
+  /* Unity 화면: 좌우 여백 조금 남기고 16:9 유지 */
+  .unity-player-wrapper{
+    width: 94vw;        /* 좌우 약 3vw씩 여백 */
+    max-width: 94vw;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* 제목/부제목 폰트 살짝 축소 */
+  .unityplayer-title{ font-size: 22px; }
+  .unityplayer-desc{ font-size: 14px; }
+
+  /* my plant */
+
+   /* 화면 패딩/배경/글꼴 유지 + 상단 여백 확보 */
+  .myplant-container{
+    min-height: 100svh;
+    padding: 14px 12px 18px 12px;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+  }
+
+  /* ⬅️ 뒤로가기: 최상단 좌측 고정 */
+  .myplant-container .back-btn{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 18px;
+    z-index: 20;
+    padding: 0;
+  }
+
+  /* 제목: 중앙 정렬(절대 위치 제거) */
+  .myplant-header{
+    position: static !important;
+    transform: none !important;
+    text-align: center !important;
+    font-size: 22px !important;     /* 작게 */
+    margin: 0 auto 6px auto !important;
+    padding-top: 40px;               /* back 버튼 공간만큼 내림 */
+    color: #2f2f2f;
+  }
+
+  /* 부제목: 제목 아래 */
+  .myplant-subtext{
+    text-align: center !important;
+    font-size: 13px !important;
+    margin: 0 0 12px 0 !important;
+    color: #666;
+  }
+
+  /* 본문 카드 레이아웃: 세로 스택 */
+  .plant-info-layout{
+    display: flex;
+    flex-direction: column;          /* 가로 → 세로 */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;                       /* 요소 간격 축소 */
+    padding: 14px !important;        /* 카드 패딩 축소 */
+    border-radius: 16px;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 12px auto;
+  }
+
+  /* 이미지 영역 먼저 */
+  .plant-left{
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+  .plant-large-img{
+    width: 62vw;                     /* 화면 기준 축소 */
+    max-width: 260px;
+    height: auto;
+    border-radius: 16px;
+  }
+  .plant-name{ font-size: 18px; margin-top: 8px; }
+  .plant-stage{ font-size: 13px; }
+
+  /* 성장 상태(버튼/라벨) 다음 */
+  .button-group{
+    order: 2;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .status-button{
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 14px;
+  }
+  .status-label{
+    order: 2;
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 16px;
+  }
+
+  /* 센서 카드들 */
+  .sensor-cards{
+    order: 3;
+    width: 100%;
+    gap: 8px;
+    margin: 6px 0 4px 0;
+  }
+  .sensor-card{
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+
+  /* 날씨 섹션(실제 클래스명에 따라 커버) */
+  .weather-section,
+  .weather-info,
+  [class*="weather"]{
+    order: 4;
+    width: 100%;
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  /* 이미지 옆 토마토 아이콘(있다면) */
+  .tomato-icon{
+    height: 36px;
+    margin: 8px 0 0 0;
+  }
+
+  /* 달력 버튼 등 기타 버튼 */
+  .calendar-btn{
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 14px;
+  }
+
+  /* 푸터는 맨 아래 */
+  .footer-info{
+    order: 5;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 14px;
+  }
+  
+}
+
+/* ── 360px 이하 (아주 작은 폰) ────────────────────────── */
+@media (max-width: 360px){
+
+  .bee-img{
+    flex: 0 0 50px;
+    width: 50px;
+  }
+  .speech-bubble{
+    max-width: calc(100% - 50px - 8px) !important;
+    min-height: 40px;
+    padding: 4px 6px;
+    border-radius: 8px;
+  }
+  .speech-bubble .search-bar{
+    height: 20px !important;
+    border-radius: 6px !important;
+  }
+  .speech-bubble .search-icon{ width: 11px; height: 11px; }
+  .speech-bubble .search-bar input{
+    font-size: 10px !important;
+    line-height: 20px !important;
+  }
+
+  .typing{
+    font-size: 10.5px;
+    line-height: 1.28;
+    margin-bottom: 2px;
+  }
+
+  .suggested-questions button{
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 8px;
+  }
+
+  .status-box{
+    padding: 6px;
+    font-size: 10.5px;
+  }
+  .tomato-icon{ height: 22px; }
+
+  /* myfarm */
+
+  .shelf{ max-width: 340px; }
+  .pots-row{ padding: 0 5px; gap: 5px; }
+  .pot-slot{ flex-basis: calc((100% - 20px) / 5); } /* gap 5px * 4 = 20px */
+  .add-seed-btn{ width: 70%; height: 70%; font-size: 16px; }
+  .plant-img{ width: 84% !important; height: 84% !important; }
+  .delete-seed-btn{ width: 16px !important; height: 16px !important; }
+
+  /* 작은 화면일 때 더 줄임 */
+  .add-seed-btn{
+    width: 55% !important;     /* 기존 70% → 55% */
+    height: 55% !important;       /* 기존 70% → 55% */
+    font-size: 12px;
+  }
+
+  /* my page */
+
+  .mypage-title{ font-size: 18px; }
+  .mypage-body{ padding: 12px; gap: 14px; border-radius: 14px; }
+  .profile-image-box{ width: 100px; height: 120px; font-size: 11px; }
+  .profile-title{ font-size: 15px; }
+  .info-section{ font-size: 13px; }
+  .notify-section{ font-size: 11.5px; }
+  .delete-btn{ font-size: 11.5px; padding: 7px 10px; }
+
+  /* unity */
+
+  /* back 버튼: 좌상단 고정 (PC에는 영향 없음) */
+  .unityplayer-container .unity-back-btn{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin-bottom: 0; /* 고정이므로 아래쪽 간격 불필요 */
+    z-index: 10;
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+
+  /* 제목/부제목/Unity 화면만 아래로 내리기 */
+  .unity-content{
+    margin-top: 64px; /* 버튼 높이만큼 내려줌 */
+  }
+
+  /* Unity 화면: 좌우 여백 조금 남기고 16:9 유지 */
+  .unity-player-wrapper{
+    width: 94vw;        /* 좌우 약 3vw씩 여백 */
+    max-width: 94vw;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* 제목/부제목 폰트 살짝 축소 */
+  .unityplayer-title{ font-size: 22px; }
+  .unityplayer-desc{ font-size: 14px; }
+
+  /* my plant */
+
+  .myplant-header{ font-size: 20px !important; padding-top: 38px; }
+  .myplant-subtext{ font-size: 12px !important; }
+  .plant-large-img{ width: 64vw; max-width: 220px; }
+  .status-button{ font-size: 13px; padding: 8px 12px; }
+  .status-label{ font-size: 12.5px; padding: 8px 12px; }
+  .sensor-card{ font-size: 13px; padding: 9px 12px; }
+}
+
+/* ── 481~768px (작은 태블릿/큰 폰) ────────────────────── */
+@media (min-width: 481px) and (max-width: 768px){
+  .header{ padding: 10px 12px; gap: 8px; flex-wrap: wrap; }
+  .logo{ height: 48px; }
+  .login-btn, .nav-btn, .logout-btn{ font-size: 14px; padding: 6px 10px; }
+
+  .bee-and-bubble{ margin-top: 20px; gap: 10px; padding: 0 12px; }
+  .bee-img{ width: 80px; height: auto; }
+
+  /* 태블릿에서는 중앙에 조금 크게 */
+  .speech-bubble{
+    min-width: 0 !important;
+    width: 90vw;
+    min-height: 64px;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+  .typing{ font-size: 13px; line-height: 1.35; margin-bottom: 6px; }
+
+  .search-bar{ height: 30px; padding: 0 10px; border-radius: 14px; }
+  .search-icon{ width: 18px; height: 18px; }
+  .search-bar input{ font-size: 12px; }
+
+  .suggested-questions{ flex-wrap: wrap; gap: 8px; margin-top: 10px; padding: 0 12px; }
+  .suggested-questions button{ font-size: 12px; padding: 5px 10px; }
+
+  .status-box-container{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+    padding: 0 12px;
+  }
+  .status-box{
+    width: auto;
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .tomato-icon{ height: 38px; }
+
+  /* unity */
+   /* back 버튼: 좌상단 고정 (PC에는 영향 없음) */
+  .unityplayer-container .unity-back-btn{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin-bottom: 0; /* 고정이므로 아래쪽 간격 불필요 */
+    z-index: 10;
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+
+  /* 제목/부제목/Unity 화면만 아래로 내리기 */
+  .unity-content{
+    margin-top: 64px; /* 버튼 높이만큼 내려줌 */
+  }
+
+  /* Unity 화면: 좌우 여백 조금 남기고 16:9 유지 */
+  .unity-player-wrapper{
+    width: 94vw;        /* 좌우 약 3vw씩 여백 */
+    max-width: 94vw;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* 제목/부제목 폰트 살짝 축소 */
+  .unityplayer-title{ font-size: 22px; }
+  .unityplayer-desc{ font-size: 14px; }
+}
+
+
+/* =========================================================
+   🌐 전체 페이지 공통 스타일
+   - 모든 화면 크기에 적용되는 기본 스타일
+   ========================================================= */
+
+
 * {
   outline: none;
 }
@@ -1160,6 +1865,9 @@ body {
   color: white;
 }
 
+
+/* ===== Unity Player sizing (desktop default) ===== */
+
 .unity-container {
   display: flex;
   justify-content: center;
@@ -1167,4 +1875,19 @@ body {
   min-height: 100vh;
   padding: 20px;
   background-color: #f5f5f5;
+}
+
+.unity-player-wrapper{
+  width: 960px;            /* 데스크톱 기본 폭 (예전과 동일한 체감 크기) */
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  aspect-ratio: 16 / 9;    /* 1920x1080 비율 유지 */
+}
+
+/* Unity 컴포넌트(canvas)는 래퍼에 맞춤 */
+.unity-player-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
 }
