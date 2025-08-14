@@ -69,8 +69,8 @@ function SignupModal({ onClose, onSwitchToLogin, onLoginSuccess }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay signup-modal">
+      <div className="modal-content signup-modal-content">
         <h2 className="modal-title">SIGN-UP</h2>
 
         <div className="signup-input-group">

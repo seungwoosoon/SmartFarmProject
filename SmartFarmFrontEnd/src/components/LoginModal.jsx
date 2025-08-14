@@ -34,8 +34,8 @@ function LoginModal({ onClose, onSwitchToSignup, onLoginSuccess }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay login-modal">
+      <div className="modal-content login-modal-content">
         <h2 className="modal-title">LOG - IN</h2>
 
         <div className="login-input-group">
