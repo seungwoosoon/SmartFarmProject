@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +34,18 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(0)
+    public SecurityFilterChain actuatorChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/actuator/**")     // ← 문자열 오버로드
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
+
+    // 앱용 기본 체인
+    @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
@@ -40,10 +54,10 @@ public class SecurityConfig {
                         // 프리플라이트
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 헬스/프로브 (프록시 유무 모두 허용)
+                        // (참고) 아래 라인은 있어도 되지만 위 actuatorChain이 먼저 먹음
                         .requestMatchers("/api/actuator/**", "/actuator/**").permitAll()
 
-                        // 비인증 접근 허용 API
+                        // 비인증 API
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/image/**",
@@ -52,7 +66,7 @@ public class SecurityConfig {
                                 "/images/**", "/css/**", "/js/**", "/image/**"
                         ).permitAll()
 
-                        // 나머지는 인증
+                        // 나머지 보호
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
@@ -61,17 +75,14 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 );
-
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // 프런트가 접근하는 "정확한 출처"만 명시 (와일드카드 금지: allowCredentials=true 때문)
         config.setAllowedOrigins(List.of(
-                "http://54.166.203.174",
+                "http://52.0.13.216",
                 "http://localhost:3000",
                 "http://127.0.0.1:3000"
         ));
@@ -94,5 +105,12 @@ public class SecurityConfig {
                 chain.doFilter(req, res);
             }
         };
+    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(
+                "/images/**",     // 업로드 파일 정적 서빙
+                "/css/**", "/js/**", "/favicon.ico"
+        );
     }
 }
