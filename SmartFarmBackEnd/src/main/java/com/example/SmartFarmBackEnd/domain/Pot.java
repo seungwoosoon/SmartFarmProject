@@ -103,4 +103,17 @@ public class Pot {
     public void linkShelfFloor(ShelfFloor floor) {
         this.shelfFloor = floor;
     }
+
+    public void applyExp(double expIncrease) {
+        this.exp += expIncrease;
+        if (exp == 1.0) {
+            this.potPlant = Plant.COMPLETE;
+        } else if (exp > 0.6) {
+            this.potPlant = Plant.FRUIT;
+        } else if (exp > 0.3) {
+            this.potPlant = Plant.FLOWER;
+        } else if (exp >= 0) {
+            this.potPlant = Plant.SPROUT;
+        }
+    }
 }

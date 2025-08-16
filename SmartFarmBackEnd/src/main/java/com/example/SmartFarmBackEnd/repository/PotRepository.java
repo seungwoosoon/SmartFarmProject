@@ -108,4 +108,10 @@ public class PotRepository {
                 .getResultList();
     }
 
+    public List<Pot> findAllNonEmpty() {
+        return em.createQuery(
+                        "select p from Pot p where p.status <> :empty and p.exp < 1.0", Pot.class)
+                .setParameter("empty", PotStatus.EMPTY)
+                .getResultList();
+    }
 }

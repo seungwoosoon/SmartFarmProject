@@ -9,7 +9,7 @@ import lombok.Data;
 public class PotDto {
     private PositionDto position;
     private PotStatus status;
-    private Plant plant = Plant.TOMATO;
+    private Plant plant = Plant.SPROUT;
     private double ph = 7.5;
     private double temperature = 26.5;
     private double lightStrength = 3;
