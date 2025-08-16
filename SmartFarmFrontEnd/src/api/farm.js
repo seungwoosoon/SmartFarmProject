@@ -1,15 +1,11 @@
 // src/api/farm.js
 import axios from 'axios';
 
-const API_ROOT = process.env.REACT_APP_BACKEND_URL;
-const FARM_BASE = `${API_ROOT}/api/farm`;
+// ✅ Nginx 프록시를 통해 /api/farm 으로 요청
+const FARM_BASE = `/api/farm`;
 
 /**
  * 세싹 등록 API 호출
- * @param {number} numofshelf - 몇 번째 선반
- * @param {number} numofshelffloor - 선반의 몇 번째 줄
- * @param {number} numofpot - 줄의 몇 번째 칸
- * @returns {Promise<object>} - 서버 응답 데이터
  */
 export const addSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => {
     console.log("전송 요청 데이터 확인:", {
@@ -29,6 +25,9 @@ export const addSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => 
     return data;
 };
 
+/**
+ * 세싹 삭제 API 호출
+ */
 export const deleteSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) => {
     const { data } = await axios.post(
         `${FARM_BASE}/deleteSeedling`,
@@ -43,8 +42,7 @@ export const deleteSeedling = async ({ numOfShelf, numOfShelfFloor, numOfPot }) 
 };
 
 /**
- * 세싹 전체 상태 조회 API 호출 (GET /api/auth/structure)
- * @returns {Promise<object>} - { seedlings: [...] }
+ * 세싹 전체 상태 조회 API 호출
  */
 export const getSeedlings = async () => {
     const { data } = await axios.get(`${FARM_BASE}/getSeedlings`, {

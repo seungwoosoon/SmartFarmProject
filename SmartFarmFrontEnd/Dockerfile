@@ -2,23 +2,18 @@
 FROM node:20 AS build
 WORKDIR /app
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+# ✅ 빌드 전에 키 주입
+ARG REACT_APP_WEATHER_API_KEY
+ENV REACT_APP_WEATHER_API_KEY=$REACT_APP_WEATHER_API_KEY
 
 COPY package*.json ./
-# RUN npm ci
 RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npm run build
 
-# 2단계: Nginx로 정적 파일 서빙
+# 2단계: Nginx
 FROM nginx:alpine
 WORKDIR /app
-
-# 빌드된 정적 파일 복사
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Nginx 설정 복사
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 CMD ["nginx", "-g", "daemon off;"]

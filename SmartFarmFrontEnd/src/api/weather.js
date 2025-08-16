@@ -1,5 +1,5 @@
-// WeatherAPI 호출
-const API_KEY = "a1ced7c40c2c4260944112213251008"; // WeatherAPI 키
+// src/api/weather.js
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const BASE_URL = "https://api.weatherapi.com/v1/current.json";
 
 export const getWeatherData = async (lat, lon) => {
@@ -14,8 +14,8 @@ export const getWeatherData = async (lat, lon) => {
         humidity: data.current.humidity,
         condition: data.current.condition.text,
         wind: data.current.wind_kph
-          ? (data.current.wind_kph / 3.6).toFixed(1)
-          : undefined, // m/s로 변환
+            ? (data.current.wind_kph / 3.6).toFixed(1)
+            : undefined, // m/s로 변환
         feelsLike: Math.round(data.current.feelslike_c),
       };
     }
@@ -26,7 +26,4 @@ export const getWeatherData = async (lat, lon) => {
   }
 };
 
-// OpenWeatherMap API는 위도/경도를 직접 사용
-export const convertToGridCoord = (lat, lon) => {
-  return { lat, lon };
-};
+export const convertToGridCoord = (lat, lon) => ({ lat, lon });

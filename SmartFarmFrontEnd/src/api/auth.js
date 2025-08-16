@@ -1,14 +1,14 @@
 // src/api/auth.js
 import axios from "axios";
 
-const API_ROOT = process.env.REACT_APP_BACKEND_URL;
-const AUTH_BASE = `${API_ROOT}/api/auth`;
+// ✅ Nginx가 /api/* 를 백엔드로 프록시하므로 /api 접두어 사용
+const AUTH_BASE = "/api/auth";
 
 export const login = async (loginId, password) => {
   const { data } = await axios.post(
-    `${AUTH_BASE}/login`,
-    { login: loginId, password },
-    { withCredentials: true }
+      `${AUTH_BASE}/login`,
+      { login: loginId, password },
+      { withCredentials: true }
   );
   return data;
 };
@@ -21,12 +21,11 @@ export const signup = async (userData) => {
 };
 
 export const checkLogin = async (login) => {
-  const response = await axios.get(`${AUTH_BASE}/check-login`, {
+  const { data } = await axios.get(`${AUTH_BASE}/check-login`, {
     params: { login },
     withCredentials: true,
   });
-  // { available: true } 형태로 가정
-  return response.data.available;
+  return data.available;
 };
 
 export const logout = async () => {
@@ -40,14 +39,9 @@ export const getCurrentUser = async () => {
   return data;
 };
 
-/**
- * 사용자 프로필 정보 수정 (이름, 주소 등)
- * @param {Object} profile { name, address: { street, city, zipcode } }
- */
 export const updateProfile = async (profile) => {
   const { data } = await axios.patch(`${AUTH_BASE}/me`, profile, {
     withCredentials: true,
   });
   return data;
 };
-

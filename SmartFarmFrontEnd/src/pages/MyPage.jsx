@@ -82,7 +82,7 @@ function MyPage() {
               <img
                 src={profileImageUrl}
                 alt={t("alt.profileImage")}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             ) : (
               <div className="image-placeholder">

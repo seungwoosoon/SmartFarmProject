@@ -1,0 +1,43 @@
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2
+    container_name: mqtt-broker
+    ports: ["1883:1883","9001:9001"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    restart: unless-stopped
+
+  backend:
+    image: sonseungwoo/smartfarm-backend:ver1
+    container_name: smartfarm-backend
+    env_file: .env.prod
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      APP_UPLOAD_DIR: /app/uploads
+    volumes:
+      - /home/ubuntu/uploads:/app/uploads:rw
+    depends_on: [mqtt-broker]
+    restart: unless-stopped
+
+  # (옵션) 유지해도 되고 제거해도 됨
+  frontend:
+    image: sonseungwoo/smartfarm-frontend:ver1
+    container_name: smartfarm-frontend
+    depends_on: [backend]
+    restart: unless-stopped
+
+  nginx:
+    image: sonseungwoo/smartfarm-frontend:ver1
+    container_name: edge-nginx
+    volumes:
+      - ./nginx/nginx.main.conf:/etc/nginx/nginx.conf:ro
+      - /home/ubuntu/uploads:/uploads:ro 
+    depends_on: [backend]
+    ports: ["80:80"]
+    restart: unless-stopped
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
