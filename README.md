@@ -61,30 +61,34 @@
 classDiagram
     direction LR
 
-    %% ===== DOMAIN =====
+    %% ========= DOMAIN =========
     class Member {
-      +id, login, password, name
-      --Domain Logic--
-      +addShelf()
+        +Long id
+        +String login
+        +String name
     }
     class Shelf {
-      +id, position
-      +addFloor()
+        +Long id
+        +Integer position
     }
     class ShelfFloor {
-      +id, position
-      +addPot()
+        +Long id
+        +Integer position
     }
     class Pot {
-      +id, position, exp
-      +applySensor()
-      +applyExp()
-      +applyStatus()
+        +Long id
+        +Integer position
+        +PotStatus status
+        +double exp
     }
     class Image {
-      +id, imageUrl
+        +Long id
+        +String imageUrl
     }
-    class Address
+    class Address {
+        +String city
+        +String street
+    }
     class Plant
     class PotStatus
 
@@ -93,45 +97,65 @@ classDiagram
     ShelfFloor "1" --> "*" Pot
     Member "1" --> "1" Image
 
-    %% ===== REPOSITORY =====
+    %% ========= REPOSITORY =========
     class MemberRepository {
-      +save(), +findById(), +findByLogin()
+        +save(), +findById(), +findByLogin()
     }
     class PotRepository {
-      +save(), +findOne(), +findByPosition(), +findAllNonEmpty()
+        +save(), +findOne(), +findByPosition(), +findAllNonEmpty()
     }
     class ImageRepository {
-      +save(), +findByMember(), +delete()
+        +save(), +findByMember(), +delete()
     }
     class ShelfRepository { +save() }
     class ShelfFloorRepository { +save() }
 
+    %% ========= SERVICE =========
+    class FarmService {
+        +createMemberWithEmptyFarm()
+        +addPot(), +deletePot(), +selectFarm()
+    }
+    class DiagnosisService {
+        +applyDiagnosis()
+    }
+    class SensorService {
+        +processSensorMessage()
+    }
+    class ImageService {
+        +upload(), +getByMember()
+    }
+    class MemberService {
+        +updateProfile(), +deleteAccount()
+    }
+    class LoginService {
+        +login(), +join(), +existsByLogin()
+    }
+
+    %% ========= CONTROLLER =========
+    class FarmController {
+        +getSeedlings(), +addSeedling(), +deleteSeedling()
+    }
+    class DiagnosisController {
+        +receiveDiagnosis()
+    }
+    class ImageController {
+        +upload(), +getMyImage()
+    }
+    class LoginController {
+        +login(), +join(), +me(), +updateMe()
+    }
+
+    %% ========= EXTERNAL =========
+    class MqttListener { +messageArrived() }
+    class MqttPublisher { +publish() }
+    class GrowthScheduler { +tick() }
+
+    %% ========= RELATIONS =========
     MemberRepository --> Member
     PotRepository --> Pot
     ImageRepository --> Image
     ShelfRepository --> Shelf
     ShelfFloorRepository --> ShelfFloor
-
-    %% ===== SERVICE =====
-    class FarmService {
-      +createMemberWithEmptyFarm()
-      +addPot(), +deletePot(), +selectFarm()
-    }
-    class DiagnosisService {
-      +applyDiagnosis()
-    }
-    class SensorService {
-      +processSensorMessage()
-    }
-    class ImageService {
-      +upload(), +getByMember()
-    }
-    class MemberService {
-      +updateProfile(), +deleteAccount()
-    }
-    class LoginService {
-      +login(), +join(), +existsByLogin()
-    }
 
     FarmService --> MemberRepository
     FarmService --> PotRepository
@@ -141,37 +165,12 @@ classDiagram
     MemberService --> MemberRepository
     LoginService --> MemberRepository
 
-    %% ===== CONTROLLER =====
-    class FarmController {
-      +getSeedlings(), +addSeedling(), +deleteSeedling()
-    }
-    class DiagnosisController {
-      +receiveDiagnosis()
-    }
-    class ImageController {
-      +upload(), +getMyImage()
-    }
-    class LoginController {
-      +login(), +join(), +me(), +updateMe()
-    }
-
     FarmController --> FarmService
     DiagnosisController --> DiagnosisService
     ImageController --> ImageService
     LoginController --> LoginService
     LoginController --> MemberService
 
-    %% ===== EXTERNAL =====
-    class MqttListener {
-      +messageArrived()
-    }
-    class MqttPublisher {
-      +publish()
-    }
-    class GrowthScheduler {
-      +tick()
-    }
-
     MqttListener --> SensorService
-    MqttPublisher --> SensorService : publishes
+    MqttPublisher --> SensorService
     GrowthScheduler --> PotRepository
