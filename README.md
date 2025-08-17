@@ -106,10 +106,10 @@ classDiagram
         Plant potPlant
         PotStatus status
     }
-    enum Plant {
+    class Plant {
         SPROUT, FLOWER, FRUIT, COMPLETE, EMPTY
     }
-    enum PotStatus {
+    class PotStatus {
         NORMAL, WARNING, EMPTY, GRAYMOLD, POWDERYMILDEW, NITROGENDEFICIENCY, PHOSPHROUSDEFICIENCY, POTASSIUMDEFICIENCY
     }
 
