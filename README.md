@@ -31,6 +31,8 @@
   <img src="./image/part/part.png" width="800px" />
 </div>
 
+***
+
 ## 📌 주요 기능
 
 ### 🧠 **AI 생육 진단**
