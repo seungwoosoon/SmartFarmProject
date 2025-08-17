@@ -24,7 +24,7 @@ Based on environmental data, the growth of plants is predicted, and information 
 - 양지은 : 센서
 - 이용훈 : PM
 ## Environment
-![Part Stack](./image/part/part.png)
+<img src="./image/part/part.png" width="300px" />
 ## 📌 주요 기능
 
 ### 🧠 **AI 생육 진단**
