@@ -65,6 +65,12 @@
   <img src="./image/ai/yollo.jpeg" width="500px" />
 </div>
 
+### Time Series
+
+<div align="center">
+  <img src="./image/ai/time.png" width="500px" />
+</div>
+
 ## 🪞 Unity 🪞
 <div align="center">
   <img src="./image/unity/status.png" width="500px" />
