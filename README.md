@@ -59,130 +59,70 @@
 
 ```mermaid
 classDiagram
-    direction TB
+    direction LR
 
     %% ===== DOMAIN =====
     class Member {
-        +Long id
-        +String login
-        +String password
-        +String name
-        +String phoneNumber
-        +Address address
-        --Methods--
-        +addShelf()
-    }
-    class Address
-    class Image {
-        +Long id
-        +String imageUrl
+      +id, login, password, name
+      +addShelf()
     }
     class Shelf {
-        +Long id
-        +Integer position
-        --Methods--
-        +addFloor()
-        +linkMember()
+      +id, position
+      +addFloor()
     }
     class ShelfFloor {
-        +Long id
-        +Integer position
-        --Methods--
-        +addPot()
-        +linkShelf()
+      +id, position
+      +addPot()
     }
     class Pot {
-        +Long id
-        +Integer position
-        +double exp
-        +Plant potPlant
-        +PotStatus status
-        --Methods--
-        +applySensor()
-        +applyExp()
-        +applyStatus()
+      +id, position, exp
+      +applySensor()
+      +applyExp()
+      +applyStatus()
     }
-    class Plant {
-        <<enumeration>>
-        SPROUT
-        FLOWER
-        FRUIT
-        COMPLETE
-        EMPTY
-    }
-    class PotStatus {
-        <<enumeration>>
-        NORMAL
-        WARNING
-        EMPTY
-        GRAYMOLD
-        POWDERYMILDEW
-        NITROGENDEFICIENCY
-        PHOSPHROUSDEFICIENCY
-        POTASSIUMDEFICIENCY
-    }
+    class Image
+    class Address
+    class Plant <<enumeration>>
+    class PotStatus <<enumeration>>
 
-    Member "1" --> "1" Image
     Member "1" --> "*" Shelf
     Shelf "1" --> "*" ShelfFloor
     ShelfFloor "1" --> "*" Pot
+    Member "1" --> "1" Image
 
-    %% ===== REPOSITORIES =====
-    class MemberRepository {
-        +save()
-        +findById()
-        +findByLogin()
-        +findWithShelves()
-    }
-    class PotRepository {
-        +save()
-        +findOne()
-        +findByPosition()
-        +findAllNonEmpty()
-    }
+    %% ===== REPOSITORY =====
+    class MemberRepository
+    class PotRepository
 
     MemberRepository --> Member
     PotRepository --> Pot
 
-    %% ===== SERVICES =====
-    class FarmService {
-        +createMemberWithEmptyFarm()
-        +addPot()
-        +deletePot()
-        +selectFarm()
-    }
-    class DiagnosisService {
-        +applyDiagnosis()
-    }
-    class SensorService {
-        +processSensorMessage()
-    }
+    %% ===== SERVICE =====
+    class FarmService
+    class DiagnosisService
+    class SensorService
 
     FarmService --> MemberRepository
     FarmService --> PotRepository
     DiagnosisService --> PotRepository
     SensorService --> PotRepository
 
-    %% ===== CONTROLLERS =====
-    class FarmController {
-        +getSeedlings()
-        +addSeedling()
-        +deleteSeedling()
-    }
-    class DiagnosisController {
-        +receiveDiagnosis()
-    }
+    %% ===== CONTROLLER =====
+    class FarmController
+    class DiagnosisController
 
     FarmController --> FarmService
     DiagnosisController --> DiagnosisService
 
     %% ===== EXTERNAL =====
-    class MqttListener {
-        +messageArrived()
-    }
-    class GrowthScheduler {
-        +tick()
-    }
+    class MqttListener
+    class GrowthScheduler
 
     MqttListener --> SensorService
     GrowthScheduler --> PotRepository
+
+    %% ===== BOUNDARY BOXES =====
+    classDomain <|-- Member
+    classRepo <|-- MemberRepository
+    classService <|-- FarmService
+    classCtrl <|-- FarmController
