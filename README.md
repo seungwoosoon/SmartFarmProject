@@ -64,26 +64,34 @@ classDiagram
     %% ===== DOMAIN =====
     class Member {
       +id, login, password, name
-      +addShelf()
+      --Domain Logic--
+      +addShelf() : 선반추가
     }
     class Shelf {
       +id, position
-      +addFloor()
+      --Domain Logic--
+      +addFloor() : 층 추가
     }
     class ShelfFloor {
       +id, position
-      +addPot()
+      --Domain Logic--
+      +addPot() : 화분 추가
     }
     class Pot {
       +id, position, exp
-      +applySensor()
-      +applyExp()
-      +applyStatus()
+      --Logic--
+      +applySensor() : 센서값 반영
+      +applyExp()    : 생장경험치 반영
+      +applyStatus() : 상태 업데이트
     }
-    class Image
-    class Address
+    class Image {
+      +id, imageUrl
+    }
+    class Address {
+      +city, street, zipcode
+    }
     class Plant
-    class PotStatus 
+    class PotStatus
 
     Member "1" --> "*" Shelf
     Shelf "1" --> "*" ShelfFloor
@@ -91,16 +99,34 @@ classDiagram
     Member "1" --> "1" Image
 
     %% ===== REPOSITORY =====
-    class MemberRepository
-    class PotRepository
+    class MemberRepository {
+      +save()
+      +findById()
+      +findByLogin()
+    }
+    class PotRepository {
+      +save()
+      +findOne()
+      +findByPosition()
+      +findAllNonEmpty()
+    }
 
     MemberRepository --> Member
     PotRepository --> Pot
 
     %% ===== SERVICE =====
-    class FarmService
-    class DiagnosisService
-    class SensorService
+    class FarmService {
+      +createMemberWithEmptyFarm()
+      +addPot()      : 빈 화분 생성
+      +deletePot()   : 화분 제거
+      +selectFarm()
+    }
+    class DiagnosisService {
+      +applyDiagnosis() : AI 진단 반영
+    }
+    class SensorService {
+      +processSensorMessage() : MQTT 값 파싱·적용
+    }
 
     FarmService --> MemberRepository
     FarmService --> PotRepository
@@ -108,20 +134,30 @@ classDiagram
     SensorService --> PotRepository
 
     %% ===== CONTROLLER =====
-    class FarmController
-    class DiagnosisController
+    class FarmController {
+      +getSeedlings()
+      +addSeedling()
+      +deleteSeedling()
+    }
+    class DiagnosisController {
+      +receiveDiagnosis()
+    }
 
     FarmController --> FarmService
     DiagnosisController --> DiagnosisService
 
     %% ===== EXTERNAL =====
-    class MqttListener
-    class GrowthScheduler
+    class MqttListener {
+      +messageArrived() : 구독 메시지 도착
+    }
+    class GrowthScheduler {
+      +tick() : 생장스케줄러 주기 실행
+    }
 
     MqttListener --> SensorService
     GrowthScheduler --> PotRepository
 
-    %% ===== BOUNDARY BOXES =====
+    %% ===== LAYER MARKERS =====
     classDomain <|-- Member
     classRepo <|-- MemberRepository
     classService <|-- FarmService
