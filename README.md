@@ -1,5 +1,7 @@
 # Farm Link🌿 <AI 기반 생육 진단과 디지털 트윈을 활용한 스마트팜 시스템>
-<img src="./image/part/logo.png" width="100px" /> 
+<p align="center">
+  <img src="./image/part/logo.png" width="150px" />
+</p>
 
 
 ## 📚 프로잭트 소개
