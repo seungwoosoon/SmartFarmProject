@@ -29,5 +29,28 @@ yarn-error.log*
 .vscode/
 
 #=====sensorWIFI======
+.env.*
+!.env.example
 config.cpp
+credentials.h
+config.h
+secrets.h
 
+# ==================================
+# Python / AI
+# ==================================
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.pt
+*.pth
+
+# ==================================
+# General
+# ==================================
+*.log
+# AI Log Images
+SmartFarmAI/log/*.jpg
