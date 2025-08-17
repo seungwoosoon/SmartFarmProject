@@ -47,8 +47,6 @@
 - 현재 생육 상태 및 환경 정보 시각화
  <img src="./image/unity/status.png" width="500px" />
 
-### ⚙️ 기술 스텍
-
 ## Architecture
 <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
 
