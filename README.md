@@ -1,7 +1,6 @@
 <p align="center">
-  <h1>Farm Link🌿 <AI 기반 생육 진단과 디지털 트윈을 활용한 스마트팜 시스템></h1>
-</p>
-<p align="center">
+  <b>Farm Link🌿</b><br/>
+  <i>AI 기반 생육 진단과 디지털 트윈을 활용한 스마트팜 시스템</i>
   <img src="./image/part/logo.png" width="150px" />
 </p>
 
