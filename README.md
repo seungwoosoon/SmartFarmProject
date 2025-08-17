@@ -65,31 +65,26 @@ classDiagram
     class Member {
       +id, login, password, name
       --Domain Logic--
-      +addShelf() : 선반추가
+      +addShelf()
     }
     class Shelf {
       +id, position
-      --Domain Logic--
-      +addFloor() : 층 추가
+      +addFloor()
     }
     class ShelfFloor {
       +id, position
-      --Domain Logic--
-      +addPot() : 화분 추가
+      +addPot()
     }
     class Pot {
       +id, position, exp
-      --Logic--
-      +applySensor() : 센서값 반영
-      +applyExp()    : 생장경험치 반영
-      +applyStatus() : 상태 업데이트
+      +applySensor()
+      +applyExp()
+      +applyStatus()
     }
     class Image {
       +id, imageUrl
     }
-    class Address {
-      +city, street, zipcode
-    }
+    class Address
     class Plant
     class PotStatus
 
@@ -100,65 +95,83 @@ classDiagram
 
     %% ===== REPOSITORY =====
     class MemberRepository {
-      +save()
-      +findById()
-      +findByLogin()
+      +save(), +findById(), +findByLogin()
     }
     class PotRepository {
-      +save()
-      +findOne()
-      +findByPosition()
-      +findAllNonEmpty()
+      +save(), +findOne(), +findByPosition(), +findAllNonEmpty()
     }
+    class ImageRepository {
+      +save(), +findByMember(), +delete()
+    }
+    class ShelfRepository { +save() }
+    class ShelfFloorRepository { +save() }
 
     MemberRepository --> Member
     PotRepository --> Pot
+    ImageRepository --> Image
+    ShelfRepository --> Shelf
+    ShelfFloorRepository --> ShelfFloor
 
     %% ===== SERVICE =====
     class FarmService {
       +createMemberWithEmptyFarm()
-      +addPot()      : 빈 화분 생성
-      +deletePot()   : 화분 제거
-      +selectFarm()
+      +addPot(), +deletePot(), +selectFarm()
     }
     class DiagnosisService {
-      +applyDiagnosis() : AI 진단 반영
+      +applyDiagnosis()
     }
     class SensorService {
-      +processSensorMessage() : MQTT 값 파싱·적용
+      +processSensorMessage()
+    }
+    class ImageService {
+      +upload(), +getByMember()
+    }
+    class MemberService {
+      +updateProfile(), +deleteAccount()
+    }
+    class LoginService {
+      +login(), +join(), +existsByLogin()
     }
 
     FarmService --> MemberRepository
     FarmService --> PotRepository
     DiagnosisService --> PotRepository
     SensorService --> PotRepository
+    ImageService --> ImageRepository
+    MemberService --> MemberRepository
+    LoginService --> MemberRepository
 
     %% ===== CONTROLLER =====
     class FarmController {
-      +getSeedlings()
-      +addSeedling()
-      +deleteSeedling()
+      +getSeedlings(), +addSeedling(), +deleteSeedling()
     }
     class DiagnosisController {
       +receiveDiagnosis()
     }
+    class ImageController {
+      +upload(), +getMyImage()
+    }
+    class LoginController {
+      +login(), +join(), +me(), +updateMe()
+    }
 
     FarmController --> FarmService
     DiagnosisController --> DiagnosisService
+    ImageController --> ImageService
+    LoginController --> LoginService
+    LoginController --> MemberService
 
     %% ===== EXTERNAL =====
     class MqttListener {
-      +messageArrived() : 구독 메시지 도착
+      +messageArrived()
+    }
+    class MqttPublisher {
+      +publish()
     }
     class GrowthScheduler {
-      +tick() : 생장스케줄러 주기 실행
+      +tick()
     }
 
     MqttListener --> SensorService
+    MqttPublisher --> SensorService : publishes
     GrowthScheduler --> PotRepository
-
-    %% ===== LAYER MARKERS =====
-    classDomain <|-- Member
-    classRepo <|-- MemberRepository
-    classService <|-- FarmService
-    classCtrl <|-- FarmController
