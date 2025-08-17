@@ -48,10 +48,10 @@
 ### 🪞 **Digital Twin 시각화**
 - Unity 기반 가상 농장 구현
 - 현재 생육 상태 및 환경 정보 시각화
--  <img src="./image/unity/status.png" width="300px" />
 
 ## Architecture
 <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
 
-## ERD
+## Backend
+### ERD
 <img src="./image/ERD/ERD.ver250812.png" width="500px" />
