@@ -14,27 +14,33 @@
 
 
 
-<div style="display:inline-block; width:60%; vertical-align:top;">
-  
-  <h3>👨‍👩‍👧‍👦 맴버 구성</h3>
-  - 팀장 : 오연희<br/>
-  - 팀원 : 김찬빈, 손승우, 양지은, 유지찬, 이용훈<br/>
+<table>
+  <tr>
+    <td valign="top" width="60%">
 
-  <h3>📌 업무 분담</h3>
-  - 오연희 : AI<br/>
-  - 유지찬 : AI<br/>
-  - 김찬빈 : 프론트엔드<br/>
-  - 손승우 : 백엔드, 배포, Unity<br/>
-  - 양지은 : 센서<br/>
-  - 이용훈 : PM<br/>
+      <h3>👨‍👩‍👧‍👦 맴버 구성</h3>
 
-</div>
-<div style="display:inline-block; width:38%; vertical-align:top; text-align:right;">
-  
-  <h3>📌 환경</h3>
-  <img src="./image/part/part.png" width="300px"/>
+      - 팀장 : 오연희  
+      - 팀원 : 김찬빈, 손승우, 양지은, 유지찬, 이용훈  
 
-</div>
+      <h3>📌 업무 분담</h3>
+
+      - 오연희 : AI  
+      - 유지찬 : AI  
+      - 김찬빈 : 프론트엔드  
+      - 손승우 : 백엔드, 배포, Unity  
+      - 양지은 : 센서  
+      - 이용훈 : PM  
+
+    </td>
+    <td valign="top" align="right" width="40%">
+
+      <h3>📌 환경</h3>
+      <img src="./image/part/part.png" width="300px" />
+
+    </td>
+  </tr>
+</table>
 
 ## 📌 주요 기능
 
