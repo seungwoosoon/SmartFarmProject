@@ -53,8 +53,13 @@
 <div align="center">
   <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
 </div>
+
+---
+
 ## Backend
+
 ### ERD
+
 <div align="center">
   <img src="./image/ERD/ERD.ver250812.png" width="900px" />
 </div>
