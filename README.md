@@ -106,11 +106,26 @@ classDiagram
         Plant potPlant
         PotStatus status
     }
+
+    %% enums (Mermaid에 맞는 표현 방식)
     class Plant {
-        SPROUT, FLOWER, FRUIT, COMPLETE, EMPTY
+        <<enumeration>>
+        SPROUT
+        FLOWER
+        FRUIT
+        COMPLETE
+        EMPTY
     }
     class PotStatus {
-        NORMAL, WARNING, EMPTY, GRAYMOLD, POWDERYMILDEW, NITROGENDEFICIENCY, PHOSPHROUSDEFICIENCY, POTASSIUMDEFICIENCY
+        <<enumeration>>
+        NORMAL
+        WARNING
+        EMPTY
+        GRAYMOLD
+        POWDERYMILDEW
+        NITROGENDEFICIENCY
+        PHOSPHROUSDEFICIENCY
+        POTASSIUMDEFICIENCY
     }
 
     %% ========== DTO ==========
@@ -182,5 +197,5 @@ classDiagram
 
     %% MQTT & Scheduler
     MqttListener --> SensorService
-    MqttPublisher --> (publishes)
+    MqttPublisher --> SensorService : publishes
     GrowthScheduler --> PotRepository
