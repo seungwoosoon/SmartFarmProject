@@ -58,7 +58,7 @@
 
 ---
 
-## Backend
+## 🛠️ Backend 🛠️
 
 ### ERD
 
@@ -187,7 +187,7 @@ classDiagram
 
 ```
 
-## Frontend
+## 🖼️ Frontend 🖼️
 
 ### Pages
 <div align="center">
