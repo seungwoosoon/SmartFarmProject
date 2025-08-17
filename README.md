@@ -24,6 +24,7 @@ Based on environmental data, the growth of plants is predicted, and information 
 - 양지은 : 센서
 - 이용훈 : PM
 
+![Part Stack](./image/part/스크린샷 2025-08-17 오후 6.02.04.png)
 ## 📌 주요 기능
 
 ### 🧠 **AI 생육 진단**
@@ -40,7 +41,10 @@ Based on environmental data, the growth of plants is predicted, and information 
 
 ### 🪞 **Digital Twin 시각화**
 - Unity 기반 가상 농장 구현
+![Unity 3D View](./image/unity/3dunity.png)
+
 - 현재 생육 상태 및 환경 정보 시각화
+![Unity 3D View](./image/unity/status.png)
 
 ### ⚙️ 기술 스텍
 
@@ -48,3 +52,6 @@ Based on environmental data, the growth of plants is predicted, and information 
 
 ![System Architecture](./image/SystemArchitecture/newSystemArchitecture.png)
 
+## ERD
+
+![ERD](./image/ERD/ERD.ver250812.png)
