@@ -4,11 +4,7 @@
 #include <DHT.h>
 #include <Adafruit_NeoPixel.h>
 #include <math.h>
-
-// ====== WiFi & MQTT ======
-const char* ssid = "Galaxy";
-const char* password = "123456789";
-const char* mqtt_server = "10.145.189.61";
+#include "config.h"
 
 // ====== Pins ======
 #define DHTPIN   4

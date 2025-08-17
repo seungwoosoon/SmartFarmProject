@@ -4,20 +4,16 @@
 #include <DHT.h>
 #include <Adafruit_NeoPixel.h>
 #include <math.h>
-
-// ====== WiFi & MQTT ======
-const char* ssid = "승우";
-const char* password = "123456789";
-const char* mqtt_server = "54.166.203.174";
+#include "config.h"
 
 // ====== Pins ======
-#define DHTPIN   4
-#define DHTTYPE  DHT11
-#define PH_PIN   17
-#define TDS_PIN  26
+#define DHTPIN 4
+#define DHTTYPE DHT11
+#define PH_PIN 35
+#define TDS_PIN 33
 #define SOIL_PIN 34
-#define CDS_PIN  39
-#define LED_PIN  15
+#define CDS_PIN 39
+#define LED_PIN 15
 #define NUM_LEDS 12
 
 // ====== Globals ======
@@ -27,38 +23,41 @@ DHT dht(DHTPIN, DHTTYPE);
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 float temp=0, humi=0, soil=0, cds=0, tds=0, ph=0;
-uint8_t currentPwm = 120;      // 현재 네오픽셀 밝기(0~255)
+uint8_t currentPwm = 120; // 현재 네오픽셀 밝기(0~255)
 
 // --- TDS ---
-#define VREF   3.3
+#define VREF 3.3
 #define SCOUNT 30
 int analogBuffer[SCOUNT];
 int analogBufferTemp[SCOUNT];
 int analogBufferIndex = 0;
 
 // --- 조도 → LED 자동 제어 ---
-const bool  INVERT_BRIGHTNESS = true;   // true: 밝을수록 LED 어둡게
-const float EMA_ALPHA = 0.12f;          // EMA 필터 계수
-const float GAMMA = 2.2f;               // 감마 보정
-const uint8_t MIN_PWM = 10;             // 하한(완전 꺼짐 방지)
+const bool INVERT_BRIGHTNESS = true; // true: 밝을수록 LED 어둡게
+const float EMA_ALPHA = 0.12f; // EMA 필터 계수
+const float GAMMA = 2.2f;      // 감마 보정
+const uint8_t MIN_PWM = 10;    // 하한(완전 꺼짐 방지)
 const uint8_t MAX_PWM = 255;
-
-int   cdsMin = 0, cdsMax = 0;
+int cdsMin = 0, cdsMax = 0;
 float cdsEma = 0;
-
-bool autoMode = true;                   // 기본 자동 모드
+bool autoMode = true;          // 기본 자동 모드
 uint8_t manualPwm = 120;
 unsigned long adaptUntil = 0;
-const unsigned long ADAPT_MS = 8000;    // 초기 환경 학습 시간
+const unsigned long ADAPT_MS = 8000; // 초기 환경 학습 시간
 
 // ── 토양수분 보정(마르면 0%, 젖으면 100%)
-#define SOIL_DRY_RAW  3200
-#define SOIL_WET_RAW  1200
+#define SOIL_DRY_RAW 3200
+#define SOIL_WET_RAW 1200
+
 int readSoilRawAvg(uint8_t n = 10) {
   long acc = 0;
-  for (uint8_t i=0;i<n;i++) { acc += analogRead(SOIL_PIN); delay(2); }
+  for (uint8_t i=0;i<n;i++) {
+    acc += analogRead(SOIL_PIN);
+    delay(2);
+  }
   return (int)(acc / n);
 }
+
 float soilPercentFromRaw(int raw) {
   int dry = SOIL_DRY_RAW, wet = SOIL_WET_RAW;
   if (dry == wet) return 0;
@@ -66,7 +65,8 @@ float soilPercentFromRaw(int raw) {
   if (raw > dry) raw = dry;
   if (raw < wet) raw = wet;
   float pct = (float)(dry - raw) * 100.0f / (float)(dry - wet);
-  if (pct < 0) pct = 0; if (pct > 100) pct = 100;
+  if (pct < 0) pct = 0;
+  if (pct > 100) pct = 100;
   return pct;
 }
 
@@ -82,9 +82,14 @@ void setWhiteBrightness(uint8_t brightness) {
 int getMedianNum(int bArray[], int len) {
   for (int i=0;i<len-1;i++)
     for (int j=0;j<len-i-1;j++)
-      if (bArray[j] > bArray[j+1]) { int t=bArray[j]; bArray[j]=bArray[j+1]; bArray[j+1]=t; }
+      if (bArray[j] > bArray[j+1]) {
+        int t=bArray[j];
+        bArray[j]=bArray[j+1];
+        bArray[j+1]=t;
+      }
   return len%2 ? bArray[len/2] : (bArray[len/2]+bArray[len/2-1])/2;
 }
+
 float getTDS(float tempC) {
   for (int i=0;i<SCOUNT;i++) analogBufferTemp[i]=analogBuffer[i];
   int median = getMedianNum(analogBufferTemp, SCOUNT);
@@ -96,21 +101,16 @@ float getTDS(float tempC) {
 
 // ── 조도 RAW → PWM
 uint8_t cdsToPwm(int cdsRaw) {
-  if (millis() < adaptUntil) {     // 초기 환경 학습
+  if (millis() < adaptUntil) {
     cdsMin = min(cdsMin, cdsRaw);
     cdsMax = max(cdsMax, cdsRaw);
   }
   int span = max(100, cdsMax - cdsMin);
-
   cdsEma = (cdsEma == 0 ? cdsRaw : EMA_ALPHA * cdsRaw + (1.0f - EMA_ALPHA) * cdsEma);
-
   float norm = (cdsEma - cdsMin) / (float)span;
   norm = constrain(norm, 0.0f, 1.0f);
-
   float level = INVERT_BRIGHTNESS ? (1.0f - norm) : norm;
-
   float gammaLevel = pow(level, 1.0f / GAMMA);
-
   int pwm = (int)round(gammaLevel * MAX_PWM);
   return (uint8_t)constrain(pwm, MIN_PWM, MAX_PWM);
 }
@@ -119,7 +119,10 @@ uint8_t cdsToPwm(int cdsRaw) {
 void setup_wifi() {
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) { delay(500); Serial.print("."); }
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
   Serial.println("\nWiFi connected. IP: " + WiFi.localIP().toString());
 }
 
@@ -129,7 +132,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   if (!err) {
     if (doc.containsKey("mode")) {
       const char* m = doc["mode"];
-      if (m && strcasecmp(m,"auto")==0)  autoMode = true;
+      if (m && strcasecmp(m,"auto")==0) autoMode = true;
       if (m && strcasecmp(m,"manual")==0){ autoMode = false; }
     }
     if (doc.containsKey("pwm")) {
@@ -143,7 +146,6 @@ void ensureMqtt() {
   while (!client.connected()) {
     if (client.connect("SmartFarmBoard")) {
       client.subscribe("led/control"); // 제어만 받음
-      // led/status 같은 상태 브로드캐스트 없음
     } else {
       delay(2000);
     }
@@ -155,15 +157,16 @@ void setup() {
 
   // ADC
   analogSetWidth(12);
-  analogSetPinAttenuation(CDS_PIN,  ADC_11db);
+  analogSetPinAttenuation(CDS_PIN, ADC_11db);
   analogSetPinAttenuation(SOIL_PIN, ADC_11db);
-  analogSetPinAttenuation(TDS_PIN,  ADC_11db);
-  analogSetPinAttenuation(PH_PIN,   ADC_11db);
+  analogSetPinAttenuation(TDS_PIN, ADC_11db);
+  analogSetPinAttenuation(PH_PIN, ADC_11db);
 
   // LED
   strip.begin();
   strip.setBrightness(255);
-  strip.clear(); strip.show();
+  strip.clear();
+  strip.show();
   setWhiteBrightness(currentPwm);
 
   // DHT
@@ -191,14 +194,13 @@ void loop() {
 
   // ── 조도 기반 LED 자동/수동 제어 ──
   static unsigned long t_led = 0;
-  if (millis() - t_led >= 100) {     // 10Hz
+  if (millis() - t_led >= 100) { // 10Hz
     t_led = millis();
     int cdsRaw = analogRead(CDS_PIN);
     cds = cdsRaw;
-
     if (autoMode) {
       uint8_t pwm = cdsToPwm(cdsRaw);
-      if (abs((int)pwm - (int)currentPwm) >= 3) setWhiteBrightness(pwm);   // 히스테리시스
+      if (abs((int)pwm - (int)currentPwm) >= 3) setWhiteBrightness(pwm);
     } else {
       if (currentPwm != manualPwm) setWhiteBrightness(manualPwm);
     }
@@ -218,8 +220,11 @@ void loop() {
     t_env = millis();
     float t = dht.readTemperature();
     float h = dht.readHumidity();
-    if (!isnan(t) && !isnan(h)) { temp = t; humi = h; }
-    tds  = getTDS(temp);
+    if (!isnan(t) && !isnan(h)) {
+      temp = t;
+      humi = h;
+    }
+    tds = getTDS(temp);
     int phRaw = analogRead(PH_PIN);
     ph = map(phRaw, 0, 4095, 140, 0) / 10.0;
   }
@@ -229,21 +234,18 @@ void loop() {
   if (millis() - t_pub > 5000) {
     t_pub = millis();
     soil = soilPercentFromRaw(readSoilRawAvg(10));
-
     StaticJsonDocument<256> doc;
     doc["temp"] = temp;
-    doc["humi"] = soil; 
-    doc["soil"] = humi;  
-    doc["cds"]  = cds;  
-    doc["tds"]  = tds;
-    doc["ph"]   = ph;
-
+    doc["humi"] = soil;
+    doc["soil"] = humi;
+    doc["cds"] = cds;
+    doc["tds"] = tds;
+    doc["ph"] = ph;
     char payload[192];
     size_t n = serializeJson(doc, payload);
     client.publish("etboard/sensor", payload, n);
 
-    // 시리얼: 둘 다 확인 가능
-    Serial.printf("PUB -> T:%.1f H:%.0f%% soil:%.0f%% L:%.0f TDS:%.1f pH:%.1f\n",
-                  temp, soil, humi, cds, tds, ph);
+    // 시리얼 출력
+    Serial.printf("PUB -> T:%.1f H:%.0f%% soil:%.0f%% L:%.0f TDS:%.1f pH:%.1f\n", temp, soil, humi, cds, tds, ph);
   }
 }
