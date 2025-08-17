@@ -189,4 +189,8 @@ classDiagram
 
 ## Frontend
 
-### ERD
+### pages
+<div align="center">
+  <img src="./image/front/home.png" width="500px" />
+</div>
+
