@@ -4,7 +4,11 @@
 #include <DHT.h>
 #include <Adafruit_NeoPixel.h>
 #include <math.h>
-#include "config.h"  
+
+// ====== WiFi & MQTT ======
+const char* ssid = "승우";
+const char* password = "123456789";
+const char* mqtt_server = "52.0.13.216";
 
 // ====== Pins ======
 #define DHTPIN 4
@@ -34,13 +38,13 @@ int analogBufferIndex = 0;
 
 // --- 조도 → LED 자동 제어 ---
 const bool INVERT_BRIGHTNESS = true; // true: 밝을수록 LED 어둡게
-const float EMA_ALPHA = 0.12f;       // EMA 필터 계수
-const float GAMMA = 2.2f;            // 감마 보정
-const uint8_t MIN_PWM = 10;          // 하한(완전 꺼짐 방지)
+const float EMA_ALPHA = 0.12f; // EMA 필터 계수
+const float GAMMA = 2.2f;      // 감마 보정
+const uint8_t MIN_PWM = 10;    // 하한(완전 꺼짐 방지)
 const uint8_t MAX_PWM = 255;
 int cdsMin = 0, cdsMax = 0;
 float cdsEma = 0;
-bool autoMode = true;                // 기본 자동 모드
+bool autoMode = true;          // 기본 자동 모드
 uint8_t manualPwm = 120;
 unsigned long adaptUntil = 0;
 const unsigned long ADAPT_MS = 8000; // 초기 환경 학습 시간
@@ -65,7 +69,9 @@ float soilPercentFromRaw(int raw) {
   if (raw > dry) raw = dry;
   if (raw < wet) raw = wet;
   float pct = (float)(dry - raw) * 100.0f / (float)(dry - wet);
-  return constrain(pct, 0, 100);
+  if (pct < 0) pct = 0;
+  if (pct > 100) pct = 100;
+  return pct;
 }
 
 // ── 네오픽셀 밝기 적용
@@ -142,9 +148,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
 void ensureMqtt() {
   while (!client.connected()) {
-    char cid[32];
-    snprintf(cid, sizeof(cid), "SmartFarm-%08X", (uint32_t)ESP.getEfuseMac()); // ✅ 고유 ID
-    if (client.connect(cid)) {
+    if (client.connect("SmartFarmBoard")) {
       client.subscribe("led/control"); // 제어만 받음
     } else {
       delay(2000);
@@ -245,8 +249,7 @@ void loop() {
     size_t n = serializeJson(doc, payload);
     client.publish("etboard/sensor", payload, n);
 
-    // 시리얼 출력 (라벨을 더 명확히)
-    Serial.printf("PUB -> Temp:%.1f  HUMI(sent_as_soil):%.0f%%  SOIL(sent_as_humi):%.0f%%  Light:%.0f  TDS:%.1f  pH:%.1f\n",
-                  temp, soil, humi, cds, tds, ph);
+    // 시리얼 출력
+    Serial.printf("PUB -> T:%.1f H:%.0f%% soil:%.0f%% L:%.0f TDS:%.1f pH:%.1f\n", temp, soil, humi, cds, tds, ph);
   }
 }
