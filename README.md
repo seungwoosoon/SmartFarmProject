@@ -28,7 +28,6 @@
 ### 📌 환경
 <img src="./image/part/part.png" width="300px" />
 
----
 ## 📌 주요 기능
 
 ### 🧠 **AI 생육 진단**
