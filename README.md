@@ -216,9 +216,9 @@ classDiagram
 
 ### Pages
 <div align="center">
-  <img src="./image/front/home.png" width="800px" />
-  <img src="./image/front/farm.png" width="400px" />
-  <img src="./image/front/flower.png" width="400px" />
+  <img src="./image/front/home.png" width="700px" />
+  <img src="./image/front/farm.png" width="350px" />
+  <img src="./image/front/flower.png" width="350px" />
 </div>
 
 ## 📡 Sensor 📡
