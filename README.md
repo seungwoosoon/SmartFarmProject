@@ -214,6 +214,11 @@ classDiagram
   <img src="./image/front/flower.png" width="400px" />
 </div>
 
+## 📡 Sensor 📡
+<div align="center">
+  <img src="./image/sensor/KakaoTalk_Photo_2025-08-17-20-42-54.png" width="500px" />
+</div>
+
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
