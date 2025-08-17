@@ -191,7 +191,7 @@ classDiagram
 
 ### pages
 <div align="center">
-  <img src="./image/front/home.png" width="500px" />
+  <img src="./image/front/home.png" width="900px" />
   <img src="./image/front/farm.png" width="500px" />
   <img src="./image/front/flower.png" width="500px" />
 </div>
