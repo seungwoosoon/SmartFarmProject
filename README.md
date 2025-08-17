@@ -184,3 +184,9 @@ classDiagram
     MqttListener --> SensorService
     MqttPublisher --> SensorService
     GrowthScheduler --> PotRepository
+
+```
+
+## Frontend
+
+### ERD
