@@ -63,20 +63,64 @@ classDiagram
 
     %% ===== DOMAIN =====
     class Member {
-        Long id
-        String login
-        String password
-        String name
-        String phoneNumber
-        Address address
+        +Long id
+        +String login
+        +String password
+        +String name
+        +String phoneNumber
+        +Address address
+        --Methods--
+        +addShelf()
     }
     class Address
-    class Image
-    class Shelf
-    class ShelfFloor
-    class Pot
-    class Plant <<enumeration>>
-    class PotStatus <<enumeration>>
+    class Image {
+        +Long id
+        +String imageUrl
+    }
+    class Shelf {
+        +Long id
+        +Integer position
+        --Methods--
+        +addFloor()
+        +linkMember()
+    }
+    class ShelfFloor {
+        +Long id
+        +Integer position
+        --Methods--
+        +addPot()
+        +linkShelf()
+    }
+    class Pot {
+        +Long id
+        +Integer position
+        +double exp
+        +Plant potPlant
+        +PotStatus status
+        --Methods--
+        +applySensor()
+        +applyExp()
+        +applyStatus()
+    }
+    class Plant {
+        <<enumeration>>
+        SPROUT
+        FLOWER
+        FRUIT
+        COMPLETE
+        EMPTY
+    }
+    class PotStatus {
+        <<enumeration>>
+        NORMAL
+        WARNING
+        EMPTY
+        GRAYMOLD
+        POWDERYMILDEW
+        NITROGENDEFICIENCY
+        PHOSPHROUSDEFICIENCY
+        POTASSIUMDEFICIENCY
+    }
 
     Member "1" --> "1" Image
     Member "1" --> "*" Shelf
@@ -84,51 +128,61 @@ classDiagram
     ShelfFloor "1" --> "*" Pot
 
     %% ===== REPOSITORIES =====
-    class MemberRepository
-    class PotRepository
-    class ImageRepository
-    class ShelfRepository
-    class ShelfFloorRepository
+    class MemberRepository {
+        +save()
+        +findById()
+        +findByLogin()
+        +findWithShelves()
+    }
+    class PotRepository {
+        +save()
+        +findOne()
+        +findByPosition()
+        +findAllNonEmpty()
+    }
 
     MemberRepository --> Member
     PotRepository --> Pot
-    ImageRepository --> Image
-    ShelfRepository --> Shelf
-    ShelfFloorRepository --> ShelfFloor
 
     %% ===== SERVICES =====
-    class FarmService
-    class DiagnosisService
-    class SensorService
-    class MemberService
-    class LoginService
-    class ImageService
+    class FarmService {
+        +createMemberWithEmptyFarm()
+        +addPot()
+        +deletePot()
+        +selectFarm()
+    }
+    class DiagnosisService {
+        +applyDiagnosis()
+    }
+    class SensorService {
+        +processSensorMessage()
+    }
 
     FarmService --> MemberRepository
     FarmService --> PotRepository
     DiagnosisService --> PotRepository
     SensorService --> PotRepository
-    MemberService --> MemberRepository
-    LoginService --> MemberRepository
-    ImageService --> ImageRepository
 
     %% ===== CONTROLLERS =====
-    class FarmController
-    class DiagnosisController
-    class LoginController
-    class ImageController
+    class FarmController {
+        +getSeedlings()
+        +addSeedling()
+        +deleteSeedling()
+    }
+    class DiagnosisController {
+        +receiveDiagnosis()
+    }
 
     FarmController --> FarmService
     DiagnosisController --> DiagnosisService
-    LoginController --> LoginService
-    LoginController --> MemberService
-    ImageController --> ImageService
 
     %% ===== EXTERNAL =====
-    class MqttListener
-    class MqttPublisher
-    class GrowthScheduler
+    class MqttListener {
+        +messageArrived()
+    }
+    class GrowthScheduler {
+        +tick()
+    }
 
     MqttListener --> SensorService
-    MqttPublisher --> SensorService : publishes
     GrowthScheduler --> PotRepository
