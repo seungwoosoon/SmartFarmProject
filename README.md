@@ -57,7 +57,8 @@
 <img src="./image/ERD/ERD.ver250812.png" width="500px" />
 
 
-'''mermaid
+```markdown
+```mermaid
 classDiagram
     direction LR
 
