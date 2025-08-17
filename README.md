@@ -82,8 +82,8 @@ classDiagram
     }
     class Image
     class Address
-    class Plant <<enumeration>>
-    class PotStatus <<enumeration>>
+    class Plant
+    class PotStatus 
 
     Member "1" --> "*" Shelf
     Shelf "1" --> "*" ShelfFloor
