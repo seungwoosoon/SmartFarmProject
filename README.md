@@ -1,8 +1,8 @@
-<p align="center">
+<div align="center">
   <p>Farm Link🌿</p>
   <h1>AI 기반 생육 진단과 디지털 트윈을 활용한 스마트팜 시스템</h1>
   <img src="./image/part/logo.png" width="150px" />
-</p>
+</div>
 
 
 ## 📚 프로잭트 소개
