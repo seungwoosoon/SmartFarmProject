@@ -44,10 +44,11 @@
 
 ### 🪞 **Digital Twin 시각화**
 - Unity 기반 가상 농장 구현
-![Unity 3D View](./image/unity/3dunity.png)
-
 - 현재 생육 상태 및 환경 정보 시각화
-![Unity 3D View](./image/unity/status.png)
+<p align="center">
+  <img src="./image/unity/3dunity.png" width="300px" />
+  <img src="./image/unity/status.png" width="300px" />
+</p>
 
 ### ⚙️ 기술 스텍
 
