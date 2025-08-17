@@ -50,9 +50,7 @@
 ### ⚙️ 기술 스텍
 
 ## Architecture
-
-![System Architecture](./image/SystemArchitecture/newSystemArchitecture.png)
+<img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
 
 ## ERD
-
-![ERD](./image/ERD/ERD.ver250812.png)
+<img src="./image/ERD/ERD.ver250812.png" width="500px" />
