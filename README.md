@@ -54,7 +54,7 @@
 
 ## Backend
 ### ERD
-<img src="./image/ERD/ERD.ver250812.png" width="500px" />
+<img src="./image/ERD/ERD.ver250812.png" width="900px" />
 
 
 ```mermaid
