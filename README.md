@@ -208,3 +208,6 @@ classDiagram
   <img src="./image/front/flower.png" width="450px" />
 </div>
 
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
