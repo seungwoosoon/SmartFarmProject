@@ -3,11 +3,14 @@
 
 
 ## 📚 프로잭트 소개
-Our project is to create a smart farm that can monitor the growth environment in real time based on sensor data and improve crop productivity through automatic control
+**Farm Link**는 실시간 환경 모니터링 센서와 AI 기반 생육 진단을 결합한 스마트팜 품질관리 시스템입니다.  
+생육 환경을 자동 제어하고 작물 생장 예측 및 디지털 트윈 시각화를 통해 사용자에게 직관적인 품질관리 기능을 제공합니다.
 
-In addition, we would like to use ai to provide more differentiated services
-It detects physiological inhibitions and diseases of plants through images and informs users of them so that crops can be easily managed
-Based on environmental data, the growth of plants is predicted, and information on growth is visualized through digital twins to provide information to users
+- 이미지 기반 AI 분석으로 **생리 장애 및 병해 탐지**
+- 환경 데이터 기반 **생장 예측**
+- **Digital Twin (React, Unity WebGL)** 시각화를 통한 사용자 인터랙션 제공
+
+---
  
 ### 📅 개발 기간
 - 25.07.18. - 25.08.25.
