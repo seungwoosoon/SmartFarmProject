@@ -50,12 +50,14 @@
 - 현재 생육 상태 및 환경 정보 시각화
 
 ## Architecture
-<img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
-
+<div align="center">
+  <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
+</div>
 ## Backend
 ### ERD
-<img src="./image/ERD/ERD.ver250812.png" width="900px" />
-
+<div align="center">
+  <img src="./image/ERD/ERD.ver250812.png" width="900px" />
+</div>
 
 ```mermaid
 classDiagram
