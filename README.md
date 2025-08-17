@@ -63,21 +63,23 @@
 
 <div align="center">
   <img src="./image/ai/yollo.jpeg" width="500px" />
+  yolo를 이용한 객체의 질병, 영양 부족 탐지
 </div>
-- yolo를 이용한 객체의 질병, 영양 부족 탐지
 
 ### Time Series
 
 <div align="center">
   <img src="./image/ai/time.png" width="500px" />
+  시계열 예측을 통한 성장치 예측 모델
 </div>
-- 시계열 예측을 통한 성장치 예측 모델
+
 
 ## 🪞 Unity 🪞
 <div align="center">
   <img src="./image/unity/status.png" width="500px" />
+  가상 공간 선반 디지털 트윈
 </div>
-- 가상 공간 선반 디지털 트윈
+
 
 ## 🛠️ Backend 🛠️
 
