@@ -27,7 +27,7 @@
 - 양지은 : 센서
 - 이용훈 : PM
 ### 📌 환경
-<img src="./image/part/part.png" width="300px" />
+<img src="./image/part/part.png" width="800px" />
 
 ## 📌 주요 기능
 
