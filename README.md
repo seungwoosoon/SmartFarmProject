@@ -23,7 +23,7 @@ Based on environmental data, the growth of plants is predicted, and information 
 - 손승우 : 백엔드, 배포, unity
 - 양지은 : 센서
 - 이용훈 : PM
-
+## Environment
 ![Part Stack](./image/part/part.png)
 ## 📌 주요 기능
 
