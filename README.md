@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./image/part/logo.png" width="130px" />
-  <p2>AI 기반 생육 진단과 디지털 트윈을 활용한 </p2>
+  <h3>AI 기반 생육 진단과 디지털 트윈을 활용한 </h3>
   <h1> 🌿스마트팜 품질관리 시스템🌿</h1>
   <img src="./image/part/smart.avif" width="800px" />
 </div>
