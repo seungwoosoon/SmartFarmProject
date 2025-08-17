@@ -59,9 +59,9 @@
 
 ```mermaid
 classDiagram
-    direction LR
+    direction TB
 
-    %% ========== DOMAIN ==========
+    %% ===== DOMAIN =====
     class Member {
         Long id
         String login
@@ -69,133 +69,66 @@ classDiagram
         String name
         String phoneNumber
         Address address
-        List~Shelf~ farmShelves
     }
-    class Address {
-        String city
-        String street
-        String zipcode
-    }
-    class Image {
-        Long id
-        String imageUrl
-        Member member
-    }
-    class Shelf {
-        Long id
-        Member member
-        Integer position
-        List~ShelfFloor~ shelfFloors
-    }
-    class ShelfFloor {
-        Long id
-        Shelf shelf
-        Integer position
-        List~Pot~ pots
-    }
-    class Pot {
-        Long id
-        ShelfFloor shelfFloor
-        Integer position
-        double ph
-        double temperature
-        double lightStrength
-        double ttsDensity
-        double humidity
-        double exp
-        Plant potPlant
-        PotStatus status
-    }
+    class Address
+    class Image
+    class Shelf
+    class ShelfFloor
+    class Pot
+    class Plant <<enumeration>>
+    class PotStatus <<enumeration>>
 
-    %% enums (Mermaid에 맞는 표현 방식)
-    class Plant {
-        <<enumeration>>
-        SPROUT
-        FLOWER
-        FRUIT
-        COMPLETE
-        EMPTY
-    }
-    class PotStatus {
-        <<enumeration>>
-        NORMAL
-        WARNING
-        EMPTY
-        GRAYMOLD
-        POWDERYMILDEW
-        NITROGENDEFICIENCY
-        PHOSPHROUSDEFICIENCY
-        POTASSIUMDEFICIENCY
-    }
+    Member "1" --> "1" Image
+    Member "1" --> "*" Shelf
+    Shelf "1" --> "*" ShelfFloor
+    ShelfFloor "1" --> "*" Pot
 
-    %% ========== DTO ==========
-    class DiagnosisRequest
-    class PotDto
-    class PotPositionRequest
-    class MemberJoinRequestDto
-    class MemberResponseDto
-    class ProfileUpdateRequest
-    class ImageUploadResponseDto
-
-    %% ========== REPOSITORY ==========
+    %% ===== REPOSITORIES =====
     class MemberRepository
     class PotRepository
     class ImageRepository
     class ShelfRepository
     class ShelfFloorRepository
 
-    %% ========== SERVICE ==========
-    class FarmService
-    class LoginService
-    class MemberService
-    class DiagnosisService
-    class SensorService
-    class ImageService
-
-    %% ========== CONTROLLER ==========
-    class FarmController
-    class LoginController
-    class DiagnosisController
-    class ImageController
-
-    %% ========== MQTT ==========
-    class MqttListener
-    class MqttPublisher
-
-    %% ========== SCHEDULER ==========
-    class GrowthScheduler
-
-    %% ========== RELATIONS ==========
-    Member "1" --> "many" Shelf : has
-    Shelf "1" --> "many" ShelfFloor : has
-    ShelfFloor "1" --> "many" Pot : has
-    Member "1" --> "1" Image
-    Pot "*" --> "1" ShelfFloor
-
-    %% Repositories
     MemberRepository --> Member
     PotRepository --> Pot
     ImageRepository --> Image
     ShelfRepository --> Shelf
     ShelfFloorRepository --> ShelfFloor
 
-    %% Services
+    %% ===== SERVICES =====
+    class FarmService
+    class DiagnosisService
+    class SensorService
+    class MemberService
+    class LoginService
+    class ImageService
+
     FarmService --> MemberRepository
     FarmService --> PotRepository
-    LoginService --> MemberRepository
-    MemberService --> MemberRepository
     DiagnosisService --> PotRepository
     SensorService --> PotRepository
+    MemberService --> MemberRepository
+    LoginService --> MemberRepository
     ImageService --> ImageRepository
 
-    %% Controllers
+    %% ===== CONTROLLERS =====
+    class FarmController
+    class DiagnosisController
+    class LoginController
+    class ImageController
+
     FarmController --> FarmService
+    DiagnosisController --> DiagnosisService
     LoginController --> LoginService
     LoginController --> MemberService
-    DiagnosisController --> DiagnosisService
     ImageController --> ImageService
 
-    %% MQTT & Scheduler
+    %% ===== EXTERNAL =====
+    class MqttListener
+    class MqttPublisher
+    class GrowthScheduler
+
     MqttListener --> SensorService
     MqttPublisher --> SensorService : publishes
     GrowthScheduler --> PotRepository
