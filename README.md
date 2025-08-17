@@ -1,6 +1,7 @@
 <div align="center">
   <img src="./image/part/logo.png" width="130px" />
   <h1>🌿AI 기반 생육 진단과 디지털 트윈을 활용한 스마트팜 시스템🌿</h1>
+  <img src="./image/part/smart.png" width="300px" style="border-radius:15px;" />
 </div>
 
 
