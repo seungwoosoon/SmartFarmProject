@@ -59,6 +59,16 @@
 
 ---
 ## 🧠 AI 🧠
+### Yolo
+
+<div align="center">
+  <img src="./image/ai/yollo.jpeg" width="500px" />
+</div>
+
+## 🪞 Unity 🪞
+<div align="center">
+  <img src="./image/unity/status.png" width="500px" />
+</div>
 
 ## 🛠️ Backend 🛠️
 
