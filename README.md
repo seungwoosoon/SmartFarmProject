@@ -64,17 +64,20 @@
 <div align="center">
   <img src="./image/ai/yollo.jpeg" width="500px" />
 </div>
+- yolo를 이용한 객체의 질병, 영양 부족 탐지
 
 ### Time Series
 
 <div align="center">
   <img src="./image/ai/time.png" width="500px" />
 </div>
+- 시계열 예측을 통한 성장치 예측 모델
 
 ## 🪞 Unity 🪞
 <div align="center">
   <img src="./image/unity/status.png" width="500px" />
 </div>
+- 가상 공간 선반 디지털 트윈
 
 ## 🛠️ Backend 🛠️
 
@@ -218,6 +221,7 @@ classDiagram
 <div align="center">
   <img src="./image/sensor/KakaoTalk_Photo_2025-08-17-20-42-54.png" width="500px" />
 </div>
+- 센서 환경 구축
 
 ## 📄 License
 
