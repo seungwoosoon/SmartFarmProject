@@ -152,6 +152,18 @@ function buildGridPayloadFromSeedlings(raw) {
         return { row, col, status: "EMPTY", plant: "EMPTY", exp: 0, ph: 0, temperature: 0, lightStrength: 0, ttsDensity: 0, humidity: 0 };
     });
 
+    // 상태 enum → 축약 코드 매핑
+    const STATUS_CODE_MAP = {
+        "NORMAL": "N",
+        "WARNING": "W",
+        "EMPTY": "E",
+        "GRAYMOLD": "GM",
+        "POWDERYMILDEW": "PM",
+        "NITROGENDEFICIENCY": "ND",
+        "PHOSPHROUSDEFICIENCY": "PD",
+        "POTASSIUMDEFICIENCY": "PKD"
+    };
+
     const up = s => (s ?? "").trim().toUpperCase();
 
     for (const s of items) {
@@ -163,27 +175,27 @@ function buildGridPayloadFromSeedlings(raw) {
         const col = pos.pot?.index   ?? pos.numOfPot         ?? pos.col            ?? 0;
         if (row < 0 || row >= ROWS_PER_SHELF || col < 0 || col >= COLS_PER_ROW) continue;
 
-        const status = (s.status ?? "NORMAL");
-        const plant  = (s.plant  ?? "SPROUT");
+        const rawStatus = up(s.status ?? "NORMAL");
+        const code = STATUS_CODE_MAP[rawStatus] ?? "N";  // 축약코드 없으면 NORMAL("N") 처리
+        const plant = up(s.plant ?? "SPROUT");
 
         const idx = row * COLS_PER_ROW + col;
         cells[idx] = {
             row, col,
-            status: up(status) === "EMPTY" ? "EMPTY" : status,
-            plant:  up(plant)  === "EMPTY" ? "EMPTY" : plant,
-            exp:           Number(s.exp           ?? 0) || 0,
-            ph:            Number(s.ph            ?? 0) || 0,
-            temperature:   Number(s.temperature   ?? 0) || 0,
-            lightStrength: Number(s.lightStrength ?? 0) || 0,
-            ttsDensity:    Number(s.ttsDensity    ?? 0) || 0,
-            humidity:      Number(s.humidity      ?? 0) || 0,
-            name: s.name
+            status: code,                         // 👈 축약코드만 보내기
+            plant: plant === "EMPTY" ? "EMPTY" : plant,
+            exp: Number(s.exp ?? 0) || 0,
+            ph: Number(s.ph ?? 0) || 7,
+            temperature: Number(s.temperature ?? 0) || 25,
+            lightStrength: Number(s.lightStrength ?? 0) || 1500,
+            ttsDensity: Number(s.ttsDensity ?? 0) || 200,
+            humidity: Number(s.humidity ?? 0) || 10,
+            name: s.name,
         };
     }
 
     return { cells };
 }
-
 function sendGridPayloadChunked(sendMessage, payload) {
     const json = JSON.stringify(payload);
     const CHUNK = 200_000;
