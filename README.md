@@ -55,3 +55,131 @@
 ## Backend
 ### ERD
 <img src="./image/ERD/ERD.ver250812.png" width="500px" />
+
+
+classDiagram
+    direction LR
+
+    %% ========== DOMAIN ==========
+    class Member {
+        Long id
+        String login
+        String password
+        String name
+        String phoneNumber
+        Address address
+        List~Shelf~ farmShelves
+    }
+    class Address {
+        String city
+        String street
+        String zipcode
+    }
+    class Image {
+        Long id
+        String imageUrl
+        Member member
+    }
+    class Shelf {
+        Long id
+        Member member
+        Integer position
+        List~ShelfFloor~ shelfFloors
+    }
+    class ShelfFloor {
+        Long id
+        Shelf shelf
+        Integer position
+        List~Pot~ pots
+    }
+    class Pot {
+        Long id
+        ShelfFloor shelfFloor
+        Integer position
+        double ph
+        double temperature
+        double lightStrength
+        double ttsDensity
+        double humidity
+        double exp
+        Plant potPlant
+        PotStatus status
+    }
+    enum Plant {
+        SPROUT, FLOWER, FRUIT, COMPLETE, EMPTY
+    }
+    enum PotStatus {
+        NORMAL, WARNING, EMPTY, GRAYMOLD, POWDERYMILDEW, NITROGENDEFICIENCY, PHOSPHROUSDEFICIENCY, POTASSIUMDEFICIENCY
+    }
+
+    %% ========== DTO ==========
+    class DiagnosisRequest
+    class PotDto
+    class PotPositionRequest
+    class MemberJoinRequestDto
+    class MemberResponseDto
+    class ProfileUpdateRequest
+    class ImageUploadResponseDto
+
+    %% ========== REPOSITORY ==========
+    class MemberRepository
+    class PotRepository
+    class ImageRepository
+    class ShelfRepository
+    class ShelfFloorRepository
+
+    %% ========== SERVICE ==========
+    class FarmService
+    class LoginService
+    class MemberService
+    class DiagnosisService
+    class SensorService
+    class ImageService
+
+    %% ========== CONTROLLER ==========
+    class FarmController
+    class LoginController
+    class DiagnosisController
+    class ImageController
+
+    %% ========== MQTT ==========
+    class MqttListener
+    class MqttPublisher
+
+    %% ========== SCHEDULER ==========
+    class GrowthScheduler
+
+    %% ========== RELATIONS ==========
+    Member "1" --> "many" Shelf : has
+    Shelf "1" --> "many" ShelfFloor : has
+    ShelfFloor "1" --> "many" Pot : has
+    Member "1" --> "1" Image
+    Pot "*" --> "1" ShelfFloor
+
+    %% Repositories
+    MemberRepository --> Member
+    PotRepository --> Pot
+    ImageRepository --> Image
+    ShelfRepository --> Shelf
+    ShelfFloorRepository --> ShelfFloor
+
+    %% Services
+    FarmService --> MemberRepository
+    FarmService --> PotRepository
+    LoginService --> MemberRepository
+    MemberService --> MemberRepository
+    DiagnosisService --> PotRepository
+    SensorService --> PotRepository
+    ImageService --> ImageRepository
+
+    %% Controllers
+    FarmController --> FarmService
+    LoginController --> LoginService
+    LoginController --> MemberService
+    DiagnosisController --> DiagnosisService
+    ImageController --> ImageService
+
+    %% MQTT & Scheduler
+    MqttListener --> SensorService
+    MqttPublisher --> (publishes)
+    GrowthScheduler --> PotRepository
