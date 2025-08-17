@@ -63,7 +63,7 @@
 
 <div align="center">
   <img src="./image/ai/yollo.jpeg" width="500px" />
-  yolo를 이용한 객체의 질병, 영양 부족 탐지
+  <h3>YOLO 기반 작물 병해·영양 결핍 탐지 AI</h3>
 </div>
 
 ### Time Series
