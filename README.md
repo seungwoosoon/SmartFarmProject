@@ -55,7 +55,7 @@
 ## ⚙️ Architecture ⚙️
 
 <div align="center">
-  <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
+  <img src="./image/SystemArchitecture/system.jpeg" width="500px" />
 </div>
 
 ---
