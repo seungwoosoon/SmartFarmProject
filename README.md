@@ -54,7 +54,7 @@
   <img src="./image/SystemArchitecture/newSystemArchitecture.png" width="500px" />
 </div>
 
----
+--
 
 ## Backend
 
