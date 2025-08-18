@@ -5,7 +5,9 @@
   <img src="./image/part/smart.avif" width="800px" />
 </div>
 <p align="center">
-  <a href="http://52.0.13.216" target="_blank"><strong>🌱 스마트팜 페이지 접속하기 →</strong></a>
+  <a href="http://52.0.13.216" target="_blank" style="padding:8px 16px; background:#4CAF50; color:white; border-radius:6px; text-decoration:none;">
+    🌿 스마트팜 페이지 바로가기
+  </a>
 </p>
 
 
