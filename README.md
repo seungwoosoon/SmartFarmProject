@@ -4,6 +4,7 @@
   <h1> 🌿스마트팜 생육 모델🌿</h1>
   <img src="./image/part/smart.avif" width="800px" />
 </div>
+<p><a href="http://52.0.13.216" target="_blank">http://52.0.13.216</a></p>
 
 
 ## 프로젝트 소개 - 25.07.18. - 25.08.25.
