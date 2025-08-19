@@ -15,7 +15,7 @@ function UnityPlayer() {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const { unityProvider, sendMessage, isLoaded } = useUnityContext({
+    const { unityProvider, sendMessage, isLoaded, loadingProgression } = useUnityContext({
         loaderUrl: "/Build/web.loader.js",
         dataUrl: "/Build/web.data",
         frameworkUrl: "/Build/web.framework.js",
@@ -129,11 +129,89 @@ function UnityPlayer() {
                             padding: 12,
                         }}
                     >
-                        <div className="unity-player-wrapper">
-                            <Unity
-                                unityProvider={unityProvider}
-                                className="unity-player-canvas"
-                            />
+                        <div
+                            className="unity-card"
+                            style={{
+                                background: "#fff",
+                                borderRadius: 16,
+                                boxShadow: "0 4px 24px rgba(180,200,230,0.18)",
+                                padding: 12,
+                            }}
+                        >
+                            <div
+                                className="unity-player-wrapper"
+                                style={{
+                                    minHeight: 500,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    position: "relative" // 👈 오버레이를 위해 추가
+                                }}
+                            >
+                                {/* ✅ Unity는 항상 렌더되어야 로딩이 진행됨 */}
+                                <Unity unityProvider={unityProvider} className="unity-player-canvas" />
+
+                                {/* ✅ isLoaded=false 동안만 로딩 오버레이 띄우기 */}
+                                {!isLoaded && (
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            inset: 0,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            flexDirection: "column",
+                                            background: "rgba(255,255,255,0.9)"
+                                        }}
+                                    >
+                                        <div style={{ fontSize: 16, color: "#2e7d32", marginBottom: 12 }}>
+                                            <img
+                                                src={"/plant-twin-icon.png"}
+                                                alt="Plant Twin"
+                                                style={{
+                                                    width: 72,
+                                                    height: 72,
+                                                    marginBottom: 12,
+                                                    objectFit: "contain",
+                                                    userSelect: "none",
+                                                    pointerEvents: "none"
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* 진행률 바 컨테이너 */}
+                                        <div
+                                            style={{
+                                                width: "70%",
+                                                maxWidth: 520,
+                                                height: 12,
+                                                borderRadius: 8,
+                                                background: "rgba(46,125,50,0.14)",          // ✅ 초록 느낌의 트랙
+                                                overflow: "hidden",
+                                                boxShadow: "inset 0 0 0 1px rgba(46,125,50,0.18)" // 살짝 테두리
+                                            }}
+                                        >
+                                            {/* 진행률 채움 */}
+                                            <div
+                                                style={{
+                                                    height: "100%",
+                                                    width: `${Math.min(100, Math.max(0, Math.round((loadingProgression ?? 0) * 100)))}%`,
+                                                    background: "linear-gradient(90deg, #A8E063, #56AB2F)", // ✅ 자연스런 초록 그라데이션
+                                                    transition: "width 200ms ease"
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div style={{ marginTop: 10, fontSize: 14, color: "#2e7d32", fontWeight: 600 }}>
+                                            {`${
+                                                isLoaded
+                                                    ? 100
+                                                    : Math.min(99, Math.round((loadingProgression ?? 0) * 100))
+                                            }%`}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
