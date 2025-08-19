@@ -428,194 +428,185 @@
   .unityplayer-desc{ font-size: 13px !important; }
 
   /* my plant */
+ html, body { overflow-x: hidden; }
 
-   /* 화면 패딩/배경/글꼴 유지 + 상단 여백 확보 */
-  .myplant-container{
-    min-height: 100svh !important;
-    padding: 14px 12px 18px 12px !important;
-    box-sizing: border-box !important;
+  /* 좌측으로 밀던 배경/띠 제거 */
+  .plant-bg {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background-position: center top !important;
+    background-size: cover !important;
     display: block !important;
-    position: relative !important; /* 버튼 절대 위치 기준 */
+  }
+  .plant-bg::before,
+  .plant-bg::after {
+    content: none !important;
+    display: none !important;
   }
 
-  /* ⬅️ 뒤로가기: 최상단 좌측 고정 */
-  .myplant-container .back-btn{
-    position: absolute !important;  
-    top: 12px !important;
-    left: 12px !important;    
-    font-size: 18px !important;
-    z-index: 20  !important; /* 다른 요소 위에 */
-    color: #388e3c !important; /* 녹색 */
-    padding: 6px 12px !important; /* 여백 줄임 */
-    padding: 0 !important; /* 여백 최소화 */
-    margin-bottom: 0 !important; /* 고정이므로 아래쪽 간격 불필요 */
+  /* 공통: 박스계산 통일 */
+  .myplant-container,
+  .myplant-container * { box-sizing: border-box !important; }
+
+  /* 컨테이너 중앙 */
+  .myplant-container{
+    width: 100% !important;
+    max-width: 440px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 10px 10px 14px !important;
+    transform: none !important;
+    left: 0 !important; right: 0 !important;
   }
 
-  /* 제목: 중앙 정렬(절대 위치 제거) */
+  /* 뒤로가기 */
+  .back-btn{
+    top: 10px !important;
+    left: 10px !important;
+    font-size: 16px !important;
+  }
+
+  /* 헤더: 상단 세로 정렬(제목→부제목) */
   .myplant-header{
     position: static !important;
+    top: auto !important; left: auto !important;
     transform: none !important;
-    text-align: center !important;
-    font-size: 22px !important;     /* 작게 */
-    margin: 0 auto 6px auto !important;
-    padding-top: 40px;               /* back 버튼 공간만큼 내림 */
-    color: #2f2f2f;
-  }
 
-  /* 부제목: 제목 아래 */
-  .myplant-subtext{
-    text-align: center !important;
-    font-size: 13px !important;
-    margin: 0 0 12px 0 !important;
-    color: #666 !important;
-    padding: 0 12px !important; /* 좌우 여백 */
-    line-height: 1.4 !important; /* 줄 간격 */
-  }
-
-  /* 본문 카드 레이아웃: 세로 스택 */
-  .plant-info-layout{
     display: flex !important;
-    flex-direction: column !important;        /* 가로 → 세로 */
-    align-items: center !important; /* 중앙 정렬 */
-    gap: 12px !important;                     /* 요소 간격 축소 */
-    justify-content: flex-start !important; /* 위에서 아래로 */
-    gap: 14px !important;                     /* 요소 간격 축소 */
-    padding: 14px !important;        /* 카드 패딩 축소 */
-    border-radius: 16px !important;
-    background: #fff !important; /* 배경색 유지 */
-    width: 100% !important; /* 가로 꽉 채움 */
-    max-width: 480px !important; /* 최대 너비 제한 */
-    max-width: 640px !important; /* 최대 너비 제한 */
-    margin: 0 auto 12px auto !important; /* 중앙 정렬 */
-    box-shadow: 0 4px 16px rgba(60, 120, 60, 0.1) !important; /* 그림자 효과 */
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+
+    width: calc(100% - 16px) !important;   /* 좌우 8px 여백 */
+    margin: 8px auto 12px auto !important; /* 아래 공간 확보 */
+    padding-top: 6px !important;
+    text-align: center !important;
+    font-size: 18px !important;
+  }
+  .myplant-subtext{
+    display: block !important;
+    font-size: 12px !important;
+    margin: 4px 0 0 !important;
   }
 
-  /* 이미지 영역 먼저 */
+  /* 본문 카드(하얀 큰 박스): 헤더 아래 시작, 좌우 동일 여백 */
+  .plant-info-box{
+    position: relative !important;
+    z-index: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;        /* 가로 꽉 채움 */
+    width: calc(100% - 16px) !important;    /* 좌우 8px */
+    max-width: none !important;
+    margin: 0 auto 12px auto !important;
+    padding: 10px !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 4px 12px rgba(60,120,60,0.1) !important;
+    overflow: visible !important;
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+  }
+  .plant-info-box > *{
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;                /* flex overflow 방지 */
+    margin: 0 !important;
+  }
+
+  /* 새싹 이미지 영역 */
   .plant-left{
     order: 1 !important;
-    width: 100% !important;
-    text-align: center !important;
-    margin-bottom: 12px !important; /* 이미지 아래 여백 */
     display: flex !important;
     flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin: 6px 0 8px 0 !important;
   }
   .plant-large-img{
-    width: 62vw !important;                 /* 화면 기준 축소 */
-    max-width: 260px !important; /* 최대 너비 제한 */
-    height: auto !important; /* 비율 유지 */
-    object-fit: contain !important; /* 이미지 비율 유지 */
-    border-radius: 16px !important; /* 모서리 둥글게 */
+    display: block !important;
+    width: 52vw !important;
+    max-width: 140px !important;
+    max-height: 140px !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: 12px !important;
   }
-  .plant-name{ font-size: 18px !important; margin-top: 8px !important; }
-  .plant-stage{ font-size: 13px !important; color: #666 !important; }
+  .plant-name{ font-size: 15px !important; margin-top: 6px !important; }
+  .plant-stage{ font-size: 12px !important; color:#666 !important; }
 
-  /* 성장 상태(버튼/라벨) 다음 */
-  .button-group{
-    order: 2 !important;
-    display: flex !important;
-    width: 100% !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 10px !important;
-    margin-bottom: 12px !important; /* 아래쪽 여백 */
-    flex-wrap: wrap !important; /* 줄바꿈 허용 */
-  }
-  .status-button{
-    padding: 10px 14px !important;
-    font-size: 14px !important;
-    border-radius: 14px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important; /* 아이콘과 텍스트 간격 */
-    min-width: 80px !important; /* 최소 너비 */
-  }
-  .status-label{
-    order: 2 !important;
-    font-size: 14px !important;
-    display: inline-block !important;
-    margin-top: 6px !important;
-    color: #666 !important;
-    font-size: 13px !important; 
-    padding: 10px 16px !important;  
-    border-radius: 16px !important;
-    background: #f0f8e0 !important; /* 연한 녹색 배경 */
-    text-align: center !important;
-  }
-
-  /* 센서 카드들 */
-  .sensor-cards{
-    order: 3 !important;
+  /* 센서/날씨: 1열 100% 폭 */
+  .plant-right{ order: 2 !important; width: 100% !important; }
+  .sensor-weather-row{
     display: flex !important;
     flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
     width: 100% !important;
-    max-width: 480px !important; /* 최대 너비 제한 */
-    margin: 0 auto !important; /* 중앙 정렬 */
-    padding: 12px !important; /* 카드 패딩 */
-    gap: 8px !important; /* 카드 간격 */
-    background: #fff !important; /* 배경색 유지 */
-    margin: 6px 0 4px 0 !important; /* 위쪽 여백 줄임 */
+  }
+  .sensor-bars,
+  .weather-modern-card{
+    width: 100% !important;
+    /* max-width: 100% !important; */
+    margin: 0 !important;
+  }
+
+  /* 날씨 카드 축소 (고정폭 유지 원하면 아래 280px은 제거 X) */
+  .weather-modern-card{
+    padding: 10px !important;
+    border-radius: 12px !important;
+    overflow: visible !important;
+    width: 280px !important;
+  }
+  .weather-modern-header{ font-size: 14px !important; }
+  .weather-modern-row{ font-size: 12.5px !important; }
+  .weather-modern-content{ overflow: visible !important; }
+
+  /* 상태/버튼 */
+  .button-group{ justify-content: flex-start !important; gap: 8px !important; }
+  .status-label{ font-size: 12px !important; padding: 7px 10px !important; border-radius: 10px !important; }
+  .calendar-btn{ font-size: 12.5px !important; padding: 7px 12px !important; border-radius: 10px !important; }
+
+  /* 푸터 */
+  .footer-info{ font-size: 11px !important; text-align: center !important; }
+
+  /* Bar 컴포넌트 축소 (고정폭 유지) */
+  .sensor-bars{ text-align: left !important; }
+  .sensor-bars :is(.bar-wrap, .bar-container){
+    width: 265px !important;
+    padding: 2px 0 !important;
+  }
+  .sensor-bars :is(.bar-label, .bar-title){
+    font-size: 12.5px !important;
+    line-height: 0.3 !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+  }
+  .sensor-bars :is(.bar-bg, .bar-track, .bar){
+    width: 100% !important;
+    height: 16px !important;
     border-radius: 16px !important;
-    box-shadow: 0 4px 16px rgba(60, 120, 60, 0.1) !important; /* 그림자 효과 */ 
   }
-  .sensor-card{
-    font-size: 14px !important;
-    padding: 10px 14px !important; 
-    border-radius: 10px !important;
-    display: flex !important; 
-    flex-direction: column !important;
-    gap: 6px !important; /* 요소 간격 축소 */
-    background: #f9f9f9 !important; /* 연한 회색 배경 */
-    box-shadow: 0 2px 8px rgba(0, 0,  0, 0.1) !important; /* 그림자 효과 */
-    margin-bottom: 8px !important; /* 카드 간격 */
-  }
-
-  /* 날씨 섹션(실제 클래스명에 따라 커버) */
-  .weather-section,
-  .weather-info,
-  [class*="weather"]{
-    order: 4 !important;
-    display: flex !important;
-    width: 100% !important;
-    max-width: 480px !important; /* 최대 너비 제한 */
-    margin-top: 6px !important; /* 위쪽 여백 줄임 */
-    padding: 12px !important; /* 카드 패딩 */ 
-    font-size: 14px !important;
+  .sensor-bars :is(.bar-fill, .bar-value){
+    height: 16px !important;
     border-radius: 16px !important;
   }
-
-  /* 이미지 옆 토마토 아이콘(있다면) */
-  .tomato-icon{
-    height: 36px !important; /* 줄임 */
-    margin-right: 8px !important; /* 오른쪽 여백 */ 
-    margin-bottom: 0 !important; /* 아래쪽 여백 제거 */
-    flex-shrink: 0 !important; /* 이미지 크기 유지 */
+  .sensor-bars :is(.bar-min, .bar-max, .bar-scale, .bar-tick){
+    font-size: 10px !important;
   }
 
-  /* 달력 버튼 등 기타 버튼 */
-  .calendar-btn{
-    padding: 10px 18px !important;
-    font-size: 14px !important;
-    border-radius: 14px !important;
-    display: inline-flex !important;  
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important; /* 아이콘과 텍스트 간격 */ 
-    min-width: 80px !important; /* 최소 너비 */ 
-    margin-top: 12px !important; /* 위쪽 여백 */  
-    margin-bottom: 12px !important; /* 아래쪽 여백 */ 
-    background: #e0f7fa !important; /* 연한 파란색 배경 */
-    color: #00796b !important; /* 어두운 청록색 텍스트 */ 
-  }
-
-  /* 푸터는 맨 아래 */
-  .footer-info{
-    order: 5 !important;
+  /* 프레임워크 잔재 무력화 */
+  .plant-info-box [class*="col-"],
+  .sensor-weather-row [class*="col-"],
+  .plant-info-box [style*="float"],
+  .sensor-weather-row [style*="float"]{
+    float: none !important;
     width: 100% !important;
-    text-align: center !important;
-    font-size: 12px !important;
-    margin-top: 18px !important; /* 위쪽 여백 */
   }
+
+  /* 이미지/아이콘 잘림 방지 */
+  img, svg { max-width: 100%; height: auto; }
 
   /* login modal */
   .login-modal .modal-content,
