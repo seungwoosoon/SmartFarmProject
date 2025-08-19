@@ -3,6 +3,8 @@ package com.example.SmartFarmBackEnd.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -32,6 +34,11 @@ public class Pot {
     private double lightStrength;
     private double ttsDensity;
     private double humidity;
+
+    @Setter
+    private int day = 0;      // 이 화분의 누적 일수
+    @Setter
+    private int week = 0;     // 이 화분의 누적 주차
 
     public void setPosition(int position) {
         this.position = position;

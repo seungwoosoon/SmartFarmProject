@@ -3,14 +3,14 @@ package com.example.SmartFarmBackEnd.schedular;
 import com.example.SmartFarmBackEnd.domain.Pot;
 import com.example.SmartFarmBackEnd.repository.PotRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j; // ✅ 추가
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j // ✅ 로그 지원
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GrowthScheduler {
