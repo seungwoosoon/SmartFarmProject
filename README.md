@@ -61,7 +61,8 @@
 
 <div align="center">
   <img width="689" height="1440" alt="image" src="https://github.com/user-attachments/assets/88f75a5f-2b48-4c98-97bb-d82170c1f6f3" />
-  <img width="720" height="416" alt="image" src="https://github.com/user-attachments/assets/fb1b568d-8400-4533-ac50-1fee83c49a17" />
+<img width="6512" height="3760" alt="image" src="https://github.com/user-attachments/assets/51ba91a4-e1c2-42ac-85fd-89c4222cf377" />
+
 </div>
 
 ---
