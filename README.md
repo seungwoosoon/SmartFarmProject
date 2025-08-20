@@ -61,6 +61,7 @@
 
 <div align="center">
   <img src="./image/SystemArchitecture/system.png" width="500px" />
+  <img width="720" height="416" alt="image" src="https://github.com/user-attachments/assets/fb1b568d-8400-4533-ac50-1fee83c49a17" />
 </div>
 
 ---
